@@ -1,0 +1,79 @@
+/* Variables */
+:root {
+  /* Colores generales */
+  --color-fondo: #121214; /* Fondo principal de la app */
+  --color-tablero: #1c1c20; /* Fondo del tablero */
+  --color-texto-principal: #f5f5f5; /* Texto general */
+  --color-texto-secundario: #b4b4be; /* Texto secundario / subtítulos */
+
+  /* Fichas */
+  --color-ficha-x: #ffffff; /* Ficha X */
+  --color-ficha-o: #000000; /* Ficha O */
+
+  /* Estados y acciones */
+  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
+  --color-ganador: #f44336; /* Color que indica línea ganadora */
+  --color-sombra-tablero: rgba(0, 0, 0, 0.4); /* Sombra suave en tablero */
+
+  /* Bordes y contornos */
+  --color-borde-tablero: #3c3c46; /* Bordes del tablero y celdas */
+  --color-borde-modal: #2c2c34; /* Bordes de ventanas emergentes o modales */
+
+  /* Botones */
+  --color-boton: #03a9f4; /* Botones de acción */
+  --color-boton-hover: #0288d1; /* Hover de botones */
+  --color-desactivado: #666666; /* Botones inactivos o deshabilitados */
+
+  /* Mensajes */
+  --color-exito: #4caf50; /* Mensajes de éxito */
+  --color-error: #f44336; /* Mensajes de error */
+
+  /* Fondos alternativos */
+  --color-fondo-alterno: #1e1e22; /* Fondos de paneles, tarjetas o secciones secundarias */
+  --color-modal-fondo: #1c1c24; /* Fondo de modales y ventanas emergentes */
+  --color-nav-fondo: #1b1b1f; /* Fondo de barra de navegación */
+
+  /* Sombras y efectos */
+  --sombra-boton: rgba(0, 0, 0, 0.4);
+  --sombra-modal: rgba(0, 0, 0, 0.6);
+}
+
+/* TEMA CLARO */
+:root.tema-claro {
+  /* Colores generales */
+  --color-fondo: #f5f5f5; /* Fondo principal de la app */
+  --color-tablero: #ffffff; /* Fondo del tablero */
+  --color-texto-principal: #212121; /* Texto general */
+  --color-texto-secundario: #666666; /* Texto secundario / subtítulos */
+
+  /* Fichas */
+  --color-ficha-x: #000000; /* Ficha X */
+  --color-ficha-o: #ffffff; /* Ficha O */
+
+  /* Estados y acciones */
+  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
+  --color-ganador: #f44336; /* Color que indica línea ganadora */
+  --color-sombra-tablero: rgba(0, 0, 0, 0.1); /* Sombra suave en tablero */
+
+  /* Bordes y contornos */
+  --color-borde-tablero: #e0e0e0; /* Bordes del tablero y celdas */
+  --color-borde-modal: #d0d0d0; /* Bordes de ventanas emergentes o modales */
+
+  /* Botones */
+  --color-boton: #03a9f4; /* Botones de acción */
+  --color-boton-hover: #0288d1; /* Hover de botones */
+  --color-desactivado: #bdbdbd; /* Botones inactivos o deshabilitados */
+
+  /* Mensajes */
+  --color-exito: #4caf50; /* Mensajes de éxito */
+  --color-error: #f44336; /* Mensajes de error */
+
+  /* Fondos alternativos */
+  --color-fondo-alterno: #fafafa; /* Fondos de paneles, tarjetas o secciones secundarias */
+  --color-modal-fondo: #ffffff; /* Fondo de modales y ventanas emergentes */
+  --color-nav-fondo: #eeeeee; /* Fondo de barra de navegación */
+
+  /* Sombras y efectos */
+  --sombra-boton: rgba(0, 0, 0, 0.2);
+  --sombra-modal: rgba(0, 0, 0, 0.3);
+}
