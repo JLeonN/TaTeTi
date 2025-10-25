@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-primary text-white">
+    <q-header elevated class="header-personalizado">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
@@ -13,17 +13,38 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" elevated>
-      <q-list>
-        <q-item clickable to="/" exact>
-          <q-item-section avatar>
-            <q-icon name="games" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Jugar</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
+    <q-drawer
+      v-model="leftDrawerOpen"
+      side="left"
+      overlay
+      behavior="mobile"
+      elevated
+      class="drawer-personalizado"
+    >
+      <div class="contenedor-drawer">
+        <!-- Header del drawer -->
+        <div class="drawer-header">
+          <q-avatar size="50px">
+            <img src="/favicon.png" />
+          </q-avatar>
+          <div class="drawer-titulo">Ta-Te-Ti</div>
+          <div class="drawer-subtitulo">Tres en Raya</div>
+        </div>
+
+        <q-separator class="separador-personalizado" />
+
+        <q-list class="lista-menu">
+          <q-item clickable to="/" exact class="item-menu">
+            <q-item-section avatar>
+              <q-icon name="games" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Jugar</q-item-label>
+              <q-item-label caption>Nueva partida</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -48,3 +69,57 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.header-personalizado {
+  background-color: var(--color-nav-fondo);
+  color: var(--color-texto-principal);
+}
+.drawer-personalizado {
+  background-color: var(--color-fondo-alterno) !important;
+}
+.contenedor-drawer {
+  background-color: var(--color-fondo-alterno);
+  min-height: 100vh;
+  width: 100%;
+}
+.drawer-header {
+  padding: 30px 20px;
+  text-align: center;
+  background-color: var(--color-nav-fondo);
+}
+.drawer-titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-texto-principal);
+  margin-top: 12px;
+}
+.drawer-subtitulo {
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+  margin-top: 4px;
+}
+.separador-personalizado {
+  background-color: var(--color-borde-tablero);
+}
+.lista-menu {
+  padding: 12px 0;
+}
+.item-menu {
+  margin: 4px 8px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: var(--color-texto-principal);
+}
+.item-menu:hover {
+  background-color: var(--color-tablero);
+  transform: translateX(4px);
+}
+.item-menu .q-icon {
+  color: var(--color-turno-activo);
+}
+.item-menu .q-item__label--caption {
+  color: var(--color-texto-secundario);
+  font-size: 0.75rem;
+}
+</style>
