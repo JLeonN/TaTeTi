@@ -14,7 +14,16 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" elevated>
-      <!-- drawer content -->
+      <q-list>
+        <q-item clickable v-ripple to="/JugarTaTeTi" @click="leftDrawerOpen = false">
+          <q-item-section side>
+            <q-icon name="ti ti-device-gamepad-3" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Juego</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container>
