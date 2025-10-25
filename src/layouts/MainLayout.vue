@@ -6,21 +6,21 @@
 
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+            <img src="/favicon.png" />
           </q-avatar>
-          Title
+          Ta-Te-Ti
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay behavior="mobile" elevated>
       <q-list>
-        <q-item clickable v-ripple to="/JugarTaTeTi" @click="leftDrawerOpen = false">
-          <q-item-section side>
-            <q-icon name="ti ti-device-gamepad-3" />
+        <q-item clickable to="/" exact>
+          <q-item-section avatar>
+            <q-icon name="games" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Juego</q-item-label>
+            <q-item-label>Jugar</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>

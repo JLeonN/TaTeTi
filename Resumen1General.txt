@@ -1,0 +1,233 @@
+================================================================================
+PROYECTO: TA-TE-TI (TRES EN RAYA)
+================================================================================
+
+TECNOLOGÍAS UTILIZADAS
+--------------------------------------------------------------------------------
+- Vue.js 3 (Composition API)
+- Quasar Framework v2
+- Vue Router
+- JavaScript (ES6+)
+- CSS Variables para theming
+
+OBJETIVO DEL PROYECTO
+--------------------------------------------------------------------------------
+Juego de Ta-Te-Ti (tres en raya) funcional con interfaz moderna y responsiva.
+Sistema de turnos, detección de ganador, empates y reinicio de partida.
+
+ESTRUCTURA DE ARCHIVOS
+--------------------------------------------------------------------------------
+proyecto/
+├── src/
+│   ├── components/
+│   │   ├── Composables/
+│   │   │   └── useTaTeTi.js              # Lógica del juego (estado, turnos, validaciones)
+│   │   └── TaTeTi/
+│   │       ├── CeldaTaTeTi.vue           # Celda individual del tablero
+│   │       ├── TableroTaTeTi.vue         # Grid 3x3 del tablero
+│   │       ├── InfoJuego.vue             # Muestra turno actual, ganador o empate
+│   │       └── ControlesJuego.vue        # Botones reiniciar y volver
+│   ├── pages/
+│   │   └── JugarTaTeTi.vue               # Página principal que orquesta todo
+│   ├── router/
+│   │   ├── index.js                      # Configuración del router
+│   │   └── routes.js                     # Definición de rutas
+│   └── css/
+│       └── app.css                       # Variables CSS del tema oscuro
+
+ARQUITECTURA Y DECISIONES
+--------------------------------------------------------------------------------
+
+1. PATRÓN COMPOSABLE
+   - useTaTeTi.js contiene TODA la lógica del juego
+   - Los componentes son "tontos", solo reciben props y emiten eventos
+   - Facilita testing y reutilización de lógica
+
+2. COMPONENTES SEPARADOS
+   - Cada parte del juego es un componente independiente
+   - Facilita mantenimiento y escalabilidad
+   - Permite reutilizar componentes en otros contextos
+
+3. FLUJO DE DATOS
+   - JugarTaTeTi.vue → consume useTaTeTi()
+   - JugarTaTeTi.vue → pasa datos a componentes hijos via props
+   - Componentes hijos → emiten eventos hacia arriba
+   - Estado unidireccional y predecible
+
+FUNCIONALIDADES IMPLEMENTADAS
+--------------------------------------------------------------------------------
+
+1. TABLERO DE JUEGO
+   - Grid 3x3 responsive
+   - Celdas clickeables solo si están vacías
+   - Animación al aparecer fichas
+   - Hover effect en celdas disponibles
+
+2. SISTEMA DE TURNOS
+   - Alterna entre 'X' y 'O'
+   - Indicador visual del turno actual
+   - Animación de pulso en turno activo
+
+3. DETECCIÓN DE GANADOR
+   - 8 combinaciones ganadoras verificadas
+   - 3 filas, 3 columnas, 2 diagonales
+   - Mensaje de victoria con animación
+
+4. DETECCIÓN DE EMPATE
+   - Valida cuando todas las celdas están llenas
+   - Solo si no hay ganador
+   - Mensaje de empate
+
+5. CONTROLES
+   - Botón Reiniciar: resetea el juego completo
+   - Botón Volver: navega a página de inicio
+   - Responsive en mobile
+
+6. RESPONSIVE DESIGN
+   - Tablero se adapta a pantallas pequeñas
+   - Botones en columna en mobile
+   - Textos escalables
+
+LÓGICA DEL COMPOSABLE useTaTeTi
+--------------------------------------------------------------------------------
+
+ESTADO REACTIVO:
+- tablero: Array de 9 posiciones (null, 'X' o 'O')
+- turnoActual: String ('X' o 'O')
+- juegoTerminado: Boolean
+- ganador: String (null, 'X' o 'O')
+
+MÉTODOS PRINCIPALES:
+- realizarJugada(indice): Coloca ficha, valida, cambia turno
+- verificarGanador(): Revisa las 8 combinaciones posibles
+- reiniciarJuego(): Resetea todo el estado a inicial
+
+COMPUTED:
+- esEmpate: true cuando tablero lleno y sin ganador
+
+VALIDACIONES:
+- No permite jugada si celda ocupada
+- No permite jugada si juego terminado
+- Solo cambia turno si jugada válida
+
+CONVENCIONES DE CÓDIGO
+--------------------------------------------------------------------------------
+- Variables, funciones y clases: ESPAÑOL
+- Nombres descriptivos (manejarClick, realizarJugada, etc.)
+- camelCase para variables y funciones
+- PascalCase para componentes
+- Props tipadas con validación
+- Emisión explícita de eventos con defineEmits
+
+TEMA VISUAL
+--------------------------------------------------------------------------------
+- Paleta de colores oscuros (dark theme)
+- Variables CSS en app.css para consistencia
+/* Variables */
+:root {
+  /* Colores generales */
+  --color-fondo: #121214; /* Fondo principal de la app */
+  --color-tablero: #1c1c20; /* Fondo del tablero */
+  --color-texto-principal: #f5f5f5; /* Texto general */
+  --color-texto-secundario: #b4b4be; /* Texto secundario / subtítulos */
+
+  /* Fichas */
+  --color-ficha-x: #ffffff; /* Ficha X */
+  --color-ficha-o: #000000; /* Ficha O */
+
+  /* Estados y acciones */
+  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
+  --color-ganador: #f44336; /* Color que indica línea ganadora */
+  --color-sombra-tablero: rgba(0, 0, 0, 0.4); /* Sombra suave en tablero */
+
+  /* Bordes y contornos */
+  --color-borde-tablero: #3c3c46; /* Bordes del tablero y celdas */
+  --color-borde-modal: #2c2c34; /* Bordes de ventanas emergentes o modales */
+
+  /* Botones */
+  --color-boton: #03a9f4; /* Botones de acción */
+  --color-boton-hover: #0288d1; /* Hover de botones */
+  --color-desactivado: #666666; /* Botones inactivos o deshabilitados */
+
+  /* Mensajes */
+  --color-exito: #4caf50; /* Mensajes de éxito */
+  --color-error: #f44336; /* Mensajes de error */
+
+  /* Fondos alternativos */
+  --color-fondo-alterno: #1e1e22; /* Fondos de paneles, tarjetas o secciones secundarias */
+  --color-modal-fondo: #1c1c24; /* Fondo de modales y ventanas emergentes */
+  --color-nav-fondo: #1b1b1f; /* Fondo de barra de navegación */
+
+  /* Sombras y efectos */
+  --sombra-boton: rgba(0, 0, 0, 0.4);
+  --sombra-modal: rgba(0, 0, 0, 0.6);
+}
+
+/* TEMA CLARO */
+:root.tema-claro {
+  /* Colores generales */
+  --color-fondo: #f5f5f5; /* Fondo principal de la app */
+  --color-tablero: #ffffff; /* Fondo del tablero */
+  --color-texto-principal: #212121; /* Texto general */
+  --color-texto-secundario: #666666; /* Texto secundario / subtítulos */
+
+  /* Fichas */
+  --color-ficha-x: #000000; /* Ficha X */
+  --color-ficha-o: #ffffff; /* Ficha O */
+
+  /* Estados y acciones */
+  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
+  --color-ganador: #f44336; /* Color que indica línea ganadora */
+  --color-sombra-tablero: rgba(0, 0, 0, 0.1); /* Sombra suave en tablero */
+
+  /* Bordes y contornos */
+  --color-borde-tablero: #e0e0e0; /* Bordes del tablero y celdas */
+  --color-borde-modal: #d0d0d0; /* Bordes de ventanas emergentes o modales */
+
+  /* Botones */
+  --color-boton: #03a9f4; /* Botones de acción */
+  --color-boton-hover: #0288d1; /* Hover de botones */
+  --color-desactivado: #bdbdbd; /* Botones inactivos o deshabilitados */
+
+  /* Mensajes */
+  --color-exito: #4caf50; /* Mensajes de éxito */
+  --color-error: #f44336; /* Mensajes de error */
+
+  /* Fondos alternativos */
+  --color-fondo-alterno: #fafafa; /* Fondos de paneles, tarjetas o secciones secundarias */
+  --color-modal-fondo: #ffffff; /* Fondo de modales y ventanas emergentes */
+  --color-nav-fondo: #eeeeee; /* Fondo de barra de navegación */
+
+  /* Sombras y efectos */
+  --sombra-boton: rgba(0, 0, 0, 0.2);
+  --sombra-modal: rgba(0, 0, 0, 0.3);
+}
+
+
+RUTAS CONFIGURADAS
+--------------------------------------------------------------------------------
+- '/': Página principal (IndexPage.vue)
+- '/jugar-tateti': Página del juego (JugarTaTeTi.vue)
+- '/:catchAll(.*)*': Página 404 (ErrorNotFound.vue)
+
+PRÓXIMAS MEJORAS POSIBLES
+--------------------------------------------------------------------------------
+- Modo contra IA (computadora)
+- Contador de victorias por jugador
+- Historial de partidas
+- Animación de línea ganadora
+- Sonidos al hacer jugadas
+- Modo multijugador online
+- Diferentes tamaños de tablero (4x4, 5x5)
+- Temas de color personalizables
+
+NOTAS IMPORTANTES
+--------------------------------------------------------------------------------
+- ESLint: Prestar atención a warnings y errors
+- Quasar: Usa componentes q-* nativos cuando sea posible
+- Imports: Usar alias 'src/' para imports absolutos
+- Git: Carpetas con mayúsculas (TaTeTi, Composables)
+
+================================================================================
+FIN DEL RESUMEN
+================================================================================

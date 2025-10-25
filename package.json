@@ -1,17 +1,21 @@
 {
   "name": "tateti",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "Quasar App",
+  "description": "Juego de Ta-Te-Ti",
+  "productName": "Ta-Te-Ti",
   "author": "Leonardo Núñez <jorgebike.75@hotmail.com>",
   "type": "module",
   "private": true,
   "scripts": {
+    "dev": "quasar dev",
+    "build": "quasar build",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build",
+    "generar-apk": "npm run build && npm run cap:copy && npm run cap:android",
+    "cap:copy": "npx cap copy android",
+    "cap:sync": "npx cap sync android",
+    "cap:android": "npx cap open android",
     "postinstall": "quasar prepare"
   },
   "dependencies": {
