@@ -9,14 +9,14 @@
       @click="manejarReiniciar"
     />
 
-    <q-btn
+    <!-- <q-btn
       label="Volver"
       icon="arrow_back"
       color="secondary"
       outline
       size="lg"
       @click="manejarVolver"
-    />
+    /> -->
   </div>
 </template>
 
@@ -27,9 +27,9 @@ const manejarReiniciar = () => {
   emit('reiniciar')
 }
 
-const manejarVolver = () => {
-  emit('volver')
-}
+// const manejarVolver = () => {
+//   emit('volver')
+// }
 </script>
 
 <style scoped>

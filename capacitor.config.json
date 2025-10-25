@@ -1,0 +1,8 @@
+{
+  "appId": "com.leonardo.tateti",
+  "appName": "Ta-Te-Ti",
+  "webDir": "dist/spa",
+  "server": {
+    "androidScheme": "https"
+  }
+}
