@@ -68,7 +68,8 @@ const volverAlInicio = () => {
   color: var(--color-texto-principal);
   font-size: 3rem;
   font-weight: bold;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+  margin-top: -40px;
   text-align: center;
   text-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
 }
