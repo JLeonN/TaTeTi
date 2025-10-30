@@ -36,44 +36,10 @@
   /* Sombras y efectos */
   --sombra-boton: rgba(255, 71, 87, 0.4);
   --sombra-modal: rgba(108, 92, 231, 0.7);
-}
 
-/* TEMA CLARO */
-:root.tema-claro {
-  /* Colores generales */
-  --color-fondo: #f5f5f5; /* Fondo principal de la app */
-  --color-tablero: #ffffff; /* Fondo del tablero */
-  --color-texto-principal: #212121; /* Texto general */
-  --color-texto-secundario: #666666; /* Texto secundario / subtítulos */
-
-  /* Fichas */
-  --color-ficha-x: #000000; /* Ficha X */
-  --color-ficha-o: #ffffff; /* Ficha O */
-
-  /* Estados y acciones */
-  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
-  --color-ganador: #f44336; /* Color que indica línea ganadora */
-  --color-sombra-tablero: rgba(0, 0, 0, 0.1); /* Sombra suave en tablero */
-
-  /* Bordes y contornos */
-  --color-borde-tablero: #e0e0e0; /* Bordes del tablero y celdas */
-  --color-borde-modal: #d0d0d0; /* Bordes de ventanas emergentes o modales */
-
-  /* Botones */
-  --color-boton: #03a9f4; /* Botones de acción */
-  --color-boton-hover: #0288d1; /* Hover de botones */
-  --color-desactivado: #bdbdbd; /* Botones inactivos o deshabilitados */
-
-  /* Mensajes */
-  --color-exito: #4caf50; /* Mensajes de éxito */
-  --color-error: #f44336; /* Mensajes de error */
-
-  /* Fondos alternativos */
-  --color-fondo-alterno: #fafafa; /* Fondos de paneles, tarjetas o secciones secundarias */
-  --color-modal-fondo: #ffffff; /* Fondo de modales y ventanas emergentes */
-  --color-nav-fondo: #eeeeee; /* Fondo de barra de navegación */
-
-  /* Sombras y efectos */
-  --sombra-boton: rgba(0, 0, 0, 0.2);
-  --sombra-modal: rgba(0, 0, 0, 0.3);
+  /* Efectos neón para líneas ganadoras */
+  --neon-x: #ff4757;
+  --neon-o: #1e90ff;
+  --brillo-neon-x: 0 0 10px #ff4757, 0 0 20px #ff4757, 0 0 30px #ff4757, 0 0 40px #ff4757;
+  --brillo-neon-o: 0 0 10px #1e90ff, 0 0 20px #1e90ff, 0 0 30px #1e90ff, 0 0 40px #1e90ff;
 }
