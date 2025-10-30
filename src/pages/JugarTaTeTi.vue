@@ -13,6 +13,8 @@
       <TableroTaTeTi
         :tablero="tablero"
         :juego-terminado="juegoTerminado"
+        :combinacion-ganadora="combinacionGanadora"
+        :ganador="ganador"
         @jugada="realizarJugada"
       />
 
@@ -30,8 +32,16 @@ import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 
 const router = useRouter()
 
-const { tablero, turnoActual, juegoTerminado, ganador, esEmpate, realizarJugada, reiniciarJuego } =
-  useTaTeTi()
+const {
+  tablero,
+  turnoActual,
+  juegoTerminado,
+  ganador,
+  combinacionGanadora,
+  esEmpate,
+  realizarJugada,
+  reiniciarJuego,
+} = useTaTeTi()
 
 const volverAlInicio = () => {
   router.push('/')

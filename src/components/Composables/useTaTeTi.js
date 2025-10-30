@@ -10,6 +10,7 @@ export function useTaTeTi() {
   // Estado del juego
   const juegoTerminado = ref(false)
   const ganador = ref(null)
+  const combinacionGanadora = ref(null)
 
   // Combinaciones ganadoras
   const combinacionesGanadoras = [
@@ -32,6 +33,7 @@ export function useTaTeTi() {
         tablero.value[a] === tablero.value[b] &&
         tablero.value[a] === tablero.value[c]
       ) {
+        combinacionGanadora.value = combinacion
         return tablero.value[a]
       }
     }
@@ -78,6 +80,7 @@ export function useTaTeTi() {
     turnoActual.value = 'X'
     juegoTerminado.value = false
     ganador.value = null
+    combinacionGanadora.value = null
   }
 
   return {
@@ -85,6 +88,7 @@ export function useTaTeTi() {
     turnoActual,
     juegoTerminado,
     ganador,
+    combinacionGanadora,
     esEmpate,
     realizarJugada,
     reiniciarJuego,
