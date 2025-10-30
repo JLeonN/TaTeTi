@@ -1,41 +1,41 @@
 /* Variables */
 :root {
   /* Colores generales */
-  --color-fondo: #121214; /* Fondo principal de la app */
-  --color-tablero: #1c1c20; /* Fondo del tablero */
-  --color-texto-principal: #f5f5f5; /* Texto general */
-  --color-texto-secundario: #b4b4be; /* Texto secundario / subtítulos */
+  --color-fondo: #2d1b4e; /* Púrpura profundo */
+  --color-tablero: #3d2b5f; /* Púrpura intermedio */
+  --color-texto-principal: #ffffff; /* Blanco puro */
+  --color-texto-secundario: #c4b5fd; /* Lavanda suave */
 
   /* Fichas */
-  --color-ficha-x: #ffffff; /* Ficha X */
-  --color-ficha-o: #000000; /* Ficha O */
+  --color-ficha-x: #ff4757; /* Rojo vibrante */
+  --color-ficha-o: #1e90ff; /* Azul eléctrico */
 
   /* Estados y acciones */
-  --color-turno-activo: #1e88e5; /* Resalta el turno del jugador */
-  --color-ganador: #f44336; /* Color que indica línea ganadora */
-  --color-sombra-tablero: rgba(0, 0, 0, 0.4); /* Sombra suave en tablero */
+  --color-turno-activo: #ffbe0b; /* Amarillo dorado */
+  --color-ganador: #00d9a3; /* Verde neón */
+  --color-sombra-tablero: rgba(108, 92, 231, 0.6); /* Sombra púrpura */
 
   /* Bordes y contornos */
-  --color-borde-tablero: #3c3c46; /* Bordes del tablero y celdas */
-  --color-borde-modal: #2c2c34; /* Bordes de ventanas emergentes o modales */
+  --color-borde-tablero: #8b44ff; /* Púrpura brillante */
+  --color-borde-modal: #6c5ce7; /* Púrpura medio */
 
   /* Botones */
-  --color-boton: #03a9f4; /* Botones de acción */
-  --color-boton-hover: #0288d1; /* Hover de botones */
-  --color-desactivado: #666666; /* Botones inactivos o deshabilitados */
+  --color-boton: #8b44ff; /* Púrpura brillante */
+  --color-boton-hover: #ffbe0b; /* Amarillo dorado */
+  --color-desactivado: #6b5b8e; /* Púrpura apagado */
 
   /* Mensajes */
-  --color-exito: #4caf50; /* Mensajes de éxito */
-  --color-error: #f44336; /* Mensajes de error */
+  --color-exito: #00d9a3; /* Verde neón */
+  --color-error: #ff4757; /* Rojo vibrante */
 
   /* Fondos alternativos */
-  --color-fondo-alterno: #1e1e22; /* Fondos de paneles, tarjetas o secciones secundarias */
-  --color-modal-fondo: #1c1c24; /* Fondo de modales y ventanas emergentes */
-  --color-nav-fondo: #1b1b1f; /* Fondo de barra de navegación */
+  --color-fondo-alterno: #4a3470; /* Púrpura claro */
+  --color-modal-fondo: #3d2b5f; /* Púrpura modal */
+  --color-nav-fondo: #2d1b4e; /* Púrpura nav */
 
   /* Sombras y efectos */
-  --sombra-boton: rgba(0, 0, 0, 0.4);
-  --sombra-modal: rgba(0, 0, 0, 0.6);
+  --sombra-boton: rgba(255, 71, 87, 0.4);
+  --sombra-modal: rgba(108, 92, 231, 0.7);
 }
 
 /* TEMA CLARO */
