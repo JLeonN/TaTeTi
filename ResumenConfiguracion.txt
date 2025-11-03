@@ -1,0 +1,108 @@
+================================================================================
+SISTEMA DE CONFIGURACIÓN - TA-TE-TI
+================================================================================
+
+DESCRIPCIÓN
+--------------------------------------------------------------------------------
+Sistema de configuración que permite al usuario personalizar su nombre.
+El nombre se guarda en el almacenamiento nativo de Capacitor y se muestra
+en el header de la aplicación.
+
+TECNOLOGÍAS UTILIZADAS
+--------------------------------------------------------------------------------
+- Capacitor Preferences (almacenamiento nativo)
+- Composable singleton para estado compartido
+- Tabler Icons para iconografía
+- Quasar Notify para notificaciones
+
+ARCHIVOS PRINCIPALES
+--------------------------------------------------------------------------------
+
+1. src/components/Composables/useConfiguracion.js
+   - Composable singleton que maneja el estado del nombre del usuario
+   - Funciones: cargarNombre(), guardarNombre()
+   - Estado compartido globalmente entre componentes
+   - Utiliza Capacitor Preferences con clave 'nombre_usuario'
+
+2. src/pages/ConfiguracionPage.vue
+   - Página principal de configuración
+   - Muestra nombre actual del usuario
+   - Botón para abrir modal de cambio de nombre
+   - Input con validación de nombre vacío
+   - Notificaciones de éxito/error al guardar
+
+3. src/layouts/MainLayout.vue (modificado)
+   - Muestra nombre del usuario en el header
+   - Ítem de configuración agregado al drawer lateral
+   - Carga nombre al montar el componente
+
+4. src/router/routes.js (modificado)
+   - Ruta '/configuracion' agregada
+
+FLUJO DE FUNCIONAMIENTO
+--------------------------------------------------------------------------------
+
+1. Al iniciar la app, MainLayout carga el nombre guardado
+2. Usuario navega a Configuración desde el drawer
+3. Usuario presiona "Cambiar Nombre"
+4. Modal se abre con input prellenado con nombre actual
+5. Usuario ingresa nuevo nombre y presiona "Guardar"
+6. Se valida que no esté vacío
+7. Se guarda en Capacitor Preferences
+8. Se actualiza el estado reactivo (singleton)
+9. El header se actualiza automáticamente
+10. Notificación de éxito se muestra
+
+PATRÓN SINGLETON
+--------------------------------------------------------------------------------
+El composable useConfiguracion usa refs declarados fuera de la función
+para compartir el mismo estado entre todos los componentes que lo usen.
+Esto permite que al cambiar el nombre en ConfiguracionPage, se actualice
+automáticamente en MainLayout sin necesidad de eventos o store.
+
+ALMACENAMIENTO
+--------------------------------------------------------------------------------
+- Plugin: @capacitor/preferences
+- Clave: 'nombre_usuario'
+- Valor por defecto: 'Jugador'
+- Persiste entre sesiones de la app
+
+VALIDACIONES
+--------------------------------------------------------------------------------
+- Nombre no puede estar vacío
+- Se hace trim() automáticamente
+- Máximo 20 caracteres
+- Contador de caracteres visible en input
+
+ICONOGRAFÍA (TABLER ICONS)
+--------------------------------------------------------------------------------
+- ti-settings: Ícono de configuración
+- ti-user: Ícono de usuario
+- ti-user-edit: Ícono de editar usuario
+- ti-edit: Ícono de editar
+- ti-device-gamepad-2: Ícono de juego (drawer)
+
+NOTIFICACIONES
+--------------------------------------------------------------------------------
+- Éxito: Verde con ícono ti-check
+- Error: Roja sin ícono
+- Posición: top
+- Auto-dismiss después de algunos segundos
+
+ESTILOS
+--------------------------------------------------------------------------------
+- Usa paleta de colores del proyecto (variables.css)
+- Diseño responsive para mobile
+- Animaciones en botones (hover, active)
+- Bordes redondeados y sombras
+
+MEJORAS FUTURAS POSIBLES
+--------------------------------------------------------------------------------
+- Avatar personalizado del usuario
+- Más opciones de configuración (tema, idioma, etc.)
+- Estadísticas del jugador
+- Historial de partidas
+
+================================================================================
+FIN DEL RESUMEN
+================================================================================
