@@ -1,7 +1,7 @@
 <template>
   <q-page class="pagina-tateti">
     <div class="contenedor-juego">
-      <h1 class="titulo-juego">Ta-Te-Ti</h1>
+      <h1 class="titulo-h1 titulo-juego">Ta-Te-Ti</h1>
 
       <InfoJuego
         :turno-actual="turnoActual"
@@ -65,17 +65,12 @@ const volverAlInicio = () => {
   align-items: center;
 }
 .titulo-juego {
-  color: var(--color-texto-principal);
-  font-size: 3rem;
-  font-weight: bold;
   margin-bottom: 10px;
   margin-top: -40px;
   text-align: center;
-  text-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
 }
 @media (max-width: 600px) {
   .titulo-juego {
-    font-size: 2rem;
     margin-bottom: 20px;
   }
 }

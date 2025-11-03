@@ -1,15 +1,15 @@
 <template>
   <q-page class="pagina-configuracion">
     <div class="contenedor-configuracion">
-      <h1 class="titulo-configuracion">
-        <i class="ti ti-settings icono-titulo"></i>
+      <h1 class="titulo-h1-con-icono">
+        <i class="ti ti-settings icono-xl icono-primario"></i>
         Configuración
       </h1>
 
       <!-- Sección de Usuario -->
       <div class="seccion-config">
         <div class="encabezado-seccion">
-          <i class="ti ti-user icono-seccion"></i>
+          <i class="ti ti-user icono-md icono-primario"></i>
           <span class="titulo-seccion">Usuario</span>
         </div>
 
@@ -19,7 +19,7 @@
             <span class="valor-actual">{{ nombreUsuario }}</span>
           </div>
 
-          <button class="boton-cambiar-nombre" @click="abrirModalCambiarNombre">
+          <button class="boton-base boton-primario" @click="abrirModalCambiarNombre">
             <i class="ti ti-edit"></i>
             <span>Cambiar Nombre</span>
           </button>
@@ -42,7 +42,7 @@
         outlined
         label="Nuevo nombre"
         placeholder="Ingresá tu nombre"
-        class="input-nombre"
+        class="input-quasar"
         maxlength="20"
         counter
         :rules="[(val) => !!val || 'El nombre no puede estar vacío']"
@@ -117,20 +117,6 @@ const cancelarCambioNombre = () => {
   max-width: 600px;
   margin: 0 auto;
 }
-.titulo-configuracion {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--color-texto-principal);
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 30px;
-  text-shadow: 0 4px 12px rgba(139, 68, 255, 0.3);
-}
-.icono-titulo {
-  font-size: 2.5rem;
-  color: var(--color-turno-activo);
-}
 .seccion-config {
   background-color: var(--color-fondo-alterno);
   border: 2px solid var(--color-borde-tablero);
@@ -145,15 +131,6 @@ const cancelarCambioNombre = () => {
   margin-bottom: 16px;
   padding-bottom: 12px;
   border-bottom: 2px solid var(--color-borde-tablero);
-}
-.icono-seccion {
-  font-size: 1.5rem;
-  color: var(--color-turno-activo);
-}
-.titulo-seccion {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: var(--color-texto-principal);
 }
 .contenido-seccion {
   display: flex;
@@ -174,50 +151,7 @@ const cancelarCambioNombre = () => {
   font-weight: 600;
   color: var(--color-texto-principal);
 }
-.boton-cambiar-nombre {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 14px 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: white;
-  background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px var(--sombra-boton);
-}
-.boton-cambiar-nombre:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--sombra-boton);
-}
-.boton-cambiar-nombre:active {
-  transform: translateY(0);
-}
-.boton-cambiar-nombre i {
-  font-size: 1.2rem;
-}
-.input-nombre {
-  margin-top: 8px;
-}
-.input-nombre :deep(.q-field__control) {
-  background-color: var(--color-tablero);
-  border-radius: 8px;
-  color: var(--color-texto-principal);
-}
-.input-nombre :deep(.q-field__label) {
-  color: var(--color-texto-secundario);
-}
-.input-nombre :deep(.q-field__native) {
-  color: var(--color-texto-principal);
-}
 @media (max-width: 600px) {
-  .titulo-configuracion {
-    font-size: 2rem;
-  }
   .seccion-config {
     padding: 16px;
   }

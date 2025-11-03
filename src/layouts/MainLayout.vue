@@ -13,7 +13,7 @@
 
         <!-- Mostrar nombre del usuario -->
         <div class="nombre-usuario">
-          <i class="ti ti-user icono-usuario"></i>
+          <i class="ti ti-user icono-sm icono-primario"></i>
           <span>{{ nombreUsuario }}</span>
         </div>
       </q-toolbar>
@@ -42,7 +42,7 @@
         <q-list class="lista-menu">
           <q-item clickable to="/" exact class="item-menu">
             <q-item-section avatar>
-              <i class="ti ti-device-gamepad-2"></i>
+              <i class="ti ti-device-gamepad-2 icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
               <q-item-label>Jugar</q-item-label>
@@ -52,7 +52,7 @@
 
           <q-item clickable to="/configuracion" exact class="item-menu">
             <q-item-section avatar>
-              <i class="ti ti-settings"></i>
+              <i class="ti ti-settings icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
               <q-item-label>Configuración</q-item-label>
@@ -102,10 +102,6 @@ const toggleLeftDrawer = () => {
   border-radius: 20px;
   border: 1px solid var(--color-borde-tablero);
 }
-.icono-usuario {
-  font-size: 1.1rem;
-  color: var(--color-turno-activo);
-}
 .drawer-personalizado {
   background-color: var(--color-fondo-alterno) !important;
 }
@@ -145,10 +141,6 @@ const toggleLeftDrawer = () => {
 .item-menu:hover {
   background-color: var(--color-tablero);
   transform: translateX(4px);
-}
-.item-menu i {
-  color: var(--color-turno-activo);
-  font-size: 1.5rem;
 }
 .item-menu .q-item__label--caption {
   color: var(--color-texto-secundario);

@@ -93,7 +93,6 @@ const obtenerCoordenadasLinea = () => {
   max-width: 400px;
   width: 100%;
 }
-
 .tablero-tateti {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -106,7 +105,6 @@ const obtenerCoordenadasLinea = () => {
   border-radius: 12px;
   box-shadow: 0 8px 24px var(--sombra-tablero);
 }
-
 .linea-ganadora {
   position: absolute;
   top: 0;
@@ -116,7 +114,6 @@ const obtenerCoordenadasLinea = () => {
   pointer-events: none;
   z-index: 10;
 }
-
 .linea-ganadora line {
   stroke-dasharray: 500;
   stroke-dashoffset: 500;
@@ -124,23 +121,19 @@ const obtenerCoordenadasLinea = () => {
     dibujarLinea 0.8s ease-out forwards,
     pulsarNeon 1.5s ease-in-out infinite;
 }
-
 .linea-x line {
   stroke: var(--neon-x);
   filter: drop-shadow(var(--brillo-neon-x));
 }
-
 .linea-o line {
   stroke: var(--neon-o);
   filter: drop-shadow(var(--brillo-neon-o));
 }
-
 @keyframes dibujarLinea {
   to {
     stroke-dashoffset: 0;
   }
 }
-
 @keyframes pulsarNeon {
   0%,
   100% {
@@ -150,7 +143,6 @@ const obtenerCoordenadasLinea = () => {
     opacity: 0.7;
   }
 }
-
 @media (max-width: 600px) {
   .tablero-tateti {
     max-width: 90vw;
