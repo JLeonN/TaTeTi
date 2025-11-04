@@ -29,6 +29,8 @@ proyecto/
 │   │   │   └── useConfiguracion.js       # Lógica de configuración
 │   │   ├── Modales/
 │   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
+│   │   ├── Configuracion/
+│   │   │   └── ConfiguracionUsuario.vue  # Config de nombre de usuario
 │   │   └── TaTeTi/
 │   │       ├── CeldaTaTeTi.vue           # Celda individual
 │   │       ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
@@ -36,7 +38,7 @@ proyecto/
 │   │       └── ControlesJuego.vue        # Botones de control
 │   ├── pages/
 │   │   ├── JugarTaTeTi.vue               # Página del juego
-│   │   ├── ConfiguracionPage.vue         # Página de configuración
+│   │   ├── ConfiguracionPage.vue         # Página de configuración (contenedor)
 │   │   └── ErrorNotFound.vue             # Página 404
 │   ├── layouts/
 │   │   └── MainLayout.vue                # Layout con header y drawer
@@ -72,6 +74,11 @@ PATRÓN SINGLETON:
 - Permite actualización reactiva entre múltiples componentes
 - El nombre del usuario se sincroniza automáticamente en toda la app
 
+PATRÓN MODULAR:
+- ConfiguracionPage.vue es un contenedor escalable
+- Cada configuración en su propio componente (ConfiguracionUsuario.vue)
+- Fácil agregar nuevas configuraciones (idioma, sonido, tema)
+
 FLUJO DE DATOS:
 - Estado unidireccional y predecible
 - Props hacia abajo, eventos hacia arriba
@@ -95,6 +102,8 @@ CONFIGURACIÓN:
 - Validación de datos
 - Notificaciones de éxito/error
 - Actualización reactiva en toda la app
+- Modal con cierre inteligente (click afuera, Enter, botones)
+- Estructura modular preparada para futuras configuraciones
 
 INTERFAZ:
 - Header con nombre de usuario
@@ -113,7 +122,7 @@ CARACTERÍSTICAS:
 - Modal genérico con dos botones (Aceptar/Cancelar)
 - Completamente personalizable vía props
 - Slot para contenido personalizado
-- Persistent (no cierra al clickear fuera)
+- Cierre inteligente (click afuera, Enter, botones)
 - Estilizado con paleta de colores del proyecto
 - Eventos: aceptar, cancelar, update:modelValue
 
@@ -226,6 +235,7 @@ NOTAS IMPORTANTES
 - Capacitor permite compilar para Android/iOS
 - Variables CSS centralizadas para fácil theming
 - Composables singleton para estado compartido global
+- Estructura modular preparada para escalabilidad
 
 ================================================================================
 FIN DEL RESUMEN
