@@ -1,5 +1,5 @@
 <template>
-  <q-dialog v-model="mostrarModal" persistent>
+  <q-dialog v-model="mostrarModal">
     <q-card class="modal-confirmacion">
       <!-- Ícono opcional -->
       <div v-if="icono" class="contenedor-icono">
@@ -83,6 +83,10 @@ watch(
 
 watch(mostrarModal, (nuevoValor) => {
   emit('update:modelValue', nuevoValor)
+  // Si se cierra el modal (click afuera), emitir cancelar
+  if (!nuevoValor) {
+    emit('cancelar')
+  }
 })
 
 const manejarAceptar = () => {

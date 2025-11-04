@@ -25,16 +25,31 @@
   opacity: 0.7;
 }
 /* Estilos para inputs de Quasar */
-.input-quasar :deep(.q-field__control) {
-  background-color: var(--color-tablero);
-  border-radius: 8px;
+.input-quasar .q-field__native,
+.input-quasar .q-field__native input {
   color: var(--color-texto-principal);
 }
-.input-quasar :deep(.q-field__label) {
+.input-quasar .q-field__counter,
+.input-quasar .q-field__bottom,
+.input-quasar .q-counter {
   color: var(--color-texto-secundario);
 }
-.input-quasar :deep(.q-field__native) {
-  color: var(--color-texto-principal);
+.input-quasar .q-field__label {
+  color: var(--color-texto-secundario);
+}
+/* Bordes del input */
+.input-quasar .q-field__control {
+  border: 2px solid var(--color-borde-tablero);
+  border-radius: 8px;
+}
+/* Borde en focus (cuando clickeás el input) */
+.input-quasar .q-field--focused .q-field__control {
+  border-color: var(--color-turno-activo);
+  box-shadow: 0 0 0 3px rgba(255, 190, 11, 0.2);
+}
+/* Borde en hover */
+.input-quasar .q-field__control:hover {
+  border-color: var(--color-turno-activo);
 }
 /* ============================================================================
    TÍTULOS
