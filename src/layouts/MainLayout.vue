@@ -72,13 +72,22 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
+import { Capacitor } from '@capacitor/core'
 
 const leftDrawerOpen = ref(false)
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 
 onMounted(async () => {
+  // Esperar a que Capacitor esté listo si es nativo
+  if (Capacitor.isNativePlatform()) {
+    console.log('🔧 Plataforma nativa detectada')
+    // Pequeño delay para asegurar que Capacitor esté listo
+    await new Promise((resolve) => setTimeout(resolve, 100))
+  }
+
   await cargarNombre()
+  console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
 })
 
 const toggleLeftDrawer = () => {
