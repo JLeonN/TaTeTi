@@ -1,6 +1,6 @@
 {
   "name": "tateti",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Juego de Ta-Te-Ti",
   "productName": "Ta-Te-Ti",
   "author": "Leonardo Núñez <jorgebike.75@hotmail.com>",
@@ -12,7 +12,8 @@
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",
-    "generar-apk": "npm run build && cd src-capacitor && npx cap open android",
+    "generar-apk": "npm run build && explorer src-capacitor\\android\\app\\build\\outputs\\apk\\release & cd src-capacitor && npx cap open android",
+    "abrir-android": "cd src-capacitor && npx cap open android",
     "cap:copy": "cd src-capacitor && npx cap copy android",
     "cap:sync": "cd src-capacitor && npx cap sync android",
     "cap:android": "cd src-capacitor && npx cap open android",
