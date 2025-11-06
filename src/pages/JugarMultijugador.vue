@@ -1,13 +1,15 @@
 <template>
   <q-page class="pagina-tateti">
     <div class="contenedor-juego">
-      <h1 class="titulo-h1 titulo-juego">Ta-Te-Ti</h1>
+      <h1 class="titulo-h1 titulo-juego">Multijugador</h1>
 
       <InfoJuego
         :turno-actual="turnoActual"
         :juego-terminado="juegoTerminado"
         :ganador="ganador"
         :es-empate="esEmpate"
+        :nombre-jugador-x="nombreJugadorX"
+        :nombre-jugador-o="nombreJugadorO"
       />
 
       <TableroTaTeTi
@@ -18,19 +20,19 @@
         @jugada="realizarJugada"
       />
 
-      <ControlesJuego @reiniciar="reiniciarJuego" @volver="volverAlInicio" />
+      <ControlesJuego @reiniciar="reiniciarJuego" />
     </div>
   </q-page>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 
-const router = useRouter()
+const nombreJugadorX = 'Jugador 1'
+const nombreJugadorO = 'Jugador 2'
 
 const {
   tablero,
@@ -41,11 +43,7 @@ const {
   esEmpate,
   realizarJugada,
   reiniciarJuego,
-} = useTaTeTi()
-
-const volverAlInicio = () => {
-  router.push('/')
-}
+} = useTaTeTi('pvp')
 </script>
 
 <style scoped>

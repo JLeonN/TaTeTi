@@ -42,13 +42,25 @@
         <q-list class="lista-menu">
           <q-item clickable to="/" exact class="item-menu">
             <q-item-section avatar>
+              <i class="ti ti-robot icono-md icono-primario"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>Jugar vs IA</q-item-label>
+              <q-item-label caption>Enfrentá a NEXUS</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable to="/jugador-vs-jugador" exact class="item-menu">
+            <q-item-section avatar>
               <i class="ti ti-device-gamepad-2 icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Jugar</q-item-label>
-              <q-item-label caption>Nueva partida</q-item-label>
+              <q-item-label>Multijugador</q-item-label>
+              <q-item-label caption>Jugá con otra persona</q-item-label>
             </q-item-section>
           </q-item>
+
+          <q-separator class="separador-personalizado separador-menu" />
 
           <q-item clickable to="/configuracion" exact class="item-menu">
             <q-item-section avatar>
@@ -137,6 +149,9 @@ const toggleLeftDrawer = () => {
 }
 .separador-personalizado {
   background-color: var(--color-borde-tablero);
+}
+.separador-menu {
+  margin: 8px 16px;
 }
 .lista-menu {
   padding: 12px 0;

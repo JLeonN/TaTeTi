@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 
-export function useTaTeTi() {
+export function useTaTeTi(modoJuego = 'pvp') {
   // Estado del tablero (array de 9 posiciones)
   const tablero = ref(Array(9).fill(null))
 
@@ -11,6 +11,12 @@ export function useTaTeTi() {
   const juegoTerminado = ref(false)
   const ganador = ref(null)
   const combinacionGanadora = ref(null)
+
+  // Modo de juego ('pvp' o 'ia')
+  const modo = ref(modoJuego)
+
+  // Bloquear interacción durante turno de IA
+  const esperandoIA = ref(false)
 
   // Combinaciones ganadoras
   const combinacionesGanadoras = [
@@ -48,7 +54,7 @@ export function useTaTeTi() {
   // Realizar jugada
   const realizarJugada = (indice) => {
     // Validaciones
-    if (juegoTerminado.value || tablero.value[indice]) {
+    if (juegoTerminado.value || tablero.value[indice] || esperandoIA.value) {
       return false
     }
 
@@ -81,6 +87,7 @@ export function useTaTeTi() {
     juegoTerminado.value = false
     ganador.value = null
     combinacionGanadora.value = null
+    esperandoIA.value = false
   }
 
   return {
@@ -92,5 +99,7 @@ export function useTaTeTi() {
     esEmpate,
     realizarJugada,
     reiniciarJuego,
+    modo,
+    esperandoIA,
   }
 }

@@ -3,14 +3,15 @@
     <div v-if="!juegoTerminado" class="turno-actual">
       <span class="etiqueta">Turno de:</span>
       <span class="jugador" :class="`jugador-${turnoActual.toLowerCase()}`">
-        {{ turnoActual }}
+        {{ nombreJugadorActual }}
       </span>
     </div>
 
     <div v-else-if="ganador" class="resultado ganador-anuncio">
       <q-icon name="emoji_events" size="2rem" color="warning" />
       <span class="texto-ganador">
-        ¡Ganó <strong :class="`jugador-${ganador.toLowerCase()}`">{{ ganador }}</strong
+        ¡<strong :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</strong>
+        venció<span v-if="nombreOponente">{{ ' a ' + nombreOponente }}</span
         >!
       </span>
     </div>
@@ -23,7 +24,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   turnoActual: {
     type: String,
     required: true,
@@ -40,6 +43,35 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  nombreJugadorX: {
+    type: String,
+    default: 'Jugador 1',
+  },
+  nombreJugadorO: {
+    type: String,
+    default: 'Jugador 2',
+  },
+})
+
+// Nombre del jugador en turno actual
+const nombreJugadorActual = computed(() => {
+  const nombreBase = props.turnoActual === 'X' ? props.nombreJugadorX : props.nombreJugadorO
+  return `${nombreBase} (${props.turnoActual})`
+})
+
+// Nombre del ganador con su ficha
+const nombreGanador = computed(() => {
+  if (!props.ganador) return ''
+  const nombre = props.ganador === 'X' ? props.nombreJugadorX : props.nombreJugadorO
+  return nombre
+})
+
+// Nombre del oponente (solo para modo IA)
+const nombreOponente = computed(() => {
+  if (!props.ganador) return ''
+  const oponente = props.ganador === 'X' ? props.nombreJugadorO : props.nombreJugadorX
+  // Si el oponente es "Jugador 2" (modo PvP default), no mostrar nada
+  return oponente !== 'Jugador 2' ? oponente : ''
 })
 </script>
 
