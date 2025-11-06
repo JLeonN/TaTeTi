@@ -5,8 +5,8 @@ PROYECTO: TA-TE-TI (TRES EN RAYA)
 DESCRIPCIÓN GENERAL
 --------------------------------------------------------------------------------
 Aplicación móvil de juego Ta-Te-Ti (tres en raya) desarrollada con Vue.js 3
-y Quasar Framework. Incluye sistema de configuración de usuario, detección
-de ganador/empate, y diseño responsive con tema oscuro personalizado.
+y Quasar Framework. Incluye dos modos de juego: Jugador vs IA y Multijugador
+(PvP). Sistema de configuración de usuario con almacenamiento persistente.
 
 TECNOLOGÍAS PRINCIPALES
 --------------------------------------------------------------------------------
@@ -26,7 +26,8 @@ proyecto/
 │   ├── components/
 │   │   ├── Composables/
 │   │   │   ├── useTaTeTi.js              # Lógica del juego
-│   │   │   └── useConfiguracion.js       # Lógica de configuración
+│   │   │   ├── useConfiguracion.js       # Lógica de configuración
+│   │   │   └── useIA.js                  # Lógica de la IA
 │   │   ├── Modales/
 │   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
 │   │   ├── Configuracion/
@@ -35,10 +36,12 @@ proyecto/
 │   │       ├── CeldaTaTeTi.vue           # Celda individual
 │   │       ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
 │   │       ├── InfoJuego.vue             # Info de turno/ganador/empate
-│   │       └── ControlesJuego.vue        # Botones de control
+│   │       ├── ControlesJuego.vue        # Botones de control
+│   │       └── SelectorDificultad.vue    # Selector de dificultad IA
 │   ├── pages/
-│   │   ├── JugarTaTeTi.vue               # Página del juego
-│   │   ├── ConfiguracionPage.vue         # Página de configuración (contenedor)
+│   │   ├── JugarContraIA.vue             # Página del juego vs IA
+│   │   ├── JugarMultijugador.vue         # Página del juego PvP
+│   │   ├── ConfiguracionPage.vue         # Página de configuración
 │   │   └── ErrorNotFound.vue             # Página 404
 │   ├── layouts/
 │   │   └── MainLayout.vue                # Layout con header y drawer
@@ -64,25 +67,42 @@ ARQUITECTURA Y PATRONES
 --------------------------------------------------------------------------------
 
 PATRÓN COMPOSABLE:
-- Toda la lógica del juego está en useTaTeTi.js
-- Toda la lógica de configuración está en useConfiguracion.js
-- Los componentes son presentacionales (reciben props, emiten eventos)
-- Facilita testing y reutilización
+- Lógica de negocio separada en composables reutilizables
+- useTaTeTi.js: Lógica del tablero, turnos, detección de ganador
+- useIA.js: Algoritmos de IA (Fácil, Normal, Difícil)
+- useConfiguracion.js: Gestión de configuración de usuario
+- Componentes presentacionales (reciben props, emiten eventos)
 
 PATRÓN SINGLETON:
 - useConfiguracion usa refs globales para compartir estado
-- Permite actualización reactiva entre múltiples componentes
-- El nombre del usuario se sincroniza automáticamente en toda la app
+- Actualización reactiva automática entre componentes
+- Sincronización del nombre de usuario en toda la app
 
 PATRÓN MODULAR:
-- ConfiguracionPage.vue es un contenedor escalable
-- Cada configuración en su propio componente (ConfiguracionUsuario.vue)
-- Fácil agregar nuevas configuraciones (idioma, sonido, tema)
+- ConfiguracionPage.vue es contenedor escalable
+- Cada configuración en su propio componente
+- Fácil agregar nuevas funcionalidades
 
 FLUJO DE DATOS:
 - Estado unidireccional y predecible
 - Props hacia abajo, eventos hacia arriba
 - Composables manejan la lógica de negocio
+
+MODOS DE JUEGO
+--------------------------------------------------------------------------------
+
+JUGADOR VS IA:
+- Tres niveles de dificultad (Fácil, Normal, Difícil)
+- Selector de dificultad con persistencia
+- IA responde con delays según dificultad
+- Algoritmo Minimax en nivel difícil
+- Más detalles en Resumen3JugadorVsIA.txt
+
+MULTIJUGADOR (PvP):
+- Dos jugadores en el mismo dispositivo
+- Turnos alternados (Jugador 1 vs Jugador 2)
+- Sistema clásico de Ta-Te-Ti
+- Más detalles en Resumen2Multijugador.txt
 
 FUNCIONALIDADES IMPLEMENTADAS
 --------------------------------------------------------------------------------
@@ -102,8 +122,7 @@ CONFIGURACIÓN:
 - Validación de datos
 - Notificaciones de éxito/error
 - Actualización reactiva en toda la app
-- Modal con cierre inteligente (click afuera, Enter, botones)
-- Estructura modular preparada para futuras configuraciones
+- Más detalles en ResumenConfiguracion.txt
 
 INTERFAZ:
 - Header con nombre de usuario
@@ -126,13 +145,6 @@ CARACTERÍSTICAS:
 - Estilizado con paleta de colores del proyecto
 - Eventos: aceptar, cancelar, update:modelValue
 
-PROPS PRINCIPALES:
-- modelValue: Control de visibilidad (v-model)
-- titulo: Título del modal
-- mensaje: Mensaje descriptivo
-- icono: Ícono Tabler (sin prefijo 'ti-')
-- textoBotonAceptar/textoBotonCancelar: Textos personalizables
-
 TABLER ICONS
 --------------------------------------------------------------------------------
 
@@ -149,11 +161,12 @@ ICONOS DEL PROYECTO:
 - ti-user: Usuario
 - ti-user-edit: Editar usuario
 - ti-edit: Editar
-- ti-device-gamepad-2: Juego
+- ti-device-gamepad-2: Juego multijugador
+- ti-robot: Juego vs IA
 - ti-check: Éxito
-- ti-alert-circle: Alerta
-
-REFERENCIA: https://tabler.io/icons
+- ti-mood-smile: Dificultad fácil
+- ti-brain: Dificultad normal
+- ti-flame: Dificultad difícil
 
 ALMACENAMIENTO NATIVO
 --------------------------------------------------------------------------------
@@ -169,55 +182,18 @@ CARACTERÍSTICAS:
 
 CLAVES USADAS:
 - nombre_usuario: Nombre del jugador
+- dificultad_ia: Dificultad seleccionada (facil/normal/dificil)
 
 TEMA VISUAL - VARIABLES CSS
 --------------------------------------------------------------------------------
 
 PALETA DE COLORES:
-:root {
-  /* Colores generales */
-  --color-fondo: #2d1b4e;
-  --color-tablero: #3d2b5f;
-  --color-texto-principal: #ffffff;
-  --color-texto-secundario: #c4b5fd;
-
-  /* Fichas */
-  --color-ficha-x: #ff4757;
-  --color-ficha-o: #1e90ff;
-
-  /* Estados y acciones */
-  --color-turno-activo: #ffbe0b;
-  --color-ganador: #00d9a3;
-  --color-sombra-tablero: rgba(108, 92, 231, 0.6);
-
-  /* Bordes y contornos */
-  --color-borde-tablero: #8b44ff;
-  --color-borde-modal: #6c5ce7;
-
-  /* Botones */
-  --color-boton: #8b44ff;
-  --color-boton-hover: #ffbe0b;
-  --color-desactivado: #6b5b8e;
-
-  /* Mensajes */
-  --color-exito: #00d9a3;
-  --color-error: #ff4757;
-
-  /* Fondos alternativos */
-  --color-fondo-alterno: #4a3470;
-  --color-modal-fondo: #3d2b5f;
-  --color-nav-fondo: #2d1b4e;
-
-  /* Sombras y efectos */
-  --sombra-boton: rgba(255, 71, 87, 0.4);
-  --sombra-modal: rgba(108, 92, 231, 0.7);
-
-  /* Efectos neón */
-  --neon-x: #ff4757;
-  --neon-o: #1e90ff;
-  --brillo-neon-x: 0 0 10px #ff4757, 0 0 20px #ff4757, 0 0 30px #ff4757;
-  --brillo-neon-o: 0 0 10px #1e90ff, 0 0 20px #1e90ff, 0 0 30px #1e90ff;
-}
+- Púrpuras profundos para fondos (#2d1b4e, #3d2b5f)
+- Rojo vibrante para ficha X (#ff4757)
+- Azul eléctrico para ficha O (#1e90ff)
+- Amarillo dorado para estados activos (#ffbe0b)
+- Verde neón para ganador (#00d9a3)
+- Efectos neón con sombras para líneas ganadoras
 
 DEPENDENCIAS PRINCIPALES
 --------------------------------------------------------------------------------
@@ -225,8 +201,15 @@ DEPENDENCIAS PRINCIPALES
 - quasar: ^2.16.0
 - vue-router: ^4.0.0
 - @capacitor/android: ^7.4.2
-- @capacitor/preferences: (para almacenamiento)
+- @capacitor/preferences: ^7.0.2
 - @tabler/icons-webfont: ^3.35.0
+
+RUTAS DE LA APLICACIÓN
+--------------------------------------------------------------------------------
+- / → JugarContraIA.vue (Página principal)
+- /jugador-vs-jugador → JugarMultijugador.vue
+- /configuracion → ConfiguracionPage.vue
+- /* → ErrorNotFound.vue (404)
 
 NOTAS IMPORTANTES
 --------------------------------------------------------------------------------
@@ -236,6 +219,7 @@ NOTAS IMPORTANTES
 - Variables CSS centralizadas para fácil theming
 - Composables singleton para estado compartido global
 - Estructura modular preparada para escalabilidad
+- Sistema de clases CSS reutilizables en app.css
 
 ================================================================================
 FIN DEL RESUMEN
