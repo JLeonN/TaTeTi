@@ -53,30 +53,44 @@ export function useTaTeTi(modoJuego = 'pvp') {
 
   // Realizar jugada
   const realizarJugada = (indice) => {
+    console.log('🎮 realizarJugada llamada con índice:', indice)
+    console.log('🎮 Turno actual:', turnoActual.value)
+    console.log('🎮 Celda actual:', tablero.value[indice])
+
     // Validaciones
-    if (juegoTerminado.value || tablero.value[indice] || esperandoIA.value) {
+    if (juegoTerminado.value) {
+      console.log('❌ Juego terminado, no se puede jugar')
+      return false
+    }
+
+    if (tablero.value[indice]) {
+      console.log('❌ Celda ocupada, no se puede jugar')
       return false
     }
 
     // Colocar ficha
     tablero.value[indice] = turnoActual.value
+    console.log('✅ Ficha colocada:', turnoActual.value, 'en celda:', indice)
 
     // Verificar ganador
     const hayGanador = verificarGanador()
     if (hayGanador) {
       ganador.value = hayGanador
       juegoTerminado.value = true
+      console.log('🏆 Ganador:', hayGanador)
       return true
     }
 
     // Verificar empate
     if (esEmpate.value) {
       juegoTerminado.value = true
+      console.log('🤝 Empate')
       return true
     }
 
     // Cambiar turno
     turnoActual.value = turnoActual.value === 'X' ? 'O' : 'X'
+    console.log('🔄 Cambio de turno a:', turnoActual.value)
     return true
   }
 

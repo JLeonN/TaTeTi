@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
@@ -67,8 +67,8 @@ const cambiarDificultad = (nuevaDificultad) => {
 
 // Manejar jugada del usuario
 const manejarJugada = async (indice) => {
-  // Si es turno de la IA o el juego terminó, no hacer nada
-  if (turnoActual.value === 'O' || juegoTerminado.value || esperandoIA.value) {
+  // Validaciones: que no esté esperando IA, que no esté terminado, que la celda esté vacía
+  if (esperandoIA.value || juegoTerminado.value || tablero.value[indice]) {
     return
   }
 
@@ -76,7 +76,7 @@ const manejarJugada = async (indice) => {
   const jugadaExitosa = realizarJugada(indice)
 
   // Si la jugada fue exitosa y el juego no terminó, es turno de la IA
-  if (jugadaExitosa && !juegoTerminado.value) {
+  if (jugadaExitosa && !juegoTerminado.value && turnoActual.value === 'O') {
     await ejecutarTurnoIA()
   }
 }
@@ -99,8 +99,13 @@ const ejecutarTurnoIA = async () => {
   // Obtener jugada de la IA
   const indiceIA = ejecutarJugadaIA(tablero.value, dificultadActual.value)
 
+  console.log('🤖 IA va a jugar en celda:', indiceIA)
+  console.log('📊 Estado del tablero ANTES:', [...tablero.value])
+
   // Realizar jugada de la IA
   realizarJugada(indiceIA)
+
+  console.log('📊 Estado del tablero DESPUÉS:', [...tablero.value])
 
   esperandoIA.value = false
 }
@@ -109,13 +114,6 @@ const ejecutarTurnoIA = async () => {
 const reiniciarJuego = () => {
   reiniciarJuegoBase()
 }
-
-// Watch para detectar si es turno de la IA al inicio (no debería pasar, pero por las dudas)
-watch(turnoActual, async (nuevoTurno) => {
-  if (nuevoTurno === 'O' && !juegoTerminado.value && !esperandoIA.value) {
-    await ejecutarTurnoIA()
-  }
-})
 </script>
 
 <style scoped>
