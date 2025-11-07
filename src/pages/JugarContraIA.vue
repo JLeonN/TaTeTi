@@ -33,7 +33,7 @@ import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
-import SelectorDificultad from 'src/components/TaTeTi/SelectorDificultad.vue'
+import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
 
 const nombreIA = 'NEXUS'
 
