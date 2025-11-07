@@ -33,11 +33,13 @@ proyecto/
 │   │   ├── Configuracion/
 │   │   │   └── ConfiguracionUsuario.vue  # Config de nombre de usuario
 │   │   └── TaTeTi/
-│   │       ├── CeldaTaTeTi.vue           # Celda individual
-│   │       ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
-│   │       ├── InfoJuego.vue             # Info de turno/ganador/empate
-│   │       ├── ControlesJuego.vue        # Botones de control
-│   │       └── SelectorDificultad.vue    # Selector de dificultad IA
+│   │       ├── Compartido/
+│   │       │   ├── CeldaTaTeTi.vue           # Celda individual
+│   │       │   ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
+│   │       │   ├── InfoJuego.vue             # Info de turno/ganador/empate
+│   │       │   └── ControlesJuego.vue        # Botones de control
+│   │       └── JugarVsIA/
+│   │           └── SelectorDificultad.vue    # Selector de dificultad IA
 │   ├── pages/
 │   │   ├── JugarContraIA.vue             # Página del juego vs IA
 │   │   ├── JugarMultijugador.vue         # Página del juego PvP
