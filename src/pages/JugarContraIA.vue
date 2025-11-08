@@ -20,13 +20,23 @@
         @jugada="manejarJugada"
       />
 
-      <ControlesJuego @reiniciar="reiniciarJuego" />
+      <ControlesJuego />
     </div>
+
+    <!-- Modal de resultado -->
+    <ModalResultado
+      v-model="mostrarModal"
+      :ganador="ganador"
+      :es-empate="esEmpate"
+      :nombre-jugador-x="nombreUsuario"
+      :nombre-jugador-o="nombreIA"
+      @reiniciar="reiniciarJuego"
+    />
   </q-page>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
@@ -34,6 +44,7 @@ import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
+import ModalResultado from 'src/components/TaTeTi/ModalResultado.vue'
 
 const nombreIA = 'NEXUS'
 
@@ -54,6 +65,7 @@ const {
 const { ejecutarJugadaIA } = useIA()
 
 const dificultadActual = ref('normal')
+const mostrarModal = ref(false)
 
 onMounted(async () => {
   await cargarNombre()
@@ -113,7 +125,17 @@ const ejecutarTurnoIA = async () => {
 // Reiniciar juego
 const reiniciarJuego = () => {
   reiniciarJuegoBase()
+  mostrarModal.value = false
 }
+
+// Watcher para abrir el modal cuando termina el juego
+watch(juegoTerminado, (nuevoValor) => {
+  if (nuevoValor) {
+    setTimeout(() => {
+      mostrarModal.value = true
+    }, 800) // Delay para que se vea la línea ganadora primero
+  }
+})
 </script>
 
 <style scoped>

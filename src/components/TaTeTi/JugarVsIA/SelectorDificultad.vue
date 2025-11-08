@@ -3,7 +3,7 @@
     <div class="etiqueta-selector">Dificultad:</div>
     <div class="botones-dificultad">
       <button
-        class="boton-dificultad"
+        class="boton-dificultad boton-izquierda"
         :class="{ activo: dificultadSeleccionada === 'facil' }"
         @click="seleccionarDificultad('facil')"
       >
@@ -12,7 +12,7 @@
       </button>
 
       <button
-        class="boton-dificultad"
+        class="boton-dificultad boton-centro"
         :class="{ activo: dificultadSeleccionada === 'normal' }"
         @click="seleccionarDificultad('normal')"
       >
@@ -21,7 +21,7 @@
       </button>
 
       <button
-        class="boton-dificultad"
+        class="boton-dificultad boton-derecha"
         :class="{ activo: dificultadSeleccionada === 'dificil' }"
         @click="seleccionarDificultad('dificil')"
       >
@@ -91,12 +91,12 @@ const seleccionarDificultad = async (dificultad) => {
 }
 .botones-dificultad {
   display: flex;
-  gap: 8px;
   justify-content: center;
 }
 .boton-dificultad {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 10px 16px;
   font-size: 0.9rem;
@@ -104,29 +104,39 @@ const seleccionarDificultad = async (dificultad) => {
   color: var(--color-texto-secundario);
   background-color: var(--color-tablero);
   border: 2px solid var(--color-borde-tablero);
-  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  flex: 1;
+  border-radius: 0;
+}
+/* Bordes redondeados solo en los extremos */
+.boton-izquierda {
+  border-radius: 8px 0 0 8px;
+}
+.boton-derecha {
+  border-radius: 0 8px 8px 0;
+}
+.boton-centro {
+  border-left: none;
+  border-right: none;
 }
 .boton-dificultad:hover {
   background-color: var(--color-fondo-alterno);
   border-color: var(--color-turno-activo);
-  transform: translateY(-2px);
+  transform: scale(1.05);
+  z-index: 1;
 }
 .boton-dificultad.activo {
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
   border-color: var(--color-turno-activo);
   box-shadow: 0 4px 12px var(--sombra-boton);
+  z-index: 2;
 }
 @media (max-width: 600px) {
-  .botones-dificultad {
-    flex-direction: column;
-    width: 100%;
-  }
   .boton-dificultad {
-    width: 100%;
-    justify-content: center;
+    padding: 8px 12px;
+    font-size: 0.85rem;
   }
 }
 </style>
