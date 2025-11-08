@@ -248,13 +248,12 @@
    ============================================================================ */
 
 /* Safe areas para evitar superposición con barras del sistema */
-body {
+/* body {
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
 
-/* Si el anterior no funciona, forzar en el layout */
 .q-layout {
   padding-top: env(safe-area-inset-top) !important;
   padding-bottom: env(safe-area-inset-bottom) !important;
-}
+} */
