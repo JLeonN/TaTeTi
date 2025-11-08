@@ -13,8 +13,9 @@ TECNOLOGÍAS PRINCIPALES
 - Vue.js 3 (Composition API)
 - Quasar Framework v2
 - Capacitor (para Android)
-- Vue Router
 - Capacitor Preferences (almacenamiento nativo)
+- Capacitor Status Bar (control de barra de estado)
+- Vue Router
 - JavaScript (ES6+)
 - CSS Variables (theming)
 - Tabler Icons (iconografía)
@@ -204,6 +205,7 @@ DEPENDENCIAS PRINCIPALES
 - vue-router: ^4.0.0
 - @capacitor/android: ^7.4.2
 - @capacitor/preferences: ^7.0.2
+- @capacitor/status-bar: ^7.0.0
 - @tabler/icons-webfont: ^3.35.0
 
 RUTAS DE LA APLICACIÓN
