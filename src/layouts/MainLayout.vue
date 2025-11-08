@@ -85,6 +85,7 @@
 import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { Capacitor } from '@capacitor/core'
+import { StatusBar } from '@capacitor/status-bar'
 
 const leftDrawerOpen = ref(false)
 
@@ -96,6 +97,17 @@ onMounted(async () => {
     console.log('🔧 Plataforma nativa detectada')
     // Pequeño delay para asegurar que Capacitor esté listo
     await new Promise((resolve) => setTimeout(resolve, 100))
+
+    // Configurar barra de estado en Android
+    if (Capacitor.getPlatform() === 'android') {
+      try {
+        await StatusBar.setBackgroundColor({ color: '#2d1b4e' })
+        await StatusBar.setOverlaysWebView({ overlay: false })
+        console.log('✅ Status Bar configurada correctamente')
+      } catch (error) {
+        console.error('❌ Error configurando Status Bar:', error)
+      }
+    }
   }
 
   await cargarNombre()

@@ -2,5 +2,15 @@
   "appId": "com.leotateti.tateti",
   "appName": "Ta-Te-Ti",
   "webDir": "dist/spa",
-  "bundledWebRuntime": false
+  "bundledWebRuntime": false,
+  "android": {
+    "backgroundColor": "#2d1b4e"
+  },
+  "plugins": {
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#2d1b4e",
+      "overlaysWebView": false
+    }
+  }
 }
