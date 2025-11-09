@@ -246,14 +246,3 @@
 /* ============================================================================
    FIX PARA ANDROID - STATUS BAR Y NAVIGATION BAR
    ============================================================================ */
-
-/* Safe areas para evitar superposición con barras del sistema */
-/* body {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.q-layout {
-  padding-top: env(safe-area-inset-top) !important;
-  padding-bottom: env(safe-area-inset-bottom) !important;
-} */

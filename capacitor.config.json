@@ -7,10 +7,11 @@
     "backgroundColor": "#2d1b4e"
   },
   "plugins": {
-    "StatusBar": {
-      "style": "DARK",
-      "backgroundColor": "#2d1b4e",
-      "overlaysWebView": false
+    "EdgeToEdge": {
+      "backgroundColor": "#2d1b4e"
+    },
+    "Keyboard": {
+      "resizeOnFullScreen": false
     }
   }
 }
