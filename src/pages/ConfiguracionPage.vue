@@ -8,12 +8,16 @@
 
       <!-- Componente de configuración de usuario -->
       <ConfiguracionUsuario />
+
+      <!-- Componente de configuración de idioma -->
+      <ConfiguracionIdioma />
     </div>
   </q-page>
 </template>
 
 <script setup>
 import ConfiguracionUsuario from '../components/configuración/ConfiguracionUsuario.vue'
+import ConfiguracionIdioma from '../components/configuración/ConfiguracionIdioma.vue'
 </script>
 
 <style scoped>

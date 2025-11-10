@@ -8,7 +8,7 @@
           <q-avatar>
             <img src="/favicon.png" />
           </q-avatar>
-          Ta-Te-Ti
+          {{ t('general.nombreApp') }}
         </q-toolbar-title>
 
         <!-- Mostrar nombre del usuario -->
@@ -33,7 +33,7 @@
           <q-avatar size="50px">
             <img src="/favicon.png" />
           </q-avatar>
-          <div class="drawer-titulo">Ta-Te-Ti</div>
+          <div class="drawer-titulo">{{ t('general.nombreApp') }}</div>
           <div class="drawer-subtitulo">Tres en Raya</div>
         </div>
 
@@ -45,8 +45,8 @@
               <i class="ti ti-robot icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Jugar vs IA</q-item-label>
-              <q-item-label caption>Enfrentá a NEXUS</q-item-label>
+              <q-item-label>{{ t('menu.jugarIA') }}</q-item-label>
+              <q-item-label caption>{{ t('menu.jugarIADescripcion') }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -55,8 +55,8 @@
               <i class="ti ti-device-gamepad-2 icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Multijugador</q-item-label>
-              <q-item-label caption>Jugá con otra persona</q-item-label>
+              <q-item-label>{{ t('menu.multijugador') }}</q-item-label>
+              <q-item-label caption>{{ t('menu.multijugadorDescripcion') }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -67,8 +67,8 @@
               <i class="ti ti-settings icono-md icono-primario"></i>
             </q-item-section>
             <q-item-section>
-              <q-item-label>Configuración</q-item-label>
-              <q-item-label caption>Ajustes de usuario</q-item-label>
+              <q-item-label>{{ t('configuracion.titulo') }}</q-item-label>
+              <q-item-label caption>{{ t('configuracion.subtitulo') }}</q-item-label>
             </q-item-section>
           </q-item>
         </q-list>
@@ -84,13 +84,18 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
+import { useIdioma } from 'src/components/Composables/useIdioma'
+import { useI18n } from 'vue-i18n'
 
 const leftDrawerOpen = ref(false)
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
+const { cargarIdioma } = useIdioma()
+const { t } = useI18n()
 
 onMounted(async () => {
   await cargarNombre()
+  await cargarIdioma()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
 })
 
