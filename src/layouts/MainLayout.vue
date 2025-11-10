@@ -84,32 +84,12 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
-import { Capacitor } from '@capacitor/core'
-import { StatusBar } from '@capacitor/status-bar'
 
 const leftDrawerOpen = ref(false)
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 
 onMounted(async () => {
-  // Esperar a que Capacitor esté listo si es nativo
-  if (Capacitor.isNativePlatform()) {
-    console.log('🔧 Plataforma nativa detectada')
-    // Pequeño delay para asegurar que Capacitor esté listo
-    await new Promise((resolve) => setTimeout(resolve, 100))
-
-    // Configurar barra de estado en Android
-    if (Capacitor.getPlatform() === 'android') {
-      try {
-        await StatusBar.setBackgroundColor({ color: '#2d1b4e' })
-        await StatusBar.setOverlaysWebView({ overlay: false })
-        console.log('✅ Status Bar configurada correctamente')
-      } catch (error) {
-        console.error('❌ Error configurando Status Bar:', error)
-      }
-    }
-  }
-
   await cargarNombre()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
 })
@@ -123,6 +103,12 @@ const toggleLeftDrawer = () => {
 .header-personalizado {
   background-color: var(--color-nav-fondo);
   color: var(--color-texto-principal);
+  padding-top: 24px !important; /* Espacio para la barra de estado */
+  min-height: 50px !important; /* Altura mínima aumentada */
+}
+/* Ajuste para el toolbar dentro del header */
+.header-personalizado .q-toolbar {
+  min-height: 40px;
 }
 .nombre-usuario {
   display: flex;
@@ -182,10 +168,21 @@ const toggleLeftDrawer = () => {
   color: var(--color-texto-secundario);
   font-size: 0.75rem;
 }
+/* Responsive: Más padding en pantallas con notch */
 @media (max-width: 600px) {
+  .header-personalizado {
+    padding-top: 32px !important; /* Más espacio en móviles */
+    min-height: 50px !important;
+  }
   .nombre-usuario {
     font-size: 0.85rem;
     padding: 4px 10px;
+  }
+}
+/* Padding extra para dispositivos con notch grande */
+@supports (padding: max(0px)) {
+  .header-personalizado {
+    padding-top: max(24px, env(safe-area-inset-top, 24px)) !important;
   }
 }
 </style>

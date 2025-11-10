@@ -7,9 +7,6 @@
     "backgroundColor": "#2d1b4e"
   },
   "plugins": {
-    "EdgeToEdge": {
-      "backgroundColor": "#2d1b4e"
-    },
     "Keyboard": {
       "resizeOnFullScreen": false
     }
