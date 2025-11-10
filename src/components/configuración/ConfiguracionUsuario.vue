@@ -2,40 +2,40 @@
   <div class="seccion-config">
     <div class="encabezado-seccion">
       <i class="ti ti-user icono-md icono-primario"></i>
-      <span class="titulo-seccion">Usuario</span>
+      <span class="titulo-seccion">{{ t('configuracion.usuario') }}</span>
     </div>
 
     <div class="contenido-seccion">
       <div class="info-usuario">
-        <span class="etiqueta">Nombre actual:</span>
+        <span class="etiqueta">{{ t('configuracion.nombreActual') }}:</span>
         <span class="valor-actual">{{ nombreUsuario }}</span>
       </div>
 
       <button class="boton-base boton-primario" @click="abrirModalCambiarNombre">
         <i class="ti ti-edit"></i>
-        <span>Cambiar Nombre</span>
+        <span>{{ t('configuracion.cambiarNombre') }}</span>
       </button>
     </div>
 
     <!-- Modal para cambiar nombre -->
     <ModalConfirmacion
       v-model="mostrarModal"
-      titulo="Cambiar Nombre"
+      :titulo="t('configuracion.cambiarNombre')"
       icono="user-edit"
-      texto-boton-aceptar="Guardar"
-      texto-boton-cancelar="Cancelar"
+      :texto-boton-aceptar="t('general.guardar')"
+      :texto-boton-cancelar="t('general.cancelar')"
       @aceptar="guardarNuevoNombre"
       @cancelar="cancelarCambioNombre"
     >
       <q-input
         v-model="nuevoNombre"
         outlined
-        label="Nuevo nombre"
-        placeholder="Ingresá tu nombre"
+        :label="t('configuracion.nuevoNombre')"
+        :placeholder="t('configuracion.placeholderNombre')"
         class="input-quasar"
         maxlength="20"
         counter
-        :rules="[(val) => !!val || 'El nombre no puede estar vacío']"
+        :rules="[(val) => !!val || t('configuracion.nombreVacio')]"
         @keyup.enter="guardarNuevoNombre"
       />
     </ModalConfirmacion>
@@ -47,8 +47,10 @@ import { ref, onMounted, watch } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 const $q = useQuasar()
+const { t } = useI18n()
 
 const { nombreUsuario, cargarNombre, guardarNombre } = useConfiguracion()
 
@@ -68,7 +70,7 @@ const guardarNuevoNombre = async () => {
   if (!nuevoNombre.value || nuevoNombre.value.trim() === '') {
     $q.notify({
       type: 'negative',
-      message: 'El nombre no puede estar vacío',
+      message: t('configuracion.nombreVacio'),
       position: 'top',
     })
     return
@@ -80,14 +82,14 @@ const guardarNuevoNombre = async () => {
     mostrarModal.value = false
     $q.notify({
       type: 'positive',
-      message: '¡Nombre actualizado correctamente!',
+      message: t('configuracion.nombreActualizado'),
       position: 'top',
       icon: 'ti ti-check',
     })
   } else {
     $q.notify({
       type: 'negative',
-      message: 'Error al guardar el nombre',
+      message: t('configuracion.errorGuardar'),
       position: 'top',
     })
   }

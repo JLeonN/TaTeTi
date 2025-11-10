@@ -2,28 +2,28 @@
   <div class="seccion-config">
     <div class="encabezado-seccion">
       <i class="ti ti-language icono-md icono-primario"></i>
-      <span class="titulo-seccion">Idioma</span>
+      <span class="titulo-seccion">{{ t('configuracion.idioma') }}</span>
     </div>
 
     <div class="contenido-seccion">
       <div class="info-usuario">
-        <span class="etiqueta">Idioma actual:</span>
+        <span class="etiqueta">{{ t('configuracion.idiomaActual') }}:</span>
         <span class="valor-actual">{{ nombreIdiomaActual }}</span>
       </div>
 
       <button class="boton-base boton-primario" @click="abrirModalCambiarIdioma">
         <i class="ti ti-world"></i>
-        <span>Cambiar Idioma</span>
+        <span>{{ t('configuracion.cambiarIdioma') }}</span>
       </button>
     </div>
 
     <!-- Modal para cambiar idioma -->
     <ModalConfirmacion
       v-model="mostrarModal"
-      titulo="Cambiar Idioma"
+      :titulo="t('configuracion.cambiarIdioma')"
       icono="world"
-      texto-boton-aceptar="Guardar"
-      texto-boton-cancelar="Cancelar"
+      :texto-boton-aceptar="t('general.guardar')"
+      :texto-boton-cancelar="t('general.cancelar')"
       @aceptar="guardarNuevoIdioma"
       @cancelar="cancelarCambioIdioma"
     >
@@ -35,7 +35,7 @@
         >
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
-            <span class="nombre-idioma">Español</span>
+            <span class="nombre-idioma">{{ t('configuracion.espanol') }}</span>
             <span class="codigo-idioma">Latinoamérica</span>
           </div>
         </button>
@@ -47,7 +47,7 @@
         >
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
-            <span class="nombre-idioma">English</span>
+            <span class="nombre-idioma">{{ t('configuracion.ingles') }}</span>
             <span class="codigo-idioma">United States</span>
           </div>
         </button>
@@ -61,8 +61,10 @@ import { ref, onMounted, watch, computed } from 'vue'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import { useQuasar } from 'quasar'
+import { useI18n } from 'vue-i18n'
 
 const $q = useQuasar()
+const { t } = useI18n()
 
 const { idiomaActual, cargarIdioma, guardarIdioma } = useIdioma()
 
@@ -71,7 +73,7 @@ const idiomaSeleccionado = ref('es-AR')
 
 // Nombre del idioma para mostrar
 const nombreIdiomaActual = computed(() => {
-  return idiomaActual.value === 'es-AR' ? 'Español' : 'English'
+  return idiomaActual.value === 'es-AR' ? t('configuracion.espanol') : t('configuracion.ingles')
 })
 
 onMounted(async () => {
