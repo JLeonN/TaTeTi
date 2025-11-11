@@ -7,6 +7,7 @@ DESCRIPCIÓN GENERAL
 Aplicación móvil de juego Ta-Te-Ti (tres en raya) desarrollada con Vue.js 3
 y Quasar Framework. Incluye dos modos de juego: Jugador vs IA y Multijugador
 (PvP). Sistema de configuración de usuario con almacenamiento persistente.
+Sistema completo de internacionalización (i18n) con español e inglés.
 
 TECNOLOGÍAS PRINCIPALES
 --------------------------------------------------------------------------------
@@ -14,7 +15,7 @@ TECNOLOGÍAS PRINCIPALES
 - Quasar Framework v2
 - Capacitor (para Android)
 - Capacitor Preferences (almacenamiento nativo)
-- Capacitor Status Bar (control de barra de estado)
+- Vue I18n (internacionalización)
 - Vue Router
 - JavaScript (ES6+)
 - CSS Variables (theming)
@@ -28,22 +29,25 @@ proyecto/
 │   │   ├── Composables/
 │   │   │   ├── useTaTeTi.js              # Lógica del juego
 │   │   │   ├── useConfiguracion.js       # Lógica de configuración
+│   │   │   ├── useIdioma.js              # Lógica de idiomas
 │   │   │   └── useIA.js                  # Lógica de la IA
 │   │   ├── Modales/
 │   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
 │   │   ├── Configuracion/
-│   │   │   └── ConfiguracionUsuario.vue  # Config de nombre de usuario
+│   │   │   ├── ConfiguracionUsuario.vue  # Config de nombre
+│   │   │   └── ConfiguracionIdioma.vue   # Config de idioma
 │   │   └── TaTeTi/
 │   │       ├── Compartido/
 │   │       │   ├── CeldaTaTeTi.vue           # Celda individual
 │   │       │   ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
-│   │       │   ├── InfoJuego.vue             # Info de turno/ganador/empate
-│   │       │   └── ControlesJuego.vue        # Botones de control
+│   │       │   ├── InfoJuego.vue             # Info turno/ganador/empate
+│   │       │   ├── ControlesJuego.vue        # Botones de control
+│   │       │   └── ModalResultado.vue        # Modal fin de juego
 │   │       └── JugarVsIA/
 │   │           └── SelectorDificultad.vue    # Selector de dificultad IA
 │   ├── pages/
-│   │   ├── JugarContraIA.vue             # Página del juego vs IA
-│   │   ├── JugarMultijugador.vue         # Página del juego PvP
+│   │   ├── JugarContraIA.vue             # Página juego vs IA
+│   │   ├── JugarMultijugador.vue         # Página juego PvP
 │   │   ├── ConfiguracionPage.vue         # Página de configuración
 │   │   └── ErrorNotFound.vue             # Página 404
 │   ├── layouts/
@@ -51,14 +55,18 @@ proyecto/
 │   ├── router/
 │   │   ├── index.js                      # Configuración router
 │   │   └── routes.js                     # Definición de rutas
+│   ├── i18n/
+│   │   ├── es-AR/
+│   │   │   └── index.js                  # Traducciones español
+│   │   ├── en-US/
+│   │   │   └── index.js                  # Traducciones inglés
+│   │   └── index.js                      # Exportación idiomas
 │   ├── css/
 │   │   ├── app.css                       # Estilos globales
 │   │   └── variables.css                 # Variables CSS del tema
 │   ├── boot/
 │   │   ├── axios.js                      # Configuración Axios
 │   │   └── i18n.js                       # Configuración i18n
-│   ├── i18n/
-│   │   └── en-US/index.js                # Traducciones
 │   └── App.vue                           # Componente raíz
 ├── src-capacitor/                        # Archivos Capacitor (Android)
 ├── quasar.config.js                      # Configuración Quasar
@@ -73,16 +81,17 @@ PATRÓN COMPOSABLE:
 - Lógica de negocio separada en composables reutilizables
 - useTaTeTi.js: Lógica del tablero, turnos, detección de ganador
 - useIA.js: Algoritmos de IA (Fácil, Normal, Difícil)
-- useConfiguracion.js: Gestión de configuración de usuario
+- useConfiguracion.js: Gestión de nombre de usuario
+- useIdioma.js: Gestión de idioma de la aplicación
 - Componentes presentacionales (reciben props, emiten eventos)
 
 PATRÓN SINGLETON:
-- useConfiguracion usa refs globales para compartir estado
+- useConfiguracion y useIdioma usan refs globales
 - Actualización reactiva automática entre componentes
-- Sincronización del nombre de usuario en toda la app
+- Sincronización del nombre e idioma en toda la app
 
 PATRÓN MODULAR:
-- ConfiguracionPage.vue es contenedor escalable
+- ConfiguracionPage es contenedor escalable
 - Cada configuración en su propio componente
 - Fácil agregar nuevas funcionalidades
 
@@ -118,14 +127,25 @@ JUEGO TA-TE-TI:
 - Línea ganadora animada con efecto neón
 - Reinicio de partida
 - Animaciones en fichas y celdas
+- Interfaz completamente traducida
 
 CONFIGURACIÓN:
 - Cambio de nombre de usuario
+- Cambio de idioma (Español/Inglés)
 - Almacenamiento persistente (Capacitor Preferences)
 - Validación de datos
-- Notificaciones de éxito/error
+- Notificaciones personalizadas de éxito/error
 - Actualización reactiva en toda la app
 - Más detalles en ResumenConfiguracion.txt
+
+SISTEMA DE IDIOMAS (i18n):
+- Soporte para español (es-AR) e inglés (en-US)
+- Detección automática del idioma del sistema
+- Cambio de idioma en tiempo real
+- Persistencia de preferencia de idioma
+- Toda la app traducida (UI, mensajes, notificaciones)
+- Estructura preparada para agregar más idiomas fácilmente
+- Traducciones organizadas por secciones
 
 INTERFAZ:
 - Header con nombre de usuario
@@ -133,6 +153,7 @@ INTERFAZ:
 - Diseño responsive (mobile-first)
 - Tema oscuro personalizado
 - Iconografía Tabler Icons
+- Notificaciones con gradientes personalizados
 
 SISTEMA DE MODALES REUTILIZABLES
 --------------------------------------------------------------------------------
@@ -147,6 +168,7 @@ CARACTERÍSTICAS:
 - Cierre inteligente (click afuera, Enter, botones)
 - Estilizado con paleta de colores del proyecto
 - Eventos: aceptar, cancelar, update:modelValue
+- Soporta traducciones dinámicas
 
 TABLER ICONS
 --------------------------------------------------------------------------------
@@ -166,6 +188,9 @@ ICONOS DEL PROYECTO:
 - ti-edit: Editar
 - ti-device-gamepad-2: Juego multijugador
 - ti-robot: Juego vs IA
+- ti-language: Idioma
+- ti-world: Cambiar idioma
+- ti-flag: Banderas de idiomas
 - ti-check: Éxito
 - ti-mood-smile: Dificultad fácil
 - ti-brain: Dificultad normal
@@ -185,7 +210,54 @@ CARACTERÍSTICAS:
 
 CLAVES USADAS:
 - nombre_usuario: Nombre del jugador
+- idioma_usuario: Código de idioma (es-AR o en-US)
 - dificultad_ia: Dificultad seleccionada (facil/normal/dificil)
+
+SISTEMA DE INTERNACIONALIZACIÓN (i18n)
+--------------------------------------------------------------------------------
+
+TECNOLOGÍA: Vue I18n v11
+CONFIGURACIÓN: src/boot/i18n.js
+
+CARACTERÍSTICAS:
+- Detección automática del idioma del sistema
+- Fallback a inglés si no hay traducción
+- Composition API (useI18n)
+- Cambio de idioma en tiempo real sin recargar
+
+IDIOMAS SOPORTADOS:
+- es-AR: Español (Latinoamérica)
+- en-US: Inglés (Estados Unidos)
+
+USO EN COMPONENTES:
+import { useI18n } from 'vue-i18n'
+const { t } = useI18n()
+<p>{{ t('general.nombreApp') }}</p>
+
+AGREGAR NUEVOS IDIOMAS:
+1. Crear carpeta src/i18n/[codigo-idioma]/
+2. Crear index.js con traducciones
+3. Exportar en src/i18n/index.js
+4. Agregar opción en ConfiguracionIdioma.vue
+
+NOTIFICACIONES PERSONALIZADAS
+--------------------------------------------------------------------------------
+
+TECNOLOGÍA: Quasar Notify
+CONFIGURACIÓN: quasar.config.js (plugins: ['Notify'])
+
+ESTILOS PERSONALIZADOS (app.css):
+- Gradientes según tipo (éxito, error, advertencia, info)
+- Bordes redondeados de 12px
+- Sombras de neón
+- Animación de entrada desde arriba
+- Fuente bold
+
+COLORES:
+- Éxito (positive): Verde #00d9a3
+- Error (negative): Rojo #ff4757
+- Advertencia (warning): Amarillo #ffbe0b
+- Info: Azul #1e90ff
 
 TEMA VISUAL - VARIABLES CSS
 --------------------------------------------------------------------------------
@@ -203,9 +275,9 @@ DEPENDENCIAS PRINCIPALES
 - vue: ^3.5.22
 - quasar: ^2.16.0
 - vue-router: ^4.0.0
+- vue-i18n: ^11.0.0
 - @capacitor/android: ^7.4.2
 - @capacitor/preferences: ^7.0.2
-- @capacitor/status-bar: ^7.0.0
 - @tabler/icons-webfont: ^3.35.0
 
 RUTAS DE LA APLICACIÓN
@@ -224,6 +296,8 @@ NOTAS IMPORTANTES
 - Composables singleton para estado compartido global
 - Estructura modular preparada para escalabilidad
 - Sistema de clases CSS reutilizables en app.css
+- Sistema de idiomas completamente implementado
+- Fácil agregar más idiomas sin modificar componentes
 
 ================================================================================
 FIN DEL RESUMEN
