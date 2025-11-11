@@ -40,14 +40,15 @@ import { ref, onMounted, watch } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
+import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
 import ModalResultado from 'src/components/TaTeTi/ModalResultado.vue'
 
-const nombreIA = 'NEXUS'
-
+const { t } = useI18n()
+const nombreIA = ref('')
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 
 const {
@@ -69,6 +70,7 @@ const mostrarModal = ref(false)
 
 onMounted(async () => {
   await cargarNombre()
+  nombreIA.value = t('juego.nexus')
 })
 
 // Cambiar dificultad y reiniciar juego

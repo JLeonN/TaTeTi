@@ -1,6 +1,6 @@
 <template>
   <div class="selector-dificultad">
-    <div class="etiqueta-selector">Dificultad:</div>
+    <div class="etiqueta-selector">{{ t('juego.dificultad') }}:</div>
     <div class="botones-dificultad">
       <button
         class="boton-dificultad boton-izquierda"
@@ -8,7 +8,7 @@
         @click="seleccionarDificultad('facil')"
       >
         <i class="ti ti-mood-smile icono-sm"></i>
-        <span>Fácil</span>
+        <span>{{ t('juego.facil') }}</span>
       </button>
 
       <button
@@ -17,7 +17,7 @@
         @click="seleccionarDificultad('normal')"
       >
         <i class="ti ti-brain icono-sm"></i>
-        <span>Normal</span>
+        <span>{{ t('juego.normal') }}</span>
       </button>
 
       <button
@@ -26,7 +26,7 @@
         @click="seleccionarDificultad('dificil')"
       >
         <i class="ti ti-flame icono-sm"></i>
-        <span>Difícil</span>
+        <span>{{ t('juego.dificil') }}</span>
       </button>
     </div>
   </div>
@@ -35,6 +35,9 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { Preferences } from '@capacitor/preferences'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const CLAVE_DIFICULTAD = 'dificultad_ia'
 

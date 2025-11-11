@@ -1,7 +1,7 @@
 <template>
   <div class="info-juego">
     <div v-if="!juegoTerminado" class="turno-actual">
-      <span class="etiqueta">Turno de:</span>
+      <span class="etiqueta">{{ t('juego.turno') }}:</span>
       <span class="jugador" :class="`jugador-${turnoActual.toLowerCase()}`">
         {{ nombreJugadorActual }}
       </span>
@@ -11,20 +11,23 @@
       <q-icon name="emoji_events" size="2rem" color="warning" />
       <span class="texto-ganador">
         ¡<strong :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</strong>
-        venció<span v-if="nombreOponente">{{ ' a ' + nombreOponente }}</span
+        {{ t('juego.ganador') }}<span v-if="nombreOponente">{{ ' a ' + nombreOponente }}</span
         >!
       </span>
     </div>
 
     <div v-else-if="esEmpate" class="resultado empate-anuncio">
       <q-icon name="handshake" size="2rem" />
-      <span class="texto-empate">¡Es un empate!</span>
+      <span class="texto-empate">{{ t('juego.empate') }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   turnoActual: {

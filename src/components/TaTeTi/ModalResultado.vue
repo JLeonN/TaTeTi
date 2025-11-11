@@ -11,15 +11,16 @@
         <!-- Mensaje -->
         <div class="modal-mensaje">
           <h2 v-if="ganador" class="titulo-h2">
-            ¡<span :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</span> ganó!
+            ¡<span :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</span>
+            {{ t('juego.ganador') }}!
           </h2>
-          <h2 v-else-if="esEmpate" class="titulo-h2">¡Es un empate!</h2>
+          <h2 v-else-if="esEmpate" class="titulo-h2">{{ t('juego.empate') }}</h2>
         </div>
 
         <!-- Botón -->
         <button class="boton-base boton-primario boton-con-efecto" @click="manejarReiniciar">
           <i class="ti ti-refresh icono-md"></i>
-          <span>Jugar de nuevo</span>
+          <span>{{ t('juego.jugarDeNuevo') }}</span>
         </button>
       </div>
     </div>
@@ -28,6 +29,9 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   modelValue: {
