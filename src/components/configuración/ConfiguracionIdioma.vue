@@ -103,7 +103,6 @@ const guardarNuevoIdioma = async () => {
       type: 'positive',
       message: t('configuracion.idiomaActualizado'),
       position: 'top',
-      icon: 'ti ti-check',
     })
   } else {
     $q.notify({

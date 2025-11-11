@@ -244,5 +244,74 @@
   }
 }
 /* ============================================================================
-   FIX PARA ANDROID - STATUS BAR Y NAVIGATION BAR
+   NOTIFICACIONES PERSONALIZADAS
    ============================================================================ */
+/* Notificación de éxito (positive) */
+.q-notification--positive {
+  background: linear-gradient(135deg, #00d9a3 0%, #00b386 100%) !important;
+  border: 2px solid #00d9a3 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 217, 163, 0.4) !important;
+  font-weight: 600 !important;
+}
+/* Notificación de error (negative) */
+.q-notification--negative {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3838 100%) !important;
+  border: 2px solid #ff4757 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(255, 71, 87, 0.4) !important;
+  font-weight: 600 !important;
+}
+/* Notificación de advertencia (warning) */
+.q-notification--warning {
+  background: linear-gradient(135deg, #ffbe0b 0%, #ffa500 100%) !important;
+  border: 2px solid #ffbe0b !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(255, 190, 11, 0.4) !important;
+  font-weight: 600 !important;
+  color: #2d1b4e !important;
+}
+/* Notificación de info */
+.q-notification--info {
+  background: linear-gradient(135deg, #1e90ff 0%, #1c7ed6 100%) !important;
+  border: 2px solid #1e90ff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(30, 144, 255, 0.4) !important;
+  font-weight: 600 !important;
+}
+/* Texto de las notificaciones */
+.q-notification__message {
+  font-size: 0.95rem !important;
+  display: flex !important;
+  align-items: center !important;
+}
+/* Ícono de las notificaciones */
+.q-notification__icon {
+  font-size: 1.5rem !important;
+  margin-right: 12px !important;
+}
+.q-notification__content {
+  display: flex !important;
+  align-items: center !important;
+}
+/* Botón de cerrar */
+.q-notification__actions {
+  opacity: 0.8;
+}
+.q-notification__actions:hover {
+  opacity: 1;
+}
+/* Animación de entrada */
+.q-notification {
+  animation: notificacion-entrada 0.3s ease-out !important;
+}
+@keyframes notificacion-entrada {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

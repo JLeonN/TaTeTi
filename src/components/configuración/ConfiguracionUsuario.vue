@@ -84,7 +84,6 @@ const guardarNuevoNombre = async () => {
       type: 'positive',
       message: t('configuracion.nombreActualizado'),
       position: 'top',
-      icon: 'ti ti-check',
     })
   } else {
     $q.notify({
