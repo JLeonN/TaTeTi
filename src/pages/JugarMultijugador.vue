@@ -6,8 +6,8 @@
         :juego-terminado="juegoTerminado"
         :ganador="ganador"
         :es-empate="esEmpate"
-        nombre-jugador-x="Jugador 1"
-        nombre-jugador-o="Jugador 2"
+        :nombre-jugador-x="nombreJugador1"
+        :nombre-jugador-o="nombreJugador2"
       />
 
       <TableroTaTeTi
@@ -26,20 +26,23 @@
       v-model="mostrarModal"
       :ganador="ganador"
       :es-empate="esEmpate"
-      nombre-jugador-x="Jugador 1"
-      nombre-jugador-o="Jugador 2"
+      :nombre-jugador-x="nombreJugador1"
+      :nombre-jugador-o="nombreJugador2"
       @reiniciar="reiniciarJuego"
     />
   </q-page>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
+import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import ModalResultado from 'src/components/TaTeTi/ModalResultado.vue'
+
+const { t } = useI18n()
 
 const {
   tablero,
@@ -53,6 +56,15 @@ const {
 } = useTaTeTi('pvp')
 
 const mostrarModal = ref(false)
+
+// Nombres de jugadores
+const nombreJugador1 = ref('')
+const nombreJugador2 = ref('')
+
+onMounted(() => {
+  nombreJugador1.value = t('juego.jugador1')
+  nombreJugador2.value = t('juego.jugador2')
+})
 
 // Manejar jugada del jugador
 const manejarJugada = (indice) => {
