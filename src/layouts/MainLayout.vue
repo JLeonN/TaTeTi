@@ -34,7 +34,7 @@
             <img src="/favicon.png" />
           </q-avatar>
           <div class="drawer-titulo">{{ t('general.nombreApp') }}</div>
-          <div class="drawer-subtitulo">Tres en Raya</div>
+          <div class="drawer-subtitulo">{{ t('general.tresEnRaya') }}</div>
         </div>
 
         <q-separator class="separador-personalizado" />

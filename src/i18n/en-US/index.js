@@ -1,3 +1,4 @@
+// inglés
 export default {
   // General
   general: {
@@ -9,6 +10,7 @@ export default {
     guardar: 'Save',
     editar: 'Edit',
     reiniciar: 'Restart',
+    tresEnRaya: 'Three in a Row',
   },
 
   // Configuration
@@ -28,6 +30,11 @@ export default {
     cambiarIdioma: 'Change Language',
     espanol: 'Spanish',
     ingles: 'English',
+    latinoamerica: 'Latin America',
+    estadosUnidos: 'United States',
+    idiomaActualizado: 'Language updated successfully!',
+    errorGuardarIdioma: 'Error saving language',
+    debeSeleccionarIdioma: 'You must select a language',
   },
 
   // Side menu

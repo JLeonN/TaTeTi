@@ -1,3 +1,4 @@
+// Español
 export default {
   // General
   general: {
@@ -9,6 +10,7 @@ export default {
     guardar: 'Guardar',
     editar: 'Editar',
     reiniciar: 'Reiniciar',
+    tresEnRaya: 'Tres en Raya',
   },
 
   // Configuración
@@ -28,6 +30,11 @@ export default {
     cambiarIdioma: 'Cambiar Idioma',
     espanol: 'Español',
     ingles: 'Inglés',
+    latinoamerica: 'Latinoamérica',
+    estadosUnidos: 'Estados Unidos',
+    idiomaActualizado: '¡Idioma actualizado correctamente!',
+    errorGuardarIdioma: 'Error al guardar el idioma',
+    debeSeleccionarIdioma: 'Debe seleccionar un idioma',
   },
 
   // Menú lateral

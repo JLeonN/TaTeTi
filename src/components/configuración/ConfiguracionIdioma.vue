@@ -36,7 +36,7 @@
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
             <span class="nombre-idioma">{{ t('configuracion.espanol') }}</span>
-            <span class="codigo-idioma">Latinoamérica</span>
+            <span class="codigo-idioma">{{ t('configuracion.latinoamerica') }}</span>
           </div>
         </button>
 
@@ -48,7 +48,7 @@
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
             <span class="nombre-idioma">{{ t('configuracion.ingles') }}</span>
-            <span class="codigo-idioma">United States</span>
+            <span class="codigo-idioma">{{ t('configuracion.estadosUnidos') }}</span>
           </div>
         </button>
       </div>
@@ -89,7 +89,7 @@ const guardarNuevoIdioma = async () => {
   if (!idiomaSeleccionado.value) {
     $q.notify({
       type: 'negative',
-      message: 'Debe seleccionar un idioma',
+      message: t('configuracion.debeSeleccionarIdioma'),
       position: 'top',
     })
     return
@@ -101,14 +101,14 @@ const guardarNuevoIdioma = async () => {
     mostrarModal.value = false
     $q.notify({
       type: 'positive',
-      message: '¡Idioma actualizado correctamente!',
+      message: t('configuracion.idiomaActualizado'),
       position: 'top',
       icon: 'ti ti-check',
     })
   } else {
     $q.notify({
       type: 'negative',
-      message: 'Error al guardar el idioma',
+      message: t('configuracion.errorGuardarIdioma'),
       position: 'top',
     })
   }
