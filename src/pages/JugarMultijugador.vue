@@ -40,7 +40,7 @@ import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
-import ModalResultado from 'src/components/TaTeTi/ModalResultado.vue'
+import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
 
 const { t } = useI18n()
 

@@ -8,8 +8,14 @@
           <q-avatar>
             <img src="/favicon.png" />
           </q-avatar>
-          {{ t('general.nombreApp') }}
         </q-toolbar-title>
+
+        <!-- Mostrar puntaje -->
+        <div class="puntaje-header">
+          <i class="ti ti-trophy icono-sm icono-primario"></i>
+          <span class="puntaje-numero">{{ puntajeTotal }}</span>
+          <span class="puntaje-texto">{{ t('puntuacion.puntos') }}</span>
+        </div>
 
         <!-- Mostrar nombre del usuario -->
         <div class="nombre-usuario">
@@ -85,18 +91,22 @@
 import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { useIdioma } from 'src/components/Composables/useIdioma'
+import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
 import { useI18n } from 'vue-i18n'
 
 const leftDrawerOpen = ref(false)
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const { cargarIdioma } = useIdioma()
+const { puntajeTotal, cargarPuntuacion } = usePuntuacion()
 const { t } = useI18n()
 
 onMounted(async () => {
   await cargarNombre()
   await cargarIdioma()
+  await cargarPuntuacion()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
+  console.log('🏆 Puntaje después de cargar:', puntajeTotal.value)
 })
 
 const toggleLeftDrawer = () => {
@@ -114,6 +124,27 @@ const toggleLeftDrawer = () => {
 /* Ajuste para el toolbar dentro del header */
 .header-personalizado .q-toolbar {
   min-height: 40px;
+}
+.puntaje-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: var(--color-texto-principal);
+  padding: 6px 12px;
+  background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
+  border-radius: 20px;
+  border: 2px solid var(--color-turno-activo);
+  box-shadow: 0 4px 12px rgba(255, 190, 11, 0.3);
+  margin-right: 8px;
+}
+.puntaje-numero {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.puntaje-texto {
+  font-size: 0.85rem;
+  opacity: 0.9;
 }
 .nombre-usuario {
   display: flex;
@@ -178,6 +209,17 @@ const toggleLeftDrawer = () => {
   .header-personalizado {
     padding-top: 32px !important; /* Más espacio en móviles */
     min-height: 50px !important;
+  }
+  .puntaje-header {
+    font-size: 0.85rem;
+    padding: 4px 10px;
+    margin-right: 6px;
+  }
+  .puntaje-numero {
+    font-size: 1rem;
+  }
+  .puntaje-texto {
+    font-size: 0.75rem;
   }
   .nombre-usuario {
     font-size: 0.85rem;

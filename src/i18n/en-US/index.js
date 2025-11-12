@@ -61,4 +61,20 @@ export default {
     jugador2: 'Player 2',
     nexus: 'NEXUS',
   },
+
+  // Score
+  puntuacion: {
+    puntos: 'pts',
+    victoria: 'win',
+    victorias: 'wins',
+    derrota: 'loss',
+    derrotas: 'losses',
+    proteccion: 'Protected',
+    ganaste: 'You won',
+    perdiste: 'You lost',
+    empataste: 'You tied',
+    racha: 'Streak',
+    puntosGanados: 'Points earned',
+    puntosPerdidos: 'Points lost',
+  },
 }

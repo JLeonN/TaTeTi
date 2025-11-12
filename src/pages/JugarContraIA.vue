@@ -23,6 +23,13 @@
       <ControlesJuego />
     </div>
 
+    <!-- Indicador de racha -->
+    <IndicadorRacha
+      :racha="rachaActual"
+      :derrotas="derrotasActuales"
+      :proteccion-activa="proteccionActiva"
+    />
+
     <!-- Modal de resultado -->
     <ModalResultado
       v-model="mostrarModal"
@@ -30,22 +37,26 @@
       :es-empate="esEmpate"
       :nombre-jugador-x="nombreUsuario"
       :nombre-jugador-o="nombreIA"
+      :puntos-ganados="puntosGanadosPartida"
+      :puntaje-total="puntajeTotal"
       @reiniciar="reiniciarJuego"
     />
   </q-page>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
+import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
 import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
-import ModalResultado from 'src/components/TaTeTi/ModalResultado.vue'
+import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
+import IndicadorRacha from 'src/components/TaTeTi/Compartido/IndicadorRacha.vue'
 
 const { t } = useI18n()
 const nombreIA = ref('')
@@ -65,11 +76,26 @@ const {
 
 const { ejecutarJugadaIA } = useIA()
 
+const {
+  puntajeTotal,
+  cargarPuntuacion,
+  procesarResultado,
+  obtenerRacha,
+  obtenerDerrotasConsecutivas,
+} = usePuntuacion()
+
 const dificultadActual = ref('normal')
 const mostrarModal = ref(false)
+const puntosGanadosPartida = ref(null)
+const proteccionActiva = ref(false)
+
+// Computeds para racha y derrotas actuales
+const rachaActual = computed(() => obtenerRacha(dificultadActual.value))
+const derrotasActuales = computed(() => obtenerDerrotasConsecutivas(dificultadActual.value))
 
 onMounted(async () => {
   await cargarNombre()
+  await cargarPuntuacion()
   nombreIA.value = t('juego.nexus')
 })
 
@@ -128,11 +154,36 @@ const ejecutarTurnoIA = async () => {
 const reiniciarJuego = () => {
   reiniciarJuegoBase()
   mostrarModal.value = false
+  puntosGanadosPartida.value = null
 }
 
-// Watcher para abrir el modal cuando termina el juego
-watch(juegoTerminado, (nuevoValor) => {
+// Watcher para procesar resultado cuando termina el juego
+watch(juegoTerminado, async (nuevoValor) => {
   if (nuevoValor) {
+    // Determinar resultado
+    let resultado = ''
+    if (ganador.value === 'X') {
+      resultado = 'victoria'
+    } else if (ganador.value === 'O') {
+      resultado = 'derrota'
+    } else if (esEmpate.value) {
+      resultado = 'empate'
+    }
+
+    // Procesar puntuación
+    const resultadoPuntuacion = await procesarResultado(resultado, dificultadActual.value)
+    puntosGanadosPartida.value = resultadoPuntuacion.puntosGanados
+    proteccionActiva.value = resultadoPuntuacion.proteccionActiva
+
+    console.log('🎯 Resultado procesado:', {
+      resultado,
+      puntos: resultadoPuntuacion.puntosGanados,
+      total: resultadoPuntuacion.puntajeTotal,
+      racha: resultadoPuntuacion.racha,
+      proteccion: resultadoPuntuacion.proteccionActiva,
+    })
+
+    // Abrir modal después de un delay
     setTimeout(() => {
       mostrarModal.value = true
     }, 800) // Delay para que se vea la línea ganadora primero
