@@ -5,6 +5,7 @@
   "author": "Leonardo Núñez <jorgebike.75@hotmail.com>",
   "private": true,
   "dependencies": {
+    "@capacitor-community/admob": "^7.2.0",
     "@capacitor/android": "^7.4.4",
     "@capacitor/app": "^7.0.0",
     "@capacitor/cli": "^7.0.0",
