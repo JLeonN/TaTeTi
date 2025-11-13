@@ -30,7 +30,8 @@ proyecto/
 │   │   │   ├── useTaTeTi.js              # Lógica del juego
 │   │   │   ├── useConfiguracion.js       # Lógica de configuración
 │   │   │   ├── useIdioma.js              # Lógica de idiomas
-│   │   │   └── useIA.js                  # Lógica de la IA
+│   │   │   ├── useIA.js                  # Lógica de la IA
+│   │   │   └── usePuntuacion.js          # Lógica de puntuación
 │   │   ├── Modales/
 │   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
 │   │   ├── Configuracion/
@@ -42,7 +43,8 @@ proyecto/
 │   │       │   ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
 │   │       │   ├── InfoJuego.vue             # Info turno/ganador/empate
 │   │       │   ├── ControlesJuego.vue        # Botones de control
-│   │       │   └── ModalResultado.vue        # Modal fin de juego
+│   │       │   ├── ModalResultado.vue        # Modal fin de juego
+│   │       │   └── IndicadorRacha.vue        # Indicador de racha en pantalla
 │   │       └── JugarVsIA/
 │   │           └── SelectorDificultad.vue    # Selector de dificultad IA
 │   ├── pages/
@@ -155,6 +157,41 @@ INTERFAZ:
 - Iconografía Tabler Icons
 - Notificaciones con gradientes personalizados
 
+SISTEMA DE PUNTUACIÓN (SOLO VS IA)
+--------------------------------------------------------------------------------
+- Puntaje inicial: 0 pts
+- Puntos según dificultad:
+  * Fácil: +3 ganar | -1 perder | +1 empate
+  * Normal: +5 ganar | -2 perder | +1 empate
+  * Difícil: +10 ganar | -5 perder | +1 empate
+- Bonus por racha:
+  * 3 victorias: +1/+2/+3 (Fácil/Normal/Difícil)
+  * 10 victorias: +2/+3/+5 (Fácil/Normal/Difícil)
+- Protección: 5 derrotas seguidas → deja de restar hasta ganar 1
+- Rachas independientes por dificultad
+- Persistencia con Capacitor Preferences
+- Visualización: Header (puntaje total), pantalla (racha), modal (resultado)
+
+SISTEMA DE PUNTUACIÓN (SOLO VS IA)
+--------------------------------------------------------------------------------
+- Puntaje inicial: 0 pts (configurable por el usuario)
+- Mínimo: 0 pts (no permite negativos)
+- Puntos según dificultad:
+  * Fácil: +3 ganar | -1 perder | +1 empate
+  * Normal: +5 ganar | -2 perder | +1 empate
+  * Difícil: +10 ganar | -5 perder | +1 empate
+- Bonus por racha:
+  * 3 victorias seguidas: +1/+2/+3 adicional (Fácil/Normal/Difícil)
+  * 10 victorias seguidas: +2/+3/+5 adicional (Fácil/Normal/Difícil)
+- Protección inteligente: 5 derrotas seguidas → deja de restar hasta ganar 1
+- Rachas independientes por dificultad (no se mezclan ni se pierden)
+- Persistencia total con Capacitor Preferences
+- Visualización:
+  * Header: Puntaje total con trofeo 🏆 (reemplaza nombre de app)
+  * Pantalla: Indicador de racha en esquina superior derecha
+  * Modal: Puntos ganados/perdidos y puntaje total actualizado
+- Traducciones completas (español/inglés)
+
 SISTEMA DE MODALES REUTILIZABLES
 --------------------------------------------------------------------------------
 
@@ -212,6 +249,7 @@ CLAVES USADAS:
 - nombre_usuario: Nombre del jugador
 - idioma_usuario: Código de idioma (es-AR o en-US)
 - dificultad_ia: Dificultad seleccionada (facil/normal/dificil)
+- puntuacion_sistema: Sistema completo de puntuación (JSON)
 
 SISTEMA DE INTERNACIONALIZACIÓN (i18n)
 --------------------------------------------------------------------------------

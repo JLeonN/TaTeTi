@@ -45,6 +45,21 @@ ARCHIVOS PRINCIPALES
    - Carga nombre del usuario para mostrar en InfoJuego
    - Nombre se usa como "Jugador X" en pantalla
 
+6. src/components/Composables/usePuntuacion.js
+   - Composable singleton para sistema de puntuación
+   - Funciones: cargarPuntuacion(), guardarPuntuacion(), procesarResultado()
+   - Maneja rachas independientes por dificultad
+   - Protección de 5 derrotas consecutivas
+   - Cálculo de bonus por racha (x3 y x10)
+   - Clave Capacitor: 'puntuacion_sistema'
+
+7. src/components/TaTeTi/Compartido/IndicadorRacha.vue
+   - Muestra racha positiva con llama 🔥
+   - Muestra racha negativa con triángulo ⚠️
+   - Muestra escudo de protección 🛡️
+   - Posición fija en esquina superior derecha
+   - Animaciones suaves y responsive
+
 FLUJO DE JUEGO
 --------------------------------------------------------------------------------
 
@@ -63,6 +78,53 @@ FLUJO DE JUEGO
    - esperandoIA = false (habilita clicks)
 9. Se repite proceso hasta ganador o empate
 10. Al finalizar, se muestra resultado y botón de reinicio
+
+SISTEMA DE PUNTUACIÓN
+--------------------------------------------------------------------------------
+
+CONFIGURACIÓN DE PUNTOS:
+- Puntaje inicial: 0 pts
+- Mínimo: 0 pts (no permite negativos)
+
+PUNTOS BASE:
+- Fácil: +3 victoria | -1 derrota | +1 empate
+- Normal: +5 victoria | -2 derrota | +1 empate
+- Difícil: +10 victoria | -5 derrota | +1 empate
+
+BONUS POR RACHA:
+- 3 victorias seguidas:
+  * Fácil: +1 adicional (total 4 pts)
+  * Normal: +2 adicional (total 7 pts)
+  * Difícil: +3 adicional (total 13 pts)
+- 10 victorias seguidas:
+  * Fácil: +2 adicional (total 5 pts)
+  * Normal: +3 adicional (total 8 pts)
+  * Difícil: +5 adicional (total 15 pts)
+
+PROTECCIÓN:
+- Después de 5 derrotas consecutivas deja de restar puntos
+- Se reactiva al ganar 1 partida
+- Puede volver a activarse si pierde 5 más
+
+RACHAS INDEPENDIENTES:
+- Cada dificultad mantiene su propia racha
+- Cambiar de dificultad no afecta las rachas existentes
+- Ejemplo: 10 rachas en Fácil + 5 rachas en Normal simultáneamente
+
+VISUALIZACIÓN:
+- Header: Puntaje total con trofeo 🏆
+- Esquina derecha: Indicador de racha actual
+- Modal resultado: Puntos ganados/perdidos + puntaje total
+
+FLUJO AL TERMINAR PARTIDA:
+1. Juego termina (victoria/derrota/empate)
+2. Se determina el resultado
+3. Se calcula puntos según dificultad + racha
+4. Se actualiza racha (suma o resetea)
+5. Se verifica protección de derrotas
+6. Se guarda en Capacitor Preferences
+7. Se muestra modal con resultado y puntos
+8. Header se actualiza automáticamente
 
 ALGORITMOS DE IA
 --------------------------------------------------------------------------------
@@ -211,6 +273,21 @@ INFO JUEGO (Adaptaciones):
 - Muestra nombre del usuario en lugar de "Jugador 1"
 - Mensaje de victoria incluye oponente ("venció a NEXUS")
 - Solo si nombreOponente !== 'Jugador 2' (detecta modo IA)
+
+INDICADOR DE RACHA:
+- Posición fija superior derecha (top: 180px)
+- Racha positiva: Llama 🔥 amarilla con número de victorias
+- Racha negativa: Triángulo ⚠️ rojo con número de derrotas
+- Protección activa: Escudo 🛡️ verde con texto "Protegido"
+- Animaciones suaves de entrada y pulso
+- Responsive: se ajusta en móviles
+
+MODAL RESULTADO (Actualizado):
+- Muestra puntos ganados en verde (+X pts)
+- Muestra puntos perdidos en rojo (-X pts)
+- Muestra empate en gris (=X pts)
+- Puntaje total actualizado debajo
+- Animaciones escalonadas
 
 NAVEGACIÓN Y RUTAS
 --------------------------------------------------------------------------------

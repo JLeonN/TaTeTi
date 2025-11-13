@@ -4,7 +4,7 @@ import { Preferences } from '@capacitor/preferences'
 const CLAVE_PUNTUACION = 'puntuacion_sistema'
 
 // Estado global (singleton)
-const puntajeTotal = ref(50)
+const puntajeTotal = ref(0)
 const estadoFacil = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
 const estadoNormal = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
 const estadoDificil = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
@@ -62,7 +62,7 @@ export function usePuntuacion() {
 
       if (resultado.value) {
         const datos = JSON.parse(resultado.value)
-        puntajeTotal.value = datos.puntajeTotal || 50
+        puntajeTotal.value = datos.puntajeTotal || 0
 
         estadoFacil.value = datos.facil || {
           racha: 0,
