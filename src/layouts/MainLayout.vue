@@ -92,6 +92,7 @@ import { ref, onMounted } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
+import { usePublicidad } from 'src/components/Composables/usePublicidad'
 import { useI18n } from 'vue-i18n'
 
 const leftDrawerOpen = ref(false)
@@ -99,6 +100,7 @@ const leftDrawerOpen = ref(false)
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const { cargarIdioma } = useIdioma()
 const { puntajeTotal, cargarPuntuacion } = usePuntuacion()
+const { inicializarAdMob, mostrarBanner } = usePublicidad()
 const { t } = useI18n()
 
 onMounted(async () => {
@@ -107,6 +109,10 @@ onMounted(async () => {
   await cargarPuntuacion()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
   console.log('🏆 Puntaje después de cargar:', puntajeTotal.value)
+
+  // Inicializar AdMob y mostrar banner
+  await inicializarAdMob()
+  await mostrarBanner()
 })
 
 const toggleLeftDrawer = () => {
