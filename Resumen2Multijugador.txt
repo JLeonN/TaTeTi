@@ -44,9 +44,14 @@ ARCHIVOS PRINCIPALES
    - Muestra mensaje de empate
    - Adapta texto según modo de juego (PvP o IA)
 
-6. src/components/TaTeTi/ControlesJuego.vue
-   - Botón "Reiniciar Juego" con icono animado
-   - Emite evento 'reiniciar'
+6. src/components/Composables/usePublicidad.js
+   - Gestión de banner e intersticial
+   - Inicialización de AdMob
+
+7. src/components/Composables/useContadorPartidas.js
+   - Contador de partidas para publicidad
+   - Persiste con Capacitor Preferences
+   - Cada 4 partidas muestra intersticial
 
 FLUJO DE JUEGO
 --------------------------------------------------------------------------------
@@ -61,6 +66,9 @@ FLUJO DE JUEGO
 8. Jugador 2 clickea una celda
 9. Se repite proceso hasta ganador o empate
 10. Al finalizar, se muestra resultado y botón de reinicio
+11. Al terminar partida, se incrementa contador
+12. Cada 4 partidas se muestra intersticial
+13. Se prepara siguiente intersticial automáticamente
 
 LÓGICA DEL COMPOSABLE (Modo PvP)
 --------------------------------------------------------------------------------

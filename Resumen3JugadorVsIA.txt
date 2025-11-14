@@ -60,6 +60,16 @@ ARCHIVOS PRINCIPALES
    - Posición fija en esquina superior derecha
    - Animaciones suaves y responsive
 
+8. src/components/Composables/usePublicidad.js
+   - Gestión de banner e intersticial
+   - Inicialización de AdMob
+   - IDs de prueba y producción
+
+9. src/components/Composables/useContadorPartidas.js
+   - Contador de partidas terminadas
+   - Muestra intersticial cada 4 partidas
+   - Persistencia con Capacitor Preferences
+
 FLUJO DE JUEGO
 --------------------------------------------------------------------------------
 
@@ -78,6 +88,9 @@ FLUJO DE JUEGO
    - esperandoIA = false (habilita clicks)
 9. Se repite proceso hasta ganador o empate
 10. Al finalizar, se muestra resultado y botón de reinicio
+11. Al terminar partida, se incrementa contador de publicidad
+12. Cada 4 partidas se muestra intersticial a pantalla completa
+13. Se prepara automáticamente el siguiente intersticial
 
 SISTEMA DE PUNTUACIÓN
 --------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ TECNOLOGÍAS PRINCIPALES
 - JavaScript (ES6+)
 - CSS Variables (theming)
 - Tabler Icons (iconografía)
+- @capacitor-community/admob (publicidad)
 
 ESTRUCTURA DE CARPETAS
 --------------------------------------------------------------------------------
@@ -31,7 +32,9 @@ proyecto/
 │   │   │   ├── useConfiguracion.js       # Lógica de configuración
 │   │   │   ├── useIdioma.js              # Lógica de idiomas
 │   │   │   ├── useIA.js                  # Lógica de la IA
-│   │   │   └── usePuntuacion.js          # Lógica de puntuación
+│   │   │   ├── usePuntuacion.js          # Lógica de puntuación
+│   │   │   ├── usePublicidad.js          # Lógica de publicidad AdMob
+│   │   │   └── useContadorPartidas.js    # Contador para intersticiales
 │   │   ├── Modales/
 │   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
 │   │   ├── Configuracion/
@@ -157,6 +160,14 @@ INTERFAZ:
 - Iconografía Tabler Icons
 - Notificaciones con gradientes personalizados
 
+SISTEMA DE PUBLICIDAD:
+- Banner publicitario siempre visible (parte inferior)
+- Intersticial cada 4 partidas (PvP y vs IA)
+- IDs de prueba configurados
+- Composables singleton para gestión de ads
+- Contador persistente de partidas (Capacitor Preferences)
+- Preparación automática de intersticiales
+
 SISTEMA DE PUNTUACIÓN (SOLO VS IA)
 --------------------------------------------------------------------------------
 - Puntaje inicial: 0 pts
@@ -250,6 +261,7 @@ CLAVES USADAS:
 - idioma_usuario: Código de idioma (es-AR o en-US)
 - dificultad_ia: Dificultad seleccionada (facil/normal/dificil)
 - puntuacion_sistema: Sistema completo de puntuación (JSON)
+- contador_partidas_publicidad: Contador para mostrar intersticiales
 
 SISTEMA DE INTERNACIONALIZACIÓN (i18n)
 --------------------------------------------------------------------------------
@@ -317,6 +329,7 @@ DEPENDENCIAS PRINCIPALES
 - @capacitor/android: ^7.4.2
 - @capacitor/preferences: ^7.0.2
 - @tabler/icons-webfont: ^3.35.0
+- @capacitor-community/admob: ^7.2.0
 
 RUTAS DE LA APLICACIÓN
 --------------------------------------------------------------------------------
