@@ -36,6 +36,8 @@
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
+import { usePublicidad } from 'src/components/Composables/usePublicidad'
+import { useContadorPartidas } from 'src/components/Composables/useContadorPartidas'
 import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
@@ -55,15 +57,22 @@ const {
   reiniciarJuego: reiniciarJuegoBase,
 } = useTaTeTi('pvp')
 
+const { prepararIntersticial, mostrarIntersticial } = usePublicidad()
+const { cargarContador, incrementarPartida } = useContadorPartidas()
+
 const mostrarModal = ref(false)
 
 // Nombres de jugadores
 const nombreJugador1 = ref('')
 const nombreJugador2 = ref('')
 
-onMounted(() => {
+onMounted(async () => {
   nombreJugador1.value = t('juego.jugador1')
   nombreJugador2.value = t('juego.jugador2')
+
+  // Cargar contador y preparar intersticial
+  await cargarContador()
+  await prepararIntersticial()
 })
 
 // Manejar jugada del jugador
@@ -81,8 +90,20 @@ const reiniciarJuego = () => {
 }
 
 // Watcher para abrir el modal cuando termina el juego
-watch(juegoTerminado, (nuevoValor) => {
+watch(juegoTerminado, async (nuevoValor) => {
   if (nuevoValor) {
+    // Incrementar contador de partidas y verificar intersticial
+    const mostrarAd = await incrementarPartida()
+
+    if (mostrarAd) {
+      // Mostrar intersticial antes del modal
+      await mostrarIntersticial()
+      // Preparar el siguiente intersticial
+      setTimeout(async () => {
+        await prepararIntersticial()
+      }, 1000)
+    }
+
     setTimeout(() => {
       mostrarModal.value = true
     }, 800) // Delay para que se vea la línea ganadora primero

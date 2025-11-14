@@ -50,6 +50,8 @@ import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
+import { usePublicidad } from 'src/components/Composables/usePublicidad'
+import { useContadorPartidas } from 'src/components/Composables/useContadorPartidas'
 import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
@@ -84,6 +86,9 @@ const {
   obtenerDerrotasConsecutivas,
 } = usePuntuacion()
 
+const { prepararIntersticial, mostrarIntersticial } = usePublicidad()
+const { cargarContador, incrementarPartida } = useContadorPartidas()
+
 const dificultadActual = ref('normal')
 const mostrarModal = ref(false)
 const puntosGanadosPartida = ref(null)
@@ -96,7 +101,11 @@ const derrotasActuales = computed(() => obtenerDerrotasConsecutivas(dificultadAc
 onMounted(async () => {
   await cargarNombre()
   await cargarPuntuacion()
+  await cargarContador()
   nombreIA.value = t('juego.nexus')
+
+  // Preparar intersticial para cuando se necesite
+  await prepararIntersticial()
 })
 
 // Cambiar dificultad y reiniciar juego
@@ -182,6 +191,18 @@ watch(juegoTerminado, async (nuevoValor) => {
       racha: resultadoPuntuacion.racha,
       proteccion: resultadoPuntuacion.proteccionActiva,
     })
+
+    // Incrementar contador de partidas y verificar intersticial
+    const mostrarAd = await incrementarPartida()
+
+    if (mostrarAd) {
+      // Mostrar intersticial antes del modal
+      await mostrarIntersticial()
+      // Preparar el siguiente intersticial
+      setTimeout(async () => {
+        await prepararIntersticial()
+      }, 1000)
+    }
 
     // Abrir modal después de un delay
     setTimeout(() => {
