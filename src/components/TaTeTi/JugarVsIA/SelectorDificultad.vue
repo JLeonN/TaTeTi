@@ -1,7 +1,37 @@
 <template>
   <div class="selector-dificultad">
-    <div class="etiqueta-selector">{{ t('juego.dificultad') }}:</div>
-    <div class="botones-dificultad">
+    <!-- Indicadores de racha (ancho completo, arriba de todos los botones) -->
+    <transition name="slide-down">
+      <div v-if="mostrarIndicadores" class="contenedor-indicadores">
+        <div v-if="racha > 0" class="indicador-item racha-positiva">
+          <i class="ti ti-flame icono-sm"></i>
+          <div class="indicador-texto">
+            <span class="indicador-numero">{{ racha }}</span>
+            <span class="indicador-label">{{
+              racha === 1 ? t('puntuacion.victoria') : t('puntuacion.victorias')
+            }}</span>
+          </div>
+        </div>
+
+        <div v-if="derrotas > 0" class="indicador-item racha-negativa">
+          <i class="ti ti-alert-triangle icono-sm"></i>
+          <div class="indicador-texto">
+            <span class="indicador-numero">{{ derrotas }}</span>
+            <span class="indicador-label">{{
+              derrotas === 1 ? t('puntuacion.derrota') : t('puntuacion.derrotas')
+            }}</span>
+          </div>
+        </div>
+
+        <div v-if="proteccionActiva" class="indicador-item proteccion">
+          <i class="ti ti-shield-check icono-sm"></i>
+          <span class="indicador-label">{{ t('puntuacion.proteccion') }}</span>
+        </div>
+      </div>
+    </transition>
+
+    <!-- Botones de dificultad -->
+    <div class="botones-dificultad" :class="{ 'con-indicadores-arriba': mostrarIndicadores }">
       <button
         class="boton-dificultad boton-izquierda"
         :class="{ activo: dificultadSeleccionada === 'facil' }"
@@ -33,7 +63,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Preferences } from '@capacitor/preferences'
 import { useI18n } from 'vue-i18n'
 
@@ -41,12 +71,32 @@ const { t } = useI18n()
 
 const CLAVE_DIFICULTAD = 'dificultad_ia'
 
+const props = defineProps({
+  racha: {
+    type: Number,
+    default: 0,
+  },
+  derrotas: {
+    type: Number,
+    default: 0,
+  },
+  proteccionActiva: {
+    type: Boolean,
+    default: false,
+  },
+})
+
 const dificultadSeleccionada = ref('normal')
 
 const emit = defineEmits(['cambio-dificultad'])
 
 onMounted(async () => {
   await cargarDificultad()
+})
+
+// Computed para saber si mostrar los indicadores
+const mostrarIndicadores = computed(() => {
+  return props.racha > 0 || props.derrotas > 0 || props.proteccionActiva
 })
 
 const cargarDificultad = async () => {
@@ -80,22 +130,95 @@ const seleccionarDificultad = async (dificultad) => {
 .selector-dificultad {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   padding: 16px;
   background-color: var(--color-fondo-alterno);
   border-radius: 12px;
   margin-bottom: 20px;
+  gap: 0;
 }
-.etiqueta-selector {
-  font-size: 1rem;
-  color: var(--color-texto-secundario);
+
+/* Contenedor de indicadores (ancho completo) */
+.contenedor-indicadores {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
+  border: 2px solid var(--color-turno-activo);
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+}
+
+.indicador-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: var(--color-texto-principal);
+}
+
+.indicador-texto {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.indicador-numero {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.indicador-label {
+  font-size: 0.9rem;
   font-weight: 600;
-  text-align: center;
 }
+
+.racha-positiva i {
+  color: var(--color-texto-principal);
+  animation: llamarada 1.5s ease-in-out infinite;
+}
+
+.racha-negativa {
+  background-color: rgba(255, 71, 87, 0.3);
+}
+
+.racha-negativa i {
+  color: var(--color-error);
+  animation: pulsar 1s ease-in-out infinite;
+}
+
+.proteccion {
+  background-color: rgba(0, 217, 163, 0.3);
+}
+
+.proteccion i {
+  color: var(--color-exito);
+}
+
+/* Botones de dificultad */
 .botones-dificultad {
   display: flex;
   justify-content: center;
+  gap: 0;
 }
+
+/* Cuando hay indicadores arriba, quitar border-radius superior */
+.botones-dificultad.con-indicadores-arriba .boton-izquierda {
+  border-radius: 0 0 0 8px;
+}
+
+.botones-dificultad.con-indicadores-arriba .boton-derecha {
+  border-radius: 0 0 8px 0;
+}
+
+.botones-dificultad.con-indicadores-arriba .boton-centro {
+  border-radius: 0;
+}
+
 .boton-dificultad {
   display: flex;
   align-items: center;
@@ -109,26 +232,32 @@ const seleccionarDificultad = async (dificultad) => {
   border: 2px solid var(--color-borde-tablero);
   cursor: pointer;
   transition: all 0.3s ease;
+  min-height: 50px;
   flex: 1;
-  border-radius: 0;
 }
-/* Bordes redondeados solo en los extremos */
+
+/* Bordes redondeados por defecto */
 .boton-izquierda {
   border-radius: 8px 0 0 8px;
 }
+
 .boton-derecha {
   border-radius: 0 8px 8px 0;
 }
+
 .boton-centro {
   border-left: none;
   border-right: none;
+  border-radius: 0;
 }
+
 .boton-dificultad:hover {
   background-color: var(--color-fondo-alterno);
   border-color: var(--color-turno-activo);
-  transform: scale(1.05);
+  transform: translateY(-2px);
   z-index: 1;
 }
+
 .boton-dificultad.activo {
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
@@ -136,10 +265,81 @@ const seleccionarDificultad = async (dificultad) => {
   box-shadow: 0 4px 12px var(--sombra-boton);
   z-index: 2;
 }
+
+/* Animaciones */
+@keyframes llamarada {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+@keyframes pulsar {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+/* Transiciones */
+.slide-down-enter-active {
+  animation: slideDown 0.3s ease;
+}
+
+.slide-down-leave-active {
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 1;
+    max-height: 200px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   .boton-dificultad {
     padding: 8px 12px;
     font-size: 0.85rem;
+    min-height: 45px;
+  }
+
+  .indicador-numero {
+    font-size: 1.3rem;
+  }
+
+  .indicador-label {
+    font-size: 0.8rem;
   }
 }
 </style>

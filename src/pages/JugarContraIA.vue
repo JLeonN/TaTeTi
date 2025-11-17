@@ -1,7 +1,12 @@
 <template>
   <q-page class="pagina-tateti">
     <div class="contenedor-juego">
-      <SelectorDificultad @cambio-dificultad="cambiarDificultad" />
+      <SelectorDificultad
+        :racha="rachaActual"
+        :derrotas="derrotasActuales"
+        :proteccion-activa="proteccionActiva"
+        @cambio-dificultad="cambiarDificultad"
+      />
 
       <InfoJuego
         :turno-actual="turnoActual"
@@ -22,13 +27,6 @@
 
       <ControlesJuego />
     </div>
-
-    <!-- Indicador de racha -->
-    <IndicadorRacha
-      :racha="rachaActual"
-      :derrotas="derrotasActuales"
-      :proteccion-activa="proteccionActiva"
-    />
 
     <!-- Modal de resultado -->
     <ModalResultado
@@ -58,7 +56,6 @@ import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
 import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
-import IndicadorRacha from 'src/components/TaTeTi/Compartido/IndicadorRacha.vue'
 
 const { t } = useI18n()
 const nombreIA = ref('')
