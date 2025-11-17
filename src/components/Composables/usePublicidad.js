@@ -2,11 +2,11 @@ import { ref } from 'vue'
 import { AdMob, BannerAdSize, BannerAdPosition } from '@capacitor-community/admob'
 
 // ============================================================================
-// IDs DE PRUEBA
+// IDs DE PRODUCCIÓN
 // ============================================================================
-const IDS_PRUEBA = {
-  banner: 'ca-app-pub-3940256099942544/6300978111',
-  intersticial: 'ca-app-pub-3940256099942544/1033173712',
+const IDS_PRODUCCION = {
+  banner: 'ca-app-pub-7620083100302566/2415845154',
+  intersticial: 'ca-app-pub-7620083100302566/3775645392',
 }
 
 // ============================================================================
@@ -23,8 +23,8 @@ export function usePublicidad() {
     try {
       await AdMob.initialize({
         requestTrackingAuthorization: true,
-        testingDevices: [], // Vacío para IDs de prueba
-        initializeForTesting: true, // Importante para testing
+        testingDevices: [],
+        initializeForTesting: false, // Cambiar a false para producción
       })
 
       admobInicializado.value = true
@@ -50,7 +50,7 @@ export function usePublicidad() {
 
     try {
       await AdMob.showBanner({
-        adId: IDS_PRUEBA.banner,
+        adId: IDS_PRODUCCION.banner,
         adSize: BannerAdSize.SMART_BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 0,
@@ -109,7 +109,7 @@ export function usePublicidad() {
 
     try {
       await AdMob.prepareInterstitial({
-        adId: IDS_PRUEBA.intersticial,
+        adId: IDS_PRODUCCION.intersticial,
       })
 
       console.log('✅ Intersticial preparado')
