@@ -56,6 +56,11 @@ export default defineConfig((ctx) => {
 
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
+      env: {
+        // 'true' → Publicidad de prueba (Google Ads de ejemplo)
+        // 'false' → Publicidad real (tus IDs de producción)
+        MODO_PRUEBA_ADS: 'true',
+      },
 
       vitePlugins: [
         [

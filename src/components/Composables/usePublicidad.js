@@ -2,12 +2,34 @@ import { ref } from 'vue'
 import { AdMob, BannerAdSize, BannerAdPosition } from '@capacitor-community/admob'
 
 // ============================================================================
-// IDs DE PRODUCCIÓN
+// CONFIGURACIÓN DE MODO PRUEBA
+// ============================================================================
+const MODO_PRUEBA = process.env.MODO_PRUEBA_ADS === 'true'
+
+// ============================================================================
+// IDs DE PRUEBA (GOOGLE ADMOB)
+// ============================================================================
+const IDS_PRUEBA = {
+  banner: 'ca-app-pub-3940256099942544/6300978111',
+  intersticial: 'ca-app-pub-3940256099942544/1033173712',
+}
+
+// ============================================================================
+// IDs DE PRODUCCIÓN (TUS IDs REALES)
 // ============================================================================
 const IDS_PRODUCCION = {
   banner: 'ca-app-pub-7620083100302566/2415845154',
   intersticial: 'ca-app-pub-7620083100302566/3775645392',
 }
+
+// ============================================================================
+// SELECCIÓN AUTOMÁTICA DE IDs
+// ============================================================================
+const IDS_ADMOB = MODO_PRUEBA ? IDS_PRUEBA : IDS_PRODUCCION
+
+// Log para saber qué modo está activo
+console.log(`🎯 AdMob en modo: ${MODO_PRUEBA ? '🧪 PRUEBA' : '🚀 PRODUCCIÓN'}`)
+console.log('📊 IDs activos:', IDS_ADMOB)
 
 // ============================================================================
 // ESTADO GLOBAL
@@ -24,7 +46,7 @@ export function usePublicidad() {
       await AdMob.initialize({
         requestTrackingAuthorization: true,
         testingDevices: [],
-        initializeForTesting: false, // Cambiar a false para producción
+        initializeForTesting: MODO_PRUEBA, // Se activa automáticamente en modo prueba
       })
 
       admobInicializado.value = true
@@ -50,7 +72,7 @@ export function usePublicidad() {
 
     try {
       await AdMob.showBanner({
-        adId: IDS_PRODUCCION.banner,
+        adId: IDS_ADMOB.banner,
         adSize: BannerAdSize.SMART_BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 0,
@@ -109,7 +131,7 @@ export function usePublicidad() {
 
     try {
       await AdMob.prepareInterstitial({
-        adId: IDS_PRODUCCION.intersticial,
+        adId: IDS_ADMOB.intersticial,
       })
 
       console.log('✅ Intersticial preparado')
