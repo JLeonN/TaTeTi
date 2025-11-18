@@ -59,7 +59,7 @@ export default defineConfig((ctx) => {
       env: {
         // 'true' → Publicidad de prueba (Google Ads de ejemplo)
         // 'false' → Publicidad real (tus IDs de producción)
-        MODO_PRUEBA_ADS: 'true',
+        MODO_PRUEBA_ADS: 'false',
       },
 
       vitePlugins: [

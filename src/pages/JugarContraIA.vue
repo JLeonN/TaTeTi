@@ -225,4 +225,8 @@ watch(juegoTerminado, async (nuevoValor) => {
   flex-direction: column;
   align-items: center;
 }
+/* En JugarContraIA.vue */
+.q-page {
+  padding-bottom: 80px; /* Altura aproximada del SMART_BANNER */
+}
 </style>
