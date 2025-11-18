@@ -133,10 +133,9 @@ const seleccionarDificultad = async (dificultad) => {
   padding: 16px;
   background-color: var(--color-fondo-alterno);
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   gap: 0;
 }
-
 /* Contenedor de indicadores (ancho completo) */
 .contenedor-indicadores {
   display: flex;
@@ -148,7 +147,6 @@ const seleccionarDificultad = async (dificultad) => {
   border-bottom: none;
   border-radius: 8px 8px 0 0;
 }
-
 .indicador-item {
   display: flex;
   align-items: center;
@@ -159,66 +157,53 @@ const seleccionarDificultad = async (dificultad) => {
   background-color: rgba(0, 0, 0, 0.2);
   color: var(--color-texto-principal);
 }
-
 .indicador-texto {
   display: flex;
   align-items: baseline;
   gap: 6px;
 }
-
 .indicador-numero {
   font-size: 1.5rem;
   font-weight: bold;
   line-height: 1;
 }
-
 .indicador-label {
   font-size: 0.9rem;
   font-weight: 600;
 }
-
 .racha-positiva i {
   color: var(--color-texto-principal);
   animation: llamarada 1.5s ease-in-out infinite;
 }
-
 .racha-negativa {
   background-color: rgba(255, 71, 87, 0.3);
 }
-
 .racha-negativa i {
   color: var(--color-error);
   animation: pulsar 1s ease-in-out infinite;
 }
-
 .proteccion {
   background-color: rgba(0, 217, 163, 0.3);
 }
-
 .proteccion i {
   color: var(--color-exito);
 }
-
 /* Botones de dificultad */
 .botones-dificultad {
   display: flex;
   justify-content: center;
   gap: 0;
 }
-
 /* Cuando hay indicadores arriba, quitar border-radius superior */
 .botones-dificultad.con-indicadores-arriba .boton-izquierda {
   border-radius: 0 0 0 8px;
 }
-
 .botones-dificultad.con-indicadores-arriba .boton-derecha {
   border-radius: 0 0 8px 0;
 }
-
 .botones-dificultad.con-indicadores-arriba .boton-centro {
   border-radius: 0;
 }
-
 .boton-dificultad {
   display: flex;
   align-items: center;
@@ -235,29 +220,24 @@ const seleccionarDificultad = async (dificultad) => {
   min-height: 50px;
   flex: 1;
 }
-
 /* Bordes redondeados por defecto */
 .boton-izquierda {
   border-radius: 8px 0 0 8px;
 }
-
 .boton-derecha {
   border-radius: 0 8px 8px 0;
 }
-
 .boton-centro {
   border-left: none;
   border-right: none;
   border-radius: 0;
 }
-
 .boton-dificultad:hover {
   background-color: var(--color-fondo-alterno);
   border-color: var(--color-turno-activo);
   transform: translateY(-2px);
   z-index: 1;
 }
-
 .boton-dificultad.activo {
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
@@ -265,7 +245,6 @@ const seleccionarDificultad = async (dificultad) => {
   box-shadow: 0 4px 12px var(--sombra-boton);
   z-index: 2;
 }
-
 /* Animaciones */
 @keyframes llamarada {
   0%,
@@ -276,7 +255,6 @@ const seleccionarDificultad = async (dificultad) => {
     transform: scale(1.15);
   }
 }
-
 @keyframes pulsar {
   0%,
   100% {
@@ -286,16 +264,13 @@ const seleccionarDificultad = async (dificultad) => {
     opacity: 0.6;
   }
 }
-
 /* Transiciones */
 .slide-down-enter-active {
   animation: slideDown 0.3s ease;
 }
-
 .slide-down-leave-active {
   animation: slideUp 0.25s ease;
 }
-
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -310,7 +285,6 @@ const seleccionarDificultad = async (dificultad) => {
     padding-bottom: 12px;
   }
 }
-
 @keyframes slideUp {
   from {
     opacity: 1;
@@ -325,7 +299,6 @@ const seleccionarDificultad = async (dificultad) => {
     padding-bottom: 0;
   }
 }
-
 /* Responsive */
 @media (max-width: 600px) {
   .boton-dificultad {
@@ -333,11 +306,9 @@ const seleccionarDificultad = async (dificultad) => {
     font-size: 0.85rem;
     min-height: 45px;
   }
-
   .indicador-numero {
     font-size: 1.3rem;
   }
-
   .indicador-label {
     font-size: 0.8rem;
   }

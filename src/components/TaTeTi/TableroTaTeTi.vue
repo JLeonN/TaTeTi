@@ -97,10 +97,10 @@ const obtenerCoordenadasLinea = () => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   aspect-ratio: 1;
-  padding: 20px;
+  padding: 16px;
   background-color: var(--color-fondo);
   border-radius: 12px;
   box-shadow: 0 8px 24px var(--sombra-tablero);

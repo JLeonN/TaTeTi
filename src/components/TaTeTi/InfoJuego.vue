@@ -80,14 +80,14 @@ const nombreOponente = computed(() => {
 
 <style scoped>
 .info-juego {
-  min-height: 80px;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 12px;
   background-color: var(--color-fondo-alterno);
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 .turno-actual {
   display: flex;

@@ -217,6 +217,7 @@ watch(juegoTerminado, async (nuevoValor) => {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  padding-bottom: 175px;
 }
 .contenedor-juego {
   width: 100%;
@@ -224,9 +225,6 @@ watch(juegoTerminado, async (nuevoValor) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-/* En JugarContraIA.vue */
-.q-page {
-  padding-bottom: 80px; /* Altura aproximada del SMART_BANNER */
+  gap: 12px;
 }
 </style>
