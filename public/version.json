@@ -3,7 +3,23 @@
   "urlPlayStore": "https://play.google.com/store/apps/details?id=com.leotateti.tateti",
   "mostrarActualizacion": false,
   "cambios": {
-    "es-AR": [],
-    "en-US": []
+    "es-AR": [
+      {
+        "apartado": "Actualizaciones",
+        "novedades": [
+          "Nuevo aviso cuando hay una actualización disponible.",
+          "Las novedades ahora se muestran en español e inglés."
+        ]
+      }
+    ],
+    "en-US": [
+      {
+        "apartado": "Updates",
+        "novedades": [
+          "New alert when an update is available.",
+          "What's new is now shown in Spanish and English."
+        ]
+      }
+    ]
   }
 }
