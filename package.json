@@ -8,7 +8,9 @@
   "private": true,
   "scripts": {
     "dev": "quasar dev",
-    "build": "quasar build -m capacitor -T android",
+    "build": "quasar build -m capacitor -T android --ide && node Scripts/CompilarAndroid.js",
+    "prebuild": "npm run generar-version",
+    "generar-version": "node Scripts/GenerarVersionJson.js",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0",

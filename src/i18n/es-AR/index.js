@@ -77,4 +77,15 @@ export default {
     puntosGanados: 'Puntos ganados',
     puntosPerdidos: 'Puntos perdidos',
   },
+
+  // Actualización
+  actualizacion: {
+    titulo: 'Hay una actualización disponible',
+    versionInstalada: 'Tu versión',
+    versionDisponible: 'Nueva versión',
+    avisoPlayStore: 'Play Store puede demorar en mostrar la nueva versión.',
+    novedades: 'Novedades de esta versión',
+    actualizar: 'Actualizar',
+    abrirNovedades: 'Actualización disponible',
+  },
 }

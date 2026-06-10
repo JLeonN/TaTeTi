@@ -77,6 +77,23 @@
               <q-item-label caption>{{ t('configuracion.subtitulo') }}</q-item-label>
             </q-item-section>
           </q-item>
+
+          <q-item
+            v-if="estadoActualizacion.hayActualizacion"
+            clickable
+            class="item-menu item-actualizacion"
+            @click="mostrarModalActualizacion = true"
+          >
+            <q-item-section avatar>
+              <i class="ti ti-download icono-md icono-primario"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ t('actualizacion.abrirNovedades') }}</q-item-label>
+              <q-item-label caption>
+                {{ estadoActualizacion.versionDisponible }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
         </q-list>
       </div>
     </q-drawer>
@@ -84,11 +101,26 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+
+    <ModalActualizacion
+      :visible="mostrarModalActualizacion"
+      :version-instalada="estadoActualizacion.versionInstalada"
+      :version-disponible="estadoActualizacion.versionDisponible"
+      :cambios="estadoActualizacion.cambios"
+      @cerrar="mostrarModalActualizacion = false"
+      @actualizar="irAPlayStore"
+    />
   </q-layout>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import ModalActualizacion from 'src/components/Actualizacion/ModalActualizacion.vue'
+import {
+  abrirActualizacionEnTienda,
+  crearEstadoSinActualizacion,
+  obtenerEstadoActualizacion,
+} from 'src/components/Actualizacion/ServicioActualizacionApp'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
@@ -96,23 +128,44 @@ import { usePublicidad } from 'src/components/Composables/usePublicidad'
 import { useI18n } from 'vue-i18n'
 
 const leftDrawerOpen = ref(false)
+const mostrarModalActualizacion = ref(false)
+const estadoActualizacion = ref(crearEstadoSinActualizacion())
+let idiomaPreparado = false
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
-const { cargarIdioma } = useIdioma()
+const { idiomaActual, cargarIdioma } = useIdioma()
 const { puntajeTotal, cargarPuntuacion } = usePuntuacion()
 const { inicializarAdMob, mostrarBanner } = usePublicidad()
 const { t } = useI18n()
 
+const verificarActualizacion = async () => {
+  estadoActualizacion.value = await obtenerEstadoActualizacion(idiomaActual.value)
+  mostrarModalActualizacion.value = estadoActualizacion.value.hayActualizacion
+}
+
+const irAPlayStore = () => {
+  abrirActualizacionEnTienda(estadoActualizacion.value.urlPlayStore)
+}
+
 onMounted(async () => {
   await cargarNombre()
   await cargarIdioma()
+  idiomaPreparado = true
   await cargarPuntuacion()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
   console.log('🏆 Puntaje después de cargar:', puntajeTotal.value)
 
+  void verificarActualizacion()
+
   // Inicializar AdMob y mostrar banner
   await inicializarAdMob()
   await mostrarBanner()
+})
+
+watch(idiomaActual, () => {
+  if (idiomaPreparado) {
+    void verificarActualizacion()
+  }
 })
 
 const toggleLeftDrawer = () => {
@@ -209,6 +262,9 @@ const toggleLeftDrawer = () => {
 .item-menu .q-item__label--caption {
   color: var(--color-texto-secundario);
   font-size: 0.75rem;
+}
+.item-actualizacion {
+  border: 1px solid var(--color-turno-activo);
 }
 /* Responsive: Más padding en pantallas con notch */
 @media (max-width: 600px) {

@@ -3,6 +3,9 @@
 
 import { defineConfig } from '#q-app/wrappers'
 import { fileURLToPath } from 'node:url'
+import { readFileSync } from 'node:fs'
+
+const paquete = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'))
 
 export default defineConfig((ctx) => {
   return {
@@ -60,6 +63,9 @@ export default defineConfig((ctx) => {
         // 'true' → Publicidad de prueba (Google Ads de ejemplo)
         // 'false' → Publicidad real (tus IDs de producción)
         MODO_PRUEBA_ADS: 'false',
+        VERSION_APP: paquete.version,
+        URL_VERSION_REMOTA: 'https://jleonn.github.io/TaTeTi/version.json',
+        URL_PLAY_STORE: 'https://play.google.com/store/apps/details?id=com.leotateti.tateti',
       },
 
       vitePlugins: [
