@@ -163,7 +163,8 @@ INTERFAZ:
 SISTEMA DE PUBLICIDAD:
 - Banner publicitario siempre visible (parte inferior)
 - Intersticial cada 4 partidas (PvP y vs IA)
-- IDs de prueba configurados
+- Configuración central para alternar entre anuncios de prueba y producción
+- Header naranja para identificar visualmente las compilaciones de prueba
 - Composables singleton para gestión de ads
 - Contador persistente de partidas (Capacitor Preferences)
 - Preparación automática de intersticiales
