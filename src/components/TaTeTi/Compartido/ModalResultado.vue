@@ -106,14 +106,17 @@ const manejarReiniciar = () => {
 <style scoped>
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: var(--altura-pantalla);
   background-color: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 20px;
+  padding-bottom: calc(20px + var(--espacio-inferior-contenido));
+  overflow-y: auto;
   z-index: 9999;
   backdrop-filter: blur(4px);
 }
@@ -123,11 +126,13 @@ const manejarReiniciar = () => {
   border-radius: 16px;
   padding: 40px 32px;
   max-width: 400px;
+  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 40px);
   width: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  overflow-y: auto;
   box-shadow: 0 10px 40px var(--sombra-modal);
   animation: modal-scale 0.3s ease-out;
 }
@@ -280,6 +285,7 @@ const manejarReiniciar = () => {
 @media (max-width: 600px) {
   .modal-contenido {
     padding: 32px 24px;
+    width: 100%;
   }
   .modal-icono {
     font-size: 4rem;

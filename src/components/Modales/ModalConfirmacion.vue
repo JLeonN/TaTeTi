@@ -104,10 +104,12 @@ const manejarCancelar = () => {
 .modal-confirmacion {
   min-width: 300px;
   max-width: 400px;
+  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 48px);
   background-color: var(--color-modal-fondo);
   border: 2px solid var(--color-borde-modal);
   border-radius: 16px;
   padding: 8px;
+  overflow-y: auto;
 }
 .contenedor-icono {
   display: flex;

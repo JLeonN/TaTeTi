@@ -4,11 +4,12 @@
   "webDir": "dist/spa",
   "bundledWebRuntime": false,
   "android": {
-    "backgroundColor": "#2d1b4e"
+    "backgroundColor": "#2d1b4e",
+    "adjustMarginsForEdgeToEdge": "force"
   },
   "plugins": {
     "Keyboard": {
-      "resizeOnFullScreen": false
+      "resizeOnFullScreen": true
     }
   }
 }

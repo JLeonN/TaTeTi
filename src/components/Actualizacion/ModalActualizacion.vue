@@ -76,11 +76,12 @@ const modalVisible = computed({
 <style scoped>
 .modal-actualizacion {
   width: min(92vw, 520px);
-  max-height: 85vh;
+  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 48px);
   color: var(--color-texto-principal);
   background-color: var(--color-modal-fondo);
   border: 2px solid var(--color-borde-modal);
   box-shadow: 0 0 24px var(--sombra-modal);
+  overflow: hidden;
 }
 .encabezado-actualizacion {
   background-color: var(--color-nav-fondo);
@@ -90,7 +91,7 @@ const modalVisible = computed({
   font-weight: 700;
 }
 .contenido-actualizacion {
-  max-height: 60vh;
+  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 190px);
   overflow-y: auto;
 }
 .versiones-actualizacion {

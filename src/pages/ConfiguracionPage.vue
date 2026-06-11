@@ -26,8 +26,8 @@ const { t } = useI18n()
 <style scoped>
 .pagina-configuracion {
   background-color: var(--color-fondo);
-  min-height: 100vh;
   padding: 20px;
+  overflow-y: auto;
 }
 .contenedor-configuracion {
   max-width: 600px;

@@ -1,5 +1,10 @@
 import { ref } from 'vue'
-import { AdMob, BannerAdSize, BannerAdPosition } from '@capacitor-community/admob'
+import {
+  AdMob,
+  BannerAdPluginEvents,
+  BannerAdPosition,
+  BannerAdSize,
+} from '@capacitor-community/admob'
 import {
   esModoPruebaPublicidad,
   idsPublicidad,
@@ -13,6 +18,41 @@ console.log(`AdMob en modo: ${esModoPruebaPublicidad ? 'PRUEBA' : 'PRODUCCIÓN'}
 // ============================================================================
 const admobInicializado = ref(false)
 const bannerVisible = ref(false)
+const manejadoresEventosBanner = []
+
+const actualizarAlturaBanner = (altura = 0) => {
+  if (typeof document === 'undefined') {
+    return
+  }
+
+  const alturaValida = Number.isFinite(altura) ? Math.max(0, altura) : 0
+  document.documentElement.style.setProperty('--altura-banner-publicidad', `${alturaValida}px`)
+}
+
+const eliminarManejadoresBanner = async () => {
+  const manejadoresPendientes = manejadoresEventosBanner.splice(0)
+  await Promise.allSettled(manejadoresPendientes.map((manejador) => manejador.remove()))
+}
+
+const registrarEventosBanner = async () => {
+  if (manejadoresEventosBanner.length > 0) {
+    return
+  }
+
+  const manejadorTamano = await AdMob.addListener(
+    BannerAdPluginEvents.SizeChanged,
+    ({ height }) => {
+      actualizarAlturaBanner(height)
+    },
+  )
+  manejadoresEventosBanner.push(manejadorTamano)
+
+  const manejadorError = await AdMob.addListener(BannerAdPluginEvents.FailedToLoad, () => {
+    bannerVisible.value = false
+    actualizarAlturaBanner()
+  })
+  manejadoresEventosBanner.push(manejadorError)
+}
 
 export function usePublicidad() {
   // ==========================================================================
@@ -48,9 +88,10 @@ export function usePublicidad() {
     }
 
     try {
+      await registrarEventosBanner()
       await AdMob.showBanner({
         adId: idsPublicidad.banner,
-        adSize: BannerAdSize.SMART_BANNER,
+        adSize: BannerAdSize.ADAPTIVE_BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 0,
       })
@@ -58,6 +99,9 @@ export function usePublicidad() {
       bannerVisible.value = true
       console.log('✅ Banner mostrado correctamente')
     } catch (error) {
+      bannerVisible.value = false
+      actualizarAlturaBanner()
+      await eliminarManejadoresBanner()
       console.error('❌ Error al mostrar banner:', error)
     }
   }
@@ -74,6 +118,7 @@ export function usePublicidad() {
     try {
       await AdMob.hideBanner()
       bannerVisible.value = false
+      actualizarAlturaBanner()
       console.log('✅ Banner ocultado correctamente')
     } catch (error) {
       console.error('❌ Error al ocultar banner:', error)
@@ -84,16 +129,24 @@ export function usePublicidad() {
   // ELIMINAR BANNER
   // ==========================================================================
   const eliminarBanner = async () => {
-    if (!bannerVisible.value) {
+    if (!bannerVisible.value && manejadoresEventosBanner.length === 0) {
       return
     }
 
     try {
-      await AdMob.removeBanner()
+      if (bannerVisible.value) {
+        await AdMob.removeBanner()
+      }
       bannerVisible.value = false
+      actualizarAlturaBanner()
+      await eliminarManejadoresBanner()
       console.log('✅ Banner eliminado correctamente')
     } catch (error) {
+      bannerVisible.value = false
+      actualizarAlturaBanner()
       console.error('❌ Error al eliminar banner:', error)
+    } finally {
+      await eliminarManejadoresBanner()
     }
   }
 

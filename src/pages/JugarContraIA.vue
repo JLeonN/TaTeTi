@@ -212,12 +212,11 @@ watch(juegoTerminado, async (nuevoValor) => {
 <style scoped>
 .pagina-tateti {
   background-color: var(--color-fondo);
-  min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: 20px;
-  padding-bottom: 175px;
+  overflow-y: auto;
 }
 .contenedor-juego {
   width: 100%;
@@ -226,5 +225,6 @@ watch(juegoTerminado, async (nuevoValor) => {
   flex-direction: column;
   align-items: center;
   gap: 12px;
+  margin-block: auto;
 }
 </style>

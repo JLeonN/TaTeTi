@@ -102,7 +102,7 @@
       </div>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="contenedor-paginas">
       <router-view />
     </q-page-container>
 
@@ -182,8 +182,7 @@ const toggleLeftDrawer = () => {
 .header-personalizado {
   background-color: var(--color-nav-fondo);
   color: var(--color-texto-principal);
-  padding-top: 24px !important; /* Espacio para la barra de estado */
-  min-height: 50px !important; /* Altura mínima aumentada */
+  min-height: 50px !important;
 }
 .header-modo-prueba {
   background-color: var(--color-modo-prueba);
@@ -228,9 +227,15 @@ const toggleLeftDrawer = () => {
   background-color: var(--color-fondo-alterno) !important;
 }
 .contenedor-drawer {
+  box-sizing: border-box;
   background-color: var(--color-fondo-alterno);
-  min-height: 100vh;
+  min-height: var(--altura-pantalla);
+  padding-bottom: var(--espacio-inferior-contenido);
   width: 100%;
+}
+.contenedor-paginas {
+  padding-bottom: var(--espacio-inferior-contenido);
+  transition: padding-bottom 0.2s ease;
 }
 .drawer-header {
   padding: 30px 20px;
@@ -274,12 +279,7 @@ const toggleLeftDrawer = () => {
 .item-actualizacion {
   border: 1px solid var(--color-turno-activo);
 }
-/* Responsive: Más padding en pantallas con notch */
 @media (max-width: 600px) {
-  .header-personalizado {
-    padding-top: 32px !important; /* Más espacio en móviles */
-    min-height: 50px !important;
-  }
   .puntaje-header {
     font-size: 0.85rem;
     padding: 4px 10px;
@@ -294,12 +294,6 @@ const toggleLeftDrawer = () => {
   .nombre-usuario {
     font-size: 0.85rem;
     padding: 4px 10px;
-  }
-}
-/* Padding extra para dispositivos con notch grande */
-@supports (padding: max(0px)) {
-  .header-personalizado {
-    padding-top: max(24px, env(safe-area-inset-top, 24px)) !important;
   }
 }
 </style>
