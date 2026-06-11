@@ -21,6 +21,7 @@ La integración de publicidad puede ejecutarse directamente. La ejecución compl
 - Mantener `esModoPruebaPublicidad` en `false` como valor predeterminado del repositorio
 - Usar únicamente IDs oficiales de prueba de Google cuando el modo de prueba esté activo
 - Mostrar el header principal en color naranja cuando `esModoPruebaPublicidad` sea `true`
+- Toda publicación con notas visibles debe usar `mostrarActualizacion: true`
 - Mantener `src-capacitor/android` como única estructura Android del proyecto
 - No crear una segunda carpeta `android`, copias del proyecto nativo ni enlaces de compatibilidad frágiles
 - Mantener los archivos nuevos y modificados en UTF-8
@@ -105,6 +106,27 @@ Mostrar una señal visual inmediata para evitar confundir una instalación de pr
 - [x] Aplicar una clase condicional al header cuando `esModoPruebaPublicidad` sea `true`
 - [x] Mantener el color normal del header cuando `esModoPruebaPublicidad` sea `false`
 
+## FASE 7: Corregir la publicación del modal 4.0.5
+
+### Objetivo
+
+Activar el aviso remoto de la versión `4.0.5` y evitar que futuras publicaciones con novedades dejen el modal desactivado.
+
+- [x] Confirmar que GitHub Pages publicó correctamente `versionDisponible: 4.0.5`
+- [x] Identificar que el modal no apareció porque `mostrarActualizacion` permaneció en `false`
+- [x] Documentar que `GenerarVersionJson.js` conserva el valor anterior y no activa el aviso automáticamente
+- [x] Cambiar `public/version.json` a `mostrarActualizacion: true`
+- [x] Mantener la versión `4.0.5` y las notas bilingües sin generar otra APK
+- [x] Crear una validación que falle cuando existan novedades y `mostrarActualizacion` no sea `true`
+- [x] Ejecutar la validación antes del flujo Android de release
+- [x] Ejecutar la misma validación antes de publicar GitHub Pages
+- [ ] Publicar el contrato corregido y verificar la respuesta remota sin caché
+- [ ] Confirmar en un dispositivo con la versión `4.0.4` que el modal aparezca automáticamente
+- [ ] Cerrar el modal y confirmar que pueda abrirse nuevamente desde el menú
+- [ ] Confirmar que una instalación `4.0.5` no muestre el aviso
+
+Resultado del incidente: la compilación Android `4.0.5` era correcta. El fallo estaba únicamente en el contrato remoto, por lo que la corrección no requiere cambiar la versión ni publicar otra aplicación.
+
 ## FASE TESTING
 
 ### Objetivo
@@ -136,6 +158,7 @@ Validar que la configuración seleccione correctamente la publicidad y que ambos
 - [x] Fase 4: Documentar el contrato de publicidad
 - [x] Fase 5: Normalizar los artefactos Android
 - [x] Fase 6: Identificar visualmente el modo de prueba
+- [ ] Fase 7: Corregir la publicación del modal 4.0.5
 - [ ] Fase Testing
 
 Fecha de creación: 10 de Junio 2026
