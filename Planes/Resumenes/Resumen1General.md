@@ -156,6 +156,7 @@ INTERFAZ:
 - Header con nombre de usuario
 - Drawer lateral con navegación
 - Diseño responsive (mobile-first)
+- Zonas seguras automáticas para barras, gestos, notch y pantallas bajas en Android
 - Tema oscuro personalizado
 - Iconografía Tabler Icons
 - Notificaciones con gradientes personalizados

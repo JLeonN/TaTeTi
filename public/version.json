@@ -1,5 +1,5 @@
 {
-  "versionDisponible": "4.0.6",
+  "versionDisponible": "4.0.7",
   "urlPlayStore": "https://play.google.com/store/apps/details?id=com.leotateti.tateti",
   "mostrarActualizacion": true,
   "cambios": {
@@ -7,7 +7,8 @@
       {
         "apartado": "Actualizaciones",
         "novedades": [
-          "Corregimos el aviso de actualización para que el modal muestre correctamente las novedades disponibles."
+          "Mejoramos la adaptación de la app a distintos tamaños de pantalla y barras de Android.",
+          "Evitamos que botones, ventanas y contenido queden tapados."
         ]
       }
     ],
@@ -15,7 +16,8 @@
       {
         "apartado": "Updates",
         "novedades": [
-          "We fixed the update notice so the modal correctly shows the available changes."
+          "We improved how the app adapts to different screen sizes and Android system bars.",
+          "We prevented buttons, windows, and content from being covered."
         ]
       }
     ]
