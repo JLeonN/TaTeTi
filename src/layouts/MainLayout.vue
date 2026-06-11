@@ -1,6 +1,10 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="header-personalizado">
+    <q-header
+      elevated
+      class="header-personalizado"
+      :class="{ 'header-modo-prueba': esModoPruebaPublicidad }"
+    >
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
@@ -125,6 +129,7 @@ import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
 import { usePublicidad } from 'src/components/Composables/usePublicidad'
+import { esModoPruebaPublicidad } from 'src/components/Configuracion/ConfiguracionPublicidad'
 import { useI18n } from 'vue-i18n'
 
 const leftDrawerOpen = ref(false)
@@ -179,6 +184,9 @@ const toggleLeftDrawer = () => {
   color: var(--color-texto-principal);
   padding-top: 24px !important; /* Espacio para la barra de estado */
   min-height: 50px !important; /* Altura mínima aumentada */
+}
+.header-modo-prueba {
+  background-color: var(--color-modo-prueba);
 }
 /* Ajuste para el toolbar dentro del header */
 .header-personalizado .q-toolbar {

@@ -27,6 +27,7 @@
   /* Mensajes */
   --color-exito: #00d9a3; /* Verde neón */
   --color-error: #ff4757; /* Rojo vibrante */
+  --color-modo-prueba: #ff8c00; /* Naranja para identificar compilaciones de prueba */
 
   /* Fondos alternativos */
   --color-fondo-alterno: #4a3470; /* Púrpura claro */

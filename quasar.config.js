@@ -60,9 +60,6 @@ export default defineConfig((ctx) => {
       // extendViteConf (viteConf) {},
       // viteVuePluginOptions: {},
       env: {
-        // 'true' → Publicidad de prueba (Google Ads de ejemplo)
-        // 'false' → Publicidad real (tus IDs de producción)
-        MODO_PRUEBA_ADS: 'false',
         VERSION_APP: paquete.version,
         URL_VERSION_REMOTA: 'https://jleonn.github.io/TaTeTi/version.json',
         URL_PLAY_STORE: 'https://play.google.com/store/apps/details?id=com.leotateti.tateti',
