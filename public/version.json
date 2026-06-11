@@ -1,23 +1,21 @@
 {
-  "versionDisponible": "4.0.5",
+  "versionDisponible": "4.0.6",
   "urlPlayStore": "https://play.google.com/store/apps/details?id=com.leotateti.tateti",
   "mostrarActualizacion": true,
   "cambios": {
     "es-AR": [
       {
-        "apartado": "Publicidad",
+        "apartado": "Actualizaciones",
         "novedades": [
-          "Mejoramos el control de la publicidad de prueba y producción.",
-          "Las versiones de prueba ahora muestran el encabezado naranja para identificarlas fácilmente."
+          "Corregimos el aviso de actualización para que el modal muestre correctamente las novedades disponibles."
         ]
       }
     ],
     "en-US": [
       {
-        "apartado": "Advertising",
+        "apartado": "Updates",
         "novedades": [
-          "We improved how test and production advertising is controlled.",
-          "Test versions now show an orange header so they are easy to identify."
+          "We fixed the update notice so the modal correctly shows the available changes."
         ]
       }
     ]
