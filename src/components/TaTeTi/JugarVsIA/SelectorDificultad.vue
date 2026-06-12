@@ -6,20 +6,30 @@
         <div v-if="racha > 0" class="indicador-item racha-positiva">
           <i class="ti ti-flame icono-sm"></i>
           <div class="indicador-texto">
-            <span class="indicador-numero">{{ racha }}</span>
-            <span class="indicador-label">{{
-              racha === 1 ? t('puntuacion.victoria') : t('puntuacion.victorias')
-            }}</span>
+            <div class="indicador-renglon">
+              <span class="indicador-numero">{{ racha }}</span>
+              <span class="indicador-label">{{
+                racha === 1 ? t('puntuacion.victoria') : t('puntuacion.victorias')
+              }}</span>
+            </div>
+            <span class="puntos-proximo-resultado">
+              {{ t('puntuacion.mantenerRacha', { puntos: puntosProximaVictoria }) }}
+            </span>
           </div>
         </div>
 
         <div v-if="derrotas > 0" class="indicador-item racha-negativa">
           <i class="ti ti-alert-triangle icono-sm"></i>
           <div class="indicador-texto">
-            <span class="indicador-numero">{{ derrotas }}</span>
-            <span class="indicador-label">{{
-              derrotas === 1 ? t('puntuacion.derrota') : t('puntuacion.derrotas')
-            }}</span>
+            <div class="indicador-renglon">
+              <span class="indicador-numero">{{ derrotas }}</span>
+              <span class="indicador-label">{{
+                derrotas === 1 ? t('puntuacion.derrota') : t('puntuacion.derrotas')
+              }}</span>
+            </div>
+            <span class="puntos-proximo-resultado">
+              {{ t('puntuacion.proximaDerrota', { puntos: puntosProximaDerrota }) }}
+            </span>
           </div>
         </div>
 
@@ -83,6 +93,14 @@ const props = defineProps({
   proteccionActiva: {
     type: Boolean,
     default: false,
+  },
+  puntosProximaVictoria: {
+    type: Number,
+    default: 0,
+  },
+  puntosProximaDerrota: {
+    type: Number,
+    default: 0,
   },
 })
 
@@ -160,6 +178,12 @@ const seleccionarDificultad = async (dificultad) => {
 }
 .indicador-texto {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+}
+.indicador-renglon {
+  display: flex;
   align-items: baseline;
   gap: 6px;
 }
@@ -171,6 +195,13 @@ const seleccionarDificultad = async (dificultad) => {
 .indicador-label {
   font-size: 0.9rem;
   font-weight: 600;
+}
+.puntos-proximo-resultado {
+  margin-top: 3px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0.9;
 }
 .racha-positiva i {
   color: var(--color-texto-principal);

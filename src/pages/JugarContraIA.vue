@@ -5,6 +5,8 @@
         :racha="rachaActual"
         :derrotas="derrotasActuales"
         :proteccion-activa="proteccionActiva"
+        :puntos-proxima-victoria="puntosProximaVictoria"
+        :puntos-proxima-derrota="puntosProximaDerrota"
         @cambio-dificultad="cambiarDificultad"
       />
 
@@ -115,6 +117,8 @@ const {
   procesarResultado,
   obtenerRacha,
   obtenerDerrotasConsecutivas,
+  calcularPuntosProximaVictoria,
+  calcularPuntosProximaDerrota,
 } = usePuntuacion()
 
 const { prepararIntersticial, mostrarIntersticial } = usePublicidad()
@@ -130,6 +134,12 @@ const proteccionActiva = ref(false)
 // Computeds para racha y derrotas actuales
 const rachaActual = computed(() => obtenerRacha(dificultadActual.value))
 const derrotasActuales = computed(() => obtenerDerrotasConsecutivas(dificultadActual.value))
+const puntosProximaVictoria = computed(() =>
+  calcularPuntosProximaVictoria(dificultadActual.value),
+)
+const puntosProximaDerrota = computed(() =>
+  calcularPuntosProximaDerrota(dificultadActual.value),
+)
 const nombreJugadorX = computed(() =>
   fichaUsuario.value === 'X' ? nombreUsuario.value : nombreIA.value,
 )
@@ -307,7 +317,7 @@ watch(juegoTerminado, async (nuevoValor) => {
   margin-block: auto;
 }
 .contenedor-juego:has(> .selector-dificultad.con-indicadores) {
-  --alto-elementos-juego: 190px;
+  --alto-elementos-juego: 204px;
 }
 .selector-fichas {
   display: grid;

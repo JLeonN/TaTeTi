@@ -81,6 +81,8 @@ export default {
     racha: 'Racha',
     puntosGanados: 'Puntos ganados',
     puntosPerdidos: 'Puntos perdidos',
+    mantenerRacha: 'Si mantenés la racha: +{puntos} pts',
+    proximaDerrota: 'Si volvés a perder: {puntos} pts',
   },
 
   // Actualización

@@ -213,6 +213,23 @@ export function usePuntuacion() {
     return estado.value.derrotasConsecutivas
   }
 
+  const calcularPuntosProximaVictoria = (dificultad) => {
+    const config = configuracionPuntos[dificultad] || configuracionPuntos.normal
+    const estado = obtenerEstado(dificultad)
+    const proximaRacha = estado.value.racha + 1
+    return config.ganar + calcularBonusRacha(proximaRacha, config)
+  }
+
+  const calcularPuntosProximaDerrota = (dificultad) => {
+    const config = configuracionPuntos[dificultad] || configuracionPuntos.normal
+    const estado = obtenerEstado(dificultad)
+    const activaProteccion = estado.value.derrotasConsecutivas + 1 >= 5
+
+    if (estado.value.proteccionActiva || activaProteccion || puntajeTotal.value <= 10) return 0
+
+    return -Math.min(config.perder, puntajeTotal.value - 10)
+  }
+
   return {
     puntajeTotal,
     cargarPuntuacion,
@@ -220,5 +237,7 @@ export function usePuntuacion() {
     procesarResultado,
     obtenerRacha,
     obtenerDerrotasConsecutivas,
+    calcularPuntosProximaVictoria,
+    calcularPuntosProximaDerrota,
   }
 }

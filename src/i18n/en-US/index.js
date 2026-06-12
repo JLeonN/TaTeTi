@@ -81,6 +81,8 @@ export default {
     racha: 'Streak',
     puntosGanados: 'Points earned',
     puntosPerdidos: 'Points lost',
+    mantenerRacha: 'Keep the streak: +{puntos} pts',
+    proximaDerrota: 'If you lose again: {puntos} pts',
   },
 
   // Update
