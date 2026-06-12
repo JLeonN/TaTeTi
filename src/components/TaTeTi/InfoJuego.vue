@@ -91,19 +91,30 @@ const nombreOponente = computed(() => {
   border-radius: 12px;
 }
 .turno-actual {
+  min-width: 0;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 1.25rem;
 }
 .etiqueta {
+  flex: 0 0 auto;
+  white-space: nowrap;
   color: var(--color-texto-secundario);
 }
 .jugador {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  flex: 0 1 auto;
   font-weight: bold;
   font-size: 1.6rem;
   padding: 4px 10px;
   border-radius: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   background-color: var(--color-tablero);
   animation: pulsarTurno 1.5s ease-in-out infinite;
 }
