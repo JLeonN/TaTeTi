@@ -60,6 +60,11 @@ export default {
     jugador1: 'Jugador 1',
     jugador2: 'Jugador 2',
     nexus: 'NEXUS',
+    cambiarFicha: 'Cambiar ficha',
+    seleccionarFicha: 'Elegir ficha',
+    seleccionarFichaDescripcion: 'Elige la ficha con la que jugarás contra NEXUS.',
+    fichaX: 'Jugar con X',
+    fichaO: 'Jugar con O',
   },
 
   // Puntuación

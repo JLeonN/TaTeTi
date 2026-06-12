@@ -1,11 +1,11 @@
 import { ref, computed } from 'vue'
 
-export function useTaTeTi(modoJuego = 'pvp') {
+export function useTaTeTi(modoJuego = 'pvp', fichaInicial = 'X') {
   // Estado del tablero (array de 9 posiciones)
   const tablero = ref(Array(9).fill(null))
 
   // Turno actual ('X' o 'O')
-  const turnoActual = ref('X')
+  const turnoActual = ref(fichaInicial)
 
   // Estado del juego
   const juegoTerminado = ref(false)
@@ -95,9 +95,9 @@ export function useTaTeTi(modoJuego = 'pvp') {
   }
 
   // Reiniciar juego
-  const reiniciarJuego = () => {
+  const reiniciarJuego = (fichaPrimerTurno = 'X') => {
     tablero.value = Array(9).fill(null)
-    turnoActual.value = 'X'
+    turnoActual.value = fichaPrimerTurno
     juegoTerminado.value = false
     ganador.value = null
     combinacionGanadora.value = null

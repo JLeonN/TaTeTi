@@ -2,9 +2,19 @@
   <div class="info-juego">
     <div v-if="!juegoTerminado" class="turno-actual">
       <span class="etiqueta">{{ t('juego.turno') }}:</span>
-      <span class="jugador" :class="`jugador-${turnoActual.toLowerCase()}`">
+      <button
+        type="button"
+        class="jugador"
+        :class="[
+          `jugador-${turnoActual.toLowerCase()}`,
+          { 'jugador-clickeable': puedeSeleccionarFicha },
+        ]"
+        :disabled="!puedeSeleccionarFicha"
+        :aria-label="puedeSeleccionarFicha ? t('juego.cambiarFicha') : undefined"
+        @click="emit('seleccionar-ficha')"
+      >
         {{ nombreJugadorActual }}
-      </span>
+      </button>
     </div>
 
     <div v-else-if="ganador" class="resultado ganador-anuncio">
@@ -54,7 +64,13 @@ const props = defineProps({
     type: String,
     default: 'Jugador 2',
   },
+  puedeSeleccionarFicha: {
+    type: Boolean,
+    default: false,
+  },
 })
+
+const emit = defineEmits(['seleccionar-ficha'])
 
 // Nombre del jugador en turno actual
 const nombreJugadorActual = computed(() => {
@@ -105,18 +121,31 @@ const nombreOponente = computed(() => {
   color: var(--color-texto-secundario);
 }
 .jugador {
+  appearance: none;
   min-width: 0;
   max-width: 100%;
   overflow: hidden;
   flex: 0 1 auto;
   font-weight: bold;
+  font-family: inherit;
   font-size: 1.6rem;
   padding: 4px 10px;
   border-radius: 8px;
   text-overflow: ellipsis;
   white-space: nowrap;
   background-color: var(--color-tablero);
+  border: 0;
+  cursor: default;
   animation: pulsarTurno 1.5s ease-in-out infinite;
+}
+.jugador-clickeable {
+  cursor: pointer;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+.jugador-clickeable:hover,
+.jugador-clickeable:focus-visible {
+  outline-color: var(--color-turno-activo);
 }
 .jugador-x {
   color: var(--color-ficha-x);

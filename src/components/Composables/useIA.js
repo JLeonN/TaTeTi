@@ -17,7 +17,7 @@ export function useIA() {
   // ============================================================================
   // NIVEL NORMAL - Bloquea al jugador e intenta ganar
   // ============================================================================
-  const jugarNormal = (tablero) => {
+  const jugarNormal = (tablero, fichaIA, fichaUsuario) => {
     const combinacionesGanadoras = [
       [0, 1, 2],
       [3, 4, 5],
@@ -34,8 +34,8 @@ export function useIA() {
       const [a, b, c] = combinacion
       const valores = [tablero[a], tablero[b], tablero[c]]
 
-      // Si tiene 2 'O' y 1 vacía, jugar ahí para ganar
-      if (valores.filter((v) => v === 'O').length === 2 && valores.includes(null)) {
+      // Completar una línea cuando la IA tiene dos fichas
+      if (valores.filter((valor) => valor === fichaIA).length === 2 && valores.includes(null)) {
         if (tablero[a] === null) return a
         if (tablero[b] === null) return b
         if (tablero[c] === null) return c
@@ -47,8 +47,11 @@ export function useIA() {
       const [a, b, c] = combinacion
       const valores = [tablero[a], tablero[b], tablero[c]]
 
-      // Si el jugador tiene 2 'X' y 1 vacía, bloquear
-      if (valores.filter((v) => v === 'X').length === 2 && valores.includes(null)) {
+      // Bloquear una línea cuando el usuario tiene dos fichas
+      if (
+        valores.filter((valor) => valor === fichaUsuario).length === 2 &&
+        valores.includes(null)
+      ) {
         if (tablero[a] === null) return a
         if (tablero[b] === null) return b
         if (tablero[c] === null) return c
@@ -62,21 +65,21 @@ export function useIA() {
   // ============================================================================
   // NIVEL DIFÍCIL - Algoritmo Minimax (imposible de vencer)
   // ============================================================================
-  const jugarDificil = (tablero) => {
-    const mejorJugada = minimax(tablero, 'O')
+  const jugarDificil = (tablero, fichaIA, fichaUsuario) => {
+    const mejorJugada = minimax(tablero, fichaIA, fichaIA, fichaUsuario)
     return mejorJugada.indice
   }
 
   // Algoritmo Minimax
-  const minimax = (tableroActual, jugador) => {
+  const minimax = (tableroActual, fichaTurno, fichaIA, fichaUsuario) => {
     const celdasVacias = tableroActual
       .map((celda, indice) => (celda === null ? indice : null))
       .filter((indice) => indice !== null)
 
     // Verificar estado terminal (ganador o empate)
     const ganador = verificarGanadorMinimax(tableroActual)
-    if (ganador === 'X') return { puntaje: -10 }
-    if (ganador === 'O') return { puntaje: 10 }
+    if (ganador === fichaUsuario) return { puntaje: -10 }
+    if (ganador === fichaIA) return { puntaje: 10 }
     if (celdasVacias.length === 0) return { puntaje: 0 }
 
     const jugadas = []
@@ -86,16 +89,12 @@ export function useIA() {
       jugada.indice = indice
 
       // Simular jugada
-      tableroActual[indice] = jugador
+      tableroActual[indice] = fichaTurno
 
       // Recursión
-      if (jugador === 'O') {
-        const resultado = minimax(tableroActual, 'X')
-        jugada.puntaje = resultado.puntaje
-      } else {
-        const resultado = minimax(tableroActual, 'O')
-        jugada.puntaje = resultado.puntaje
-      }
+      const siguienteFicha = fichaTurno === fichaIA ? fichaUsuario : fichaIA
+      const resultado = minimax(tableroActual, siguienteFicha, fichaIA, fichaUsuario)
+      jugada.puntaje = resultado.puntaje
 
       // Deshacer jugada
       tableroActual[indice] = null
@@ -104,7 +103,7 @@ export function useIA() {
 
     // Elegir mejor jugada
     let mejorJugada
-    if (jugador === 'O') {
+    if (fichaTurno === fichaIA) {
       let mejorPuntaje = -Infinity
       for (const jugada of jugadas) {
         if (jugada.puntaje > mejorPuntaje) {
@@ -150,16 +149,16 @@ export function useIA() {
   // ============================================================================
   // FUNCIÓN PRINCIPAL - Ejecutar jugada según dificultad
   // ============================================================================
-  const ejecutarJugadaIA = (tablero, dificultad) => {
+  const ejecutarJugadaIA = (tablero, dificultad, fichaIA = 'O', fichaUsuario = 'X') => {
     switch (dificultad) {
       case 'facil':
         return jugarFacil(tablero)
       case 'normal':
-        return jugarNormal(tablero)
+        return jugarNormal(tablero, fichaIA, fichaUsuario)
       case 'dificil':
-        return jugarDificil(tablero)
+        return jugarDificil(tablero, fichaIA, fichaUsuario)
       default:
-        return jugarNormal(tablero)
+        return jugarNormal(tablero, fichaIA, fichaUsuario)
     }
   }
 

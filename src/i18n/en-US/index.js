@@ -60,6 +60,11 @@ export default {
     jugador1: 'Player 1',
     jugador2: 'Player 2',
     nexus: 'NEXUS',
+    cambiarFicha: 'Change symbol',
+    seleccionarFicha: 'Choose symbol',
+    seleccionarFichaDescripcion: 'Choose the symbol you will use against NEXUS.',
+    fichaX: 'Play with X',
+    fichaO: 'Play with O',
   },
 
   // Score
