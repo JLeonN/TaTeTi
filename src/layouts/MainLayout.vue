@@ -12,11 +12,18 @@
       >
         <q-btn class="boton-menu-header" dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <div v-show="nivelCompactacionHeader < 1" class="logo-header">
+        <button
+          v-show="nivelCompactacionHeader < 1"
+          type="button"
+          class="logo-header"
+          :aria-label="t('menu.jugarIA')"
+          :title="t('menu.jugarIA')"
+          @click="irAJugarContraIA"
+        >
           <q-avatar size="40px">
             <img src="/favicon.png" />
           </q-avatar>
-        </div>
+        </button>
         <div class="espaciador-header"></div>
 
         <!-- Mostrar puntaje -->
@@ -269,6 +276,10 @@ const irAConfiguracionUsuario = () => {
   })
 }
 
+const irAJugarContraIA = () => {
+  void router.push('/')
+}
+
 const verificarActualizacion = async () => {
   estadoActualizacion.value = await obtenerEstadoActualizacion(idiomaActual.value)
   mostrarModalActualizacion.value = estadoActualizacion.value.hayActualizacion
@@ -347,8 +358,22 @@ const toggleLeftDrawer = () => {
   flex: 0 0 auto;
 }
 .logo-header {
+  appearance: none;
   display: flex;
   align-items: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.logo-header:focus-visible {
+  outline: 2px solid var(--color-turno-activo);
+  outline-offset: 2px;
+}
+.logo-header:active {
+  transform: scale(0.94);
 }
 .espaciador-header {
   min-width: 0;
