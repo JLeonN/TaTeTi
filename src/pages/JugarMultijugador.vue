@@ -114,7 +114,7 @@ watch(juegoTerminado, async (nuevoValor) => {
   background-color: var(--color-fondo);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   padding: 8px 12px;
   overflow-y: auto;
 }

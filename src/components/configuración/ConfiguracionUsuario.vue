@@ -1,5 +1,5 @@
 <template>
-  <div class="seccion-config">
+  <div ref="seccionUsuario" class="seccion-config" :class="{ resaltada: resaltandoSeccion }">
     <div class="encabezado-seccion">
       <i class="ti ti-user icono-md icono-primario"></i>
       <span class="titulo-seccion">{{ t('configuracion.usuario') }}</span>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onBeforeUnmount, onMounted, watch } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import { useQuasar } from 'quasar'
@@ -56,6 +56,9 @@ const { nombreUsuario, cargarNombre, guardarNombre } = useConfiguracion()
 
 const mostrarModal = ref(false)
 const nuevoNombre = ref('')
+const seccionUsuario = ref(null)
+const resaltandoSeccion = ref(false)
+let temporizadorResaltado = null
 
 onMounted(async () => {
   await cargarNombre()
@@ -65,6 +68,23 @@ const abrirModalCambiarNombre = () => {
   nuevoNombre.value = nombreUsuario.value
   mostrarModal.value = true
 }
+
+const enfocarSeccion = () => {
+  window.clearTimeout(temporizadorResaltado)
+  resaltandoSeccion.value = false
+  seccionUsuario.value?.scrollIntoView({
+    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    block: 'center',
+  })
+  window.requestAnimationFrame(() => {
+    resaltandoSeccion.value = true
+    temporizadorResaltado = window.setTimeout(() => {
+      resaltandoSeccion.value = false
+    }, 2600)
+  })
+}
+
+defineExpose({ enfocarSeccion })
 
 const guardarNuevoNombre = async () => {
   if (!nuevoNombre.value || nuevoNombre.value.trim() === '') {
@@ -104,15 +124,37 @@ watch(mostrarModal, (nuevoValor) => {
     nuevoNombre.value = nombreUsuario.value
   }
 })
+
+onBeforeUnmount(() => {
+  window.clearTimeout(temporizadorResaltado)
+})
 </script>
 
 <style scoped>
 .seccion-config {
+  position: relative;
+  overflow: hidden;
   background-color: var(--color-fondo-alterno);
   border: 2px solid var(--color-borde-tablero);
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 20px;
+}
+.seccion-config.resaltada {
+  animation: resaltarSeccionUsuario 0.85s ease-in-out 3;
+}
+@keyframes resaltarSeccionUsuario {
+  0%,
+  100% {
+    border-color: var(--color-borde-tablero);
+    box-shadow: none;
+  }
+  50% {
+    border-color: var(--color-turno-activo);
+    box-shadow:
+      0 0 8px var(--color-turno-activo),
+      0 0 20px var(--color-boton);
+  }
 }
 .encabezado-seccion {
   display: flex;
@@ -144,6 +186,23 @@ watch(mostrarModal, (nuevoValor) => {
 @media (max-width: 600px) {
   .seccion-config {
     padding: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .seccion-config.resaltada {
+    animation: resaltarSeccionUsuarioReducido 2.5s ease;
+  }
+  @keyframes resaltarSeccionUsuarioReducido {
+    0%,
+    100% {
+      border-color: var(--color-borde-tablero);
+      box-shadow: none;
+    }
+    10%,
+    90% {
+      border-color: var(--color-turno-activo);
+      box-shadow: 0 0 12px var(--color-boton);
+    }
   }
 }
 </style>

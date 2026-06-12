@@ -7,7 +7,7 @@
       </h1>
 
       <!-- Componente de configuración de usuario -->
-      <ConfiguracionUsuario />
+      <ConfiguracionUsuario ref="configuracionUsuario" />
 
       <!-- Componente de configuración de idioma -->
       <ConfiguracionIdioma />
@@ -16,11 +16,24 @@
 </template>
 
 <script setup>
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ConfiguracionUsuario from '../components/configuración/ConfiguracionUsuario.vue'
 import ConfiguracionIdioma from '../components/configuración/ConfiguracionIdioma.vue'
 
 const { t } = useI18n()
+const route = useRoute()
+const configuracionUsuario = ref(null)
+
+const enfocarConfiguracionUsuario = async () => {
+  if (route.query.enfocar !== 'usuario') return
+  await nextTick()
+  configuracionUsuario.value?.enfocarSeccion()
+}
+
+onMounted(enfocarConfiguracionUsuario)
+watch(() => route.query.solicitud, enfocarConfiguracionUsuario)
 </script>
 
 <style scoped>

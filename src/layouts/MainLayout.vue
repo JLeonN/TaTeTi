@@ -5,27 +5,43 @@
       class="header-personalizado"
       :class="{ 'header-modo-prueba': esModoPruebaPublicidad }"
     >
-      <q-toolbar>
-        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
+      <q-toolbar ref="toolbarHeader" class="toolbar-header">
+        <q-btn class="boton-menu-header" dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title>
-          <q-avatar>
+        <div v-show="nivelCompactacionHeader < 1" class="logo-header">
+          <q-avatar size="40px">
             <img src="/favicon.png" />
           </q-avatar>
-        </q-toolbar-title>
+        </div>
+        <div class="espaciador-header"></div>
 
         <!-- Mostrar puntaje -->
-        <div class="puntaje-header">
-          <i class="ti ti-trophy icono-sm icono-primario"></i>
+        <div ref="puntajeHeader" class="puntaje-header">
+          <i
+            v-show="nivelCompactacionHeader < 2"
+            class="ti ti-trophy icono-sm icono-primario"
+          ></i>
           <span class="puntaje-numero">{{ puntajeTotal }}</span>
-          <span class="puntaje-texto">{{ t('puntuacion.puntos') }}</span>
+          <span v-show="nivelCompactacionHeader < 4" class="puntaje-texto">
+            {{ t('puntuacion.puntos') }}
+          </span>
         </div>
 
         <!-- Mostrar nombre del usuario -->
-        <div class="nombre-usuario">
-          <i class="ti ti-user icono-sm icono-primario"></i>
-          <span>{{ nombreUsuario }}</span>
-        </div>
+        <button
+          ref="nombreHeader"
+          type="button"
+          class="nombre-usuario"
+          :title="nombreUsuario"
+          :aria-label="`${t('configuracion.cambiarNombre')}: ${nombreUsuario}`"
+          @click="irAConfiguracionUsuario"
+        >
+          <i
+            v-show="nivelCompactacionHeader < 3"
+            class="ti ti-user icono-sm icono-primario"
+          ></i>
+          <span class="nombre-usuario-texto">{{ nombreUsuario }}</span>
+        </button>
       </q-toolbar>
     </q-header>
 
@@ -118,7 +134,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import ModalActualizacion from 'src/components/Actualizacion/ModalActualizacion.vue'
 import {
   abrirActualizacionEnTienda,
@@ -135,13 +152,88 @@ import { useI18n } from 'vue-i18n'
 const leftDrawerOpen = ref(false)
 const mostrarModalActualizacion = ref(false)
 const estadoActualizacion = ref(crearEstadoSinActualizacion())
+const toolbarHeader = ref(null)
+const puntajeHeader = ref(null)
+const nombreHeader = ref(null)
+const nivelCompactacionHeader = ref(0)
 let idiomaPreparado = false
+let observadorHeader = null
+let identificadorMedicionHeader = 0
+let fotogramaAjusteHeader = 0
 
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const { idiomaActual, cargarIdioma } = useIdioma()
 const { puntajeTotal, cargarPuntuacion } = usePuntuacion()
 const { inicializarAdMob, mostrarBanner } = usePublicidad()
 const { t } = useI18n()
+const router = useRouter()
+
+const obtenerElementoDom = (referencia) => referencia.value?.$el ?? referencia.value
+
+const calcularAnchoRequeridoHeader = () => {
+  const toolbar = obtenerElementoDom(toolbarHeader)
+  const puntaje = obtenerElementoDom(puntajeHeader)
+  const nombre = obtenerElementoDom(nombreHeader)
+  const botonMenu = toolbar?.querySelector('.boton-menu-header')
+  const logo = toolbar?.querySelector('.logo-header')
+  const estilosToolbar = toolbar ? window.getComputedStyle(toolbar) : null
+  const separacion = estilosToolbar ? Number.parseFloat(estilosToolbar.columnGap) || 0 : 0
+  const cantidadElementosVisibles = toolbar
+    ? Array.from(toolbar.children).filter(
+        (elemento) => window.getComputedStyle(elemento).display !== 'none',
+      ).length
+    : 0
+  const relleno =
+    estilosToolbar === null
+      ? 0
+      : (Number.parseFloat(estilosToolbar.paddingLeft) || 0) +
+        (Number.parseFloat(estilosToolbar.paddingRight) || 0)
+
+  return (
+    relleno +
+    (botonMenu?.offsetWidth ?? 0) +
+    (logo?.offsetWidth ?? 0) +
+    (puntaje?.scrollWidth ?? 0) +
+    (nombre?.scrollWidth ?? 0) +
+    separacion * Math.max(0, cantidadElementosVisibles - 1)
+  )
+}
+
+const ajustarHeader = async () => {
+  const identificadorActual = ++identificadorMedicionHeader
+  nivelCompactacionHeader.value = 0
+  await nextTick()
+
+  const toolbar = obtenerElementoDom(toolbarHeader)
+  if (!toolbar) return
+
+  for (let nivel = 0; nivel <= 4; nivel += 1) {
+    if (identificadorActual !== identificadorMedicionHeader) return
+    nivelCompactacionHeader.value = nivel
+    await nextTick()
+
+    if (calcularAnchoRequeridoHeader() <= toolbar.clientWidth) return
+  }
+
+  nivelCompactacionHeader.value = 5
+}
+
+const programarAjusteHeader = () => {
+  window.cancelAnimationFrame(fotogramaAjusteHeader)
+  fotogramaAjusteHeader = window.requestAnimationFrame(() => {
+    void ajustarHeader()
+  })
+}
+
+const irAConfiguracionUsuario = () => {
+  void router.push({
+    path: '/configuracion',
+    query: {
+      enfocar: 'usuario',
+      solicitud: Date.now().toString(),
+    },
+  })
+}
 
 const verificarActualizacion = async () => {
   estadoActualizacion.value = await obtenerEstadoActualizacion(idiomaActual.value)
@@ -153,6 +245,11 @@ const irAPlayStore = () => {
 }
 
 onMounted(async () => {
+  observadorHeader = new ResizeObserver(programarAjusteHeader)
+  const toolbar = obtenerElementoDom(toolbarHeader)
+  if (toolbar) observadorHeader.observe(toolbar)
+  programarAjusteHeader()
+
   await cargarNombre()
   await cargarIdioma()
   idiomaPreparado = true
@@ -173,6 +270,15 @@ watch(idiomaActual, () => {
   }
 })
 
+watch([nombreUsuario, puntajeTotal], programarAjusteHeader, { flush: 'post' })
+
+onBeforeUnmount(() => {
+  observadorHeader?.disconnect()
+  observadorHeader = null
+  identificadorMedicionHeader += 1
+  window.cancelAnimationFrame(fotogramaAjusteHeader)
+})
+
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
@@ -182,14 +288,32 @@ const toggleLeftDrawer = () => {
 .header-personalizado {
   background-color: var(--color-nav-fondo);
   color: var(--color-texto-principal);
-  min-height: 50px !important;
+  height: var(--altura-header);
 }
 .header-modo-prueba {
   background-color: var(--color-modo-prueba);
 }
-/* Ajuste para el toolbar dentro del header */
-.header-personalizado .q-toolbar {
-  min-height: 40px;
+.toolbar-header {
+  box-sizing: border-box;
+  min-height: var(--altura-header);
+  height: var(--altura-header);
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow: hidden;
+}
+.boton-menu-header,
+.logo-header,
+.puntaje-header {
+  flex: 0 0 auto;
+}
+.logo-header {
+  display: flex;
+  align-items: center;
+}
+.espaciador-header {
+  min-width: 0;
+  flex: 1 1 auto;
 }
 .puntaje-header {
   display: flex;
@@ -202,7 +326,7 @@ const toggleLeftDrawer = () => {
   border-radius: 20px;
   border: 2px solid var(--color-turno-activo);
   box-shadow: 0 4px 12px rgba(255, 190, 11, 0.3);
-  margin-right: 8px;
+  white-space: nowrap;
 }
 .puntaje-numero {
   font-weight: bold;
@@ -213,15 +337,38 @@ const toggleLeftDrawer = () => {
   opacity: 0.9;
 }
 .nombre-usuario {
+  appearance: none;
+  min-width: 0;
+  max-width: 100%;
   display: flex;
   align-items: center;
+  flex: 0 1 auto;
   gap: 6px;
   font-size: 0.95rem;
+  font-family: inherit;
   color: var(--color-texto-secundario);
   padding: 6px 12px;
   background-color: var(--color-fondo-alterno);
   border-radius: 20px;
   border: 1px solid var(--color-borde-tablero);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.nombre-usuario:hover,
+.nombre-usuario:focus-visible {
+  border-color: var(--color-turno-activo);
+}
+.nombre-usuario:active {
+  transform: scale(0.97);
+}
+.nombre-usuario-texto {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .drawer-personalizado {
   background-color: var(--color-fondo-alterno) !important;
@@ -286,7 +433,6 @@ const toggleLeftDrawer = () => {
   .puntaje-header {
     font-size: 0.85rem;
     padding: 4px 10px;
-    margin-right: 6px;
   }
   .puntaje-numero {
     font-size: 1rem;
