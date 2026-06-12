@@ -11,7 +11,7 @@
         </div>
         <p class="aviso-play-store">{{ t('actualizacion.avisoPlayStore') }}</p>
         <!-- Las notas llegan desde version.json agrupadas por idioma, apartado y novedades. -->
-        <!-- Mantener textos cortos; Leo aprueba las líneas antes de publicar. -->
+        <!-- Mantener textos cortos y derivados de cambios comprobables del repositorio. -->
         <section v-if="cambios.length > 0" class="novedades-actualizacion">
           <h2>{{ t('actualizacion.novedades') }}</h2>
           <div v-for="(grupo, indiceGrupo) in cambios" :key="indiceGrupo">
@@ -75,8 +75,20 @@ const modalVisible = computed({
 
 <style scoped>
 .modal-actualizacion {
-  width: min(92vw, 520px);
-  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 48px);
+  display: flex;
+  flex-direction: column;
+  width: min(88vw, 460px);
+  max-height: calc(
+    var(--altura-pantalla) - var(--espacio-inferior-contenido) -
+      env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 64px
+  );
+  max-height: min(
+    72dvh,
+    calc(
+      var(--altura-pantalla) - var(--espacio-inferior-contenido) -
+        env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 64px
+    )
+  );
   color: var(--color-texto-principal);
   background-color: var(--color-modal-fondo);
   border: 2px solid var(--color-borde-modal);
@@ -84,34 +96,43 @@ const modalVisible = computed({
   overflow: hidden;
 }
 .encabezado-actualizacion {
+  flex: 0 0 auto;
+  padding: 18px 20px;
   background-color: var(--color-nav-fondo);
 }
 .titulo-actualizacion {
-  font-size: 1.25rem;
+  font-size: clamp(1.1rem, 4.5vw, 1.35rem);
   font-weight: 700;
 }
 .contenido-actualizacion {
-  max-height: calc(var(--altura-pantalla) - var(--espacio-inferior-contenido) - 190px);
+  min-height: 0;
+  padding: 16px 20px;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.contenido-actualizacion::-webkit-scrollbar {
+  display: none;
 }
 .versiones-actualizacion {
   display: grid;
-  gap: 6px;
+  gap: 4px;
   color: var(--color-texto-secundario);
 }
 .aviso-play-store {
-  padding: 10px;
-  margin: 16px 0;
+  padding: 9px 10px;
+  margin: 12px 0;
   background-color: var(--color-fondo-alterno);
   border-left: 4px solid var(--color-turno-activo);
   border-radius: 6px;
 }
 .novedades-actualizacion h2 {
-  margin: 0 0 12px;
+  margin: 0 0 8px;
   font-size: 1.1rem;
 }
 .novedades-actualizacion h3 {
-  margin: 12px 0 4px;
+  margin: 10px 0 4px;
   color: var(--color-texto-secundario);
   font-size: 1rem;
 }
@@ -120,9 +141,11 @@ const modalVisible = computed({
   padding-left: 22px;
 }
 .novedades-actualizacion li {
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 .acciones-actualizacion {
+  flex: 0 0 auto;
+  padding: 10px 12px;
   background-color: var(--color-nav-fondo);
 }
 .boton-cancelar {
@@ -131,5 +154,45 @@ const modalVisible = computed({
 .boton-actualizar {
   color: var(--color-texto-principal);
   background-color: var(--color-boton);
+}
+@media (max-height: 700px) {
+  .modal-actualizacion {
+    max-height: calc(
+      var(--altura-pantalla) - var(--espacio-inferior-contenido) -
+        env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 48px
+    );
+    max-height: min(
+      68dvh,
+      calc(
+        var(--altura-pantalla) - var(--espacio-inferior-contenido) -
+          env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 48px
+      )
+    );
+  }
+  .encabezado-actualizacion {
+    padding: 12px 16px;
+  }
+  .contenido-actualizacion {
+    padding: 12px 16px;
+    font-size: 0.92rem;
+  }
+  .aviso-play-store {
+    margin: 9px 0;
+  }
+  .acciones-actualizacion {
+    padding: 6px 8px;
+  }
+}
+@media (max-width: 380px) {
+  .modal-actualizacion {
+    width: 90vw;
+  }
+  .acciones-actualizacion {
+    justify-content: space-between;
+  }
+  .acciones-actualizacion .q-btn {
+    padding: 4px 8px;
+    font-size: 0.78rem;
+  }
 }
 </style>
