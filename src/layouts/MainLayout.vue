@@ -237,6 +237,9 @@ const toggleLeftDrawer = () => {
   padding-bottom: var(--espacio-inferior-contenido);
   transition: padding-bottom 0.2s ease;
 }
+.contenedor-paginas :deep(.q-page) {
+  min-height: var(--altura-pagina) !important;
+}
 .drawer-header {
   padding: 30px 20px;
   text-align: center;

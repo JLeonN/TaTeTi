@@ -17,8 +17,6 @@
         :ganador="ganador"
         @jugada="manejarJugada"
       />
-
-      <ControlesJuego />
     </div>
 
     <!-- Modal de resultado -->
@@ -41,7 +39,6 @@ import { useContadorPartidas } from 'src/components/Composables/useContadorParti
 import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
-import ControlesJuego from 'src/components/TaTeTi/ControlesJuego.vue'
 import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
 
 const { t } = useI18n()
@@ -113,11 +110,12 @@ watch(juegoTerminado, async (nuevoValor) => {
 
 <style scoped>
 .pagina-tateti {
+  --alto-elementos-juego: 76px;
   background-color: var(--color-fondo);
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding: 20px;
+  padding: 8px 12px;
   overflow-y: auto;
 }
 .contenedor-juego {
@@ -126,6 +124,7 @@ watch(juegoTerminado, async (nuevoValor) => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 6px;
   margin-block: auto;
 }
 </style>

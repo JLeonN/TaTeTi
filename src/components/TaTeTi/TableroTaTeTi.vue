@@ -91,7 +91,8 @@ const obtenerCoordenadasLinea = () => {
 .contenedor-tablero {
   position: relative;
   max-width: 400px;
-  width: 100%;
+  width: min(100%, clamp(180px, calc(var(--altura-pagina) - var(--alto-elementos-juego)), 400px));
+  flex: 0 1 auto;
 }
 .tablero-tateti {
   display: grid;
@@ -145,9 +146,8 @@ const obtenerCoordenadasLinea = () => {
 }
 @media (max-width: 600px) {
   .tablero-tateti {
-    max-width: 90vw;
-    padding: 15px;
-    gap: 6px;
+    padding: 10px;
+    gap: 5px;
   }
 }
 </style>

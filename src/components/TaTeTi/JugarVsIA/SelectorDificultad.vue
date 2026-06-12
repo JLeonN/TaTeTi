@@ -1,5 +1,5 @@
 <template>
-  <div class="selector-dificultad">
+  <div class="selector-dificultad" :class="{ 'con-indicadores': mostrarIndicadores }">
     <!-- Indicadores de racha (ancho completo, arriba de todos los botones) -->
     <transition name="slide-down">
       <div v-if="mostrarIndicadores" class="contenedor-indicadores">
@@ -130,18 +130,19 @@ const seleccionarDificultad = async (dificultad) => {
 .selector-dificultad {
   display: flex;
   flex-direction: column;
-  padding: 16px;
+  width: 100%;
+  padding: 8px;
   background-color: var(--color-fondo-alterno);
   border-radius: 12px;
-  margin-bottom: 10px;
   gap: 0;
 }
 /* Contenedor de indicadores (ancho completo) */
 .contenedor-indicadores {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
   background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
   border: 2px solid var(--color-turno-activo);
   border-bottom: none;
@@ -151,8 +152,8 @@ const seleccionarDificultad = async (dificultad) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 6px 12px;
+  gap: 6px;
+  padding: 4px 8px;
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.2);
   color: var(--color-texto-principal);
@@ -209,7 +210,7 @@ const seleccionarDificultad = async (dificultad) => {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 10px 16px;
+  padding: 6px 12px;
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--color-texto-secundario);
@@ -217,7 +218,7 @@ const seleccionarDificultad = async (dificultad) => {
   border: 2px solid var(--color-borde-tablero);
   cursor: pointer;
   transition: all 0.3s ease;
-  min-height: 50px;
+  min-height: 42px;
   flex: 1;
 }
 /* Bordes redondeados por defecto */
@@ -302,9 +303,9 @@ const seleccionarDificultad = async (dificultad) => {
 /* Responsive */
 @media (max-width: 600px) {
   .boton-dificultad {
-    padding: 8px 12px;
+    padding: 6px 8px;
     font-size: 0.85rem;
-    min-height: 45px;
+    min-height: 42px;
   }
   .indicador-numero {
     font-size: 1.3rem;

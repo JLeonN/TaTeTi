@@ -3,8 +3,12 @@
    ============================================================================ */
 :root {
   --altura-pantalla: 100vh;
+  --altura-header: 50px;
   --altura-banner-publicidad: 0px;
   --espacio-inferior-contenido: var(--altura-banner-publicidad);
+  --altura-pagina: calc(
+    var(--altura-pantalla) - var(--altura-header) - var(--espacio-inferior-contenido)
+  );
 }
 @supports (height: 100dvh) {
   :root {

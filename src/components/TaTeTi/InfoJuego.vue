@@ -80,28 +80,29 @@ const nombreOponente = computed(() => {
 
 <style scoped>
 .info-juego {
-  min-height: 60px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px;
+  padding: 6px 10px;
   background-color: var(--color-fondo-alterno);
   border-radius: 12px;
-  margin-bottom: 10px;
 }
 .turno-actual {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 1.5rem;
+  gap: 8px;
+  font-size: 1.25rem;
 }
 .etiqueta {
   color: var(--color-texto-secundario);
 }
 .jugador {
   font-weight: bold;
-  font-size: 2rem;
-  padding: 8px 16px;
+  font-size: 1.6rem;
+  padding: 4px 10px;
   border-radius: 8px;
   background-color: var(--color-tablero);
   animation: pulsarTurno 1.5s ease-in-out infinite;
@@ -154,7 +155,7 @@ const nombreOponente = computed(() => {
     font-size: 1.2rem;
   }
   .jugador {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
   .resultado {
     font-size: 1.4rem;

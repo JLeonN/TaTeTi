@@ -7,23 +7,6 @@
 
 # Reglas del Proyecto
 
-## Script Móvil (Android)
-
-Script estándar para compilar y abrir en Android Studio:
-
-```json
-"cel": "npm run androidReleaseConSimbolos && npx cap open android"
-```
-
-Pasos que ejecuta:
-
-1. `npm run androidReleaseConSimbolos` - compila la web, sincroniza Android, genera el AAB release, empaqueta los símbolos nativos y valida el zip
-2. `npx cap open android` - abre Android Studio
-
-Uso: `npm run cel`
-
----
-
 ## Codificación y Acentos
 
 - Guardar siempre archivos de texto en **UTF-8** para evitar caracteres corruptos.
@@ -106,7 +89,3 @@ Antes de crear cualquier archivo, verifica que cumpla con PascalCase.
   transition: background-color 0.2s ease;
 }
 ```
-
-Planear con Leo → GPT-5.4
-Ejecutar fases → GPT-5.3-Codex
-Dudas rápidas → GPT-5.4-Mini
