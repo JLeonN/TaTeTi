@@ -2,7 +2,7 @@
 
 ## Descripción del plan
 
-Integrar en TaTeTi un sistema completo de actualización para Android. GitHub Pages publicará el archivo remoto `version.json`; la aplicación consultará ese archivo, comparará la versión publicada con la instalada y mostrará un modal bilingüe con las novedades aprobadas por Leo.
+Integrar en TaTeTi un sistema completo de actualización para Android. GitHub Pages publicará el archivo remoto `version.json`; la aplicación consultará ese archivo, comparará la versión publicada con la instalada y mostrará un modal bilingüe con las novedades generadas desde el historial real.
 
 El proyecto usa Quasar 2, Vue 3, Capacitor 7, Vue I18n y la rama `master`. El identificador Android es `com.leotateti.tateti` y el proyecto nativo se encuentra en `src-capacitor/android`.
 
@@ -21,8 +21,8 @@ El proyecto usa Quasar 2, Vue 3, Capacitor 7, Vue I18n y la rama `master`. El id
 - Guardar todos los archivos de texto en UTF-8 y corregir cualquier carácter dañado.
 - Usar las variables de `src/css/Variables.css`; no agregar colores directos en los componentes.
 - Mantener el CSS compacto, sin líneas vacías entre reglas.
-- No inventar notas de parche. Deben salir del historial real de Git o de decisiones confirmadas por Leo.
-- Mostrar a Leo un borrador editable antes de aplicar notas definitivas.
+- No inventar notas de parche. Deben salir del historial real de Git y de los cambios comprobables del repositorio.
+- La skill `$notas-modal` debe generar y aplicar directamente las notas en el archivo correspondiente, sin solicitar aprobación previa.
 - Mantener textos de interfaz en `es-AR` y `en-US`.
 - Mantener compatibilidad razonable con el formato anterior de `cambios` como array de strings o grupos.
 - No incluir secretos, tokens ni información privada en GitHub Pages.
@@ -162,7 +162,7 @@ Comentario de integración:
 
 ```vue
 <!-- Las notas llegan desde version.json agrupadas por idioma, apartado y novedades. -->
-<!-- Mantener textos cortos; Leo aprueba las líneas antes de publicar. -->
+<!-- Mantener textos cortos y derivados de cambios comprobables del repositorio. -->
 ```
 
 ## FASE 7: Integrar la verificación en MainLayout
@@ -187,21 +187,19 @@ Consultar la versión remota al iniciar la interfaz y conectar el resultado con 
 
 ### Objetivo
 
-Preparar notas reales desde Git y publicarlas solo después de la aprobación de Leo.
+Preparar notas reales desde Git y aplicarlas automáticamente al contrato de actualización.
 
-- [ ] Crear un tag base antes del primer uso regular de `$notas-modal`, porque actualmente el repositorio no tiene tags.
-- [ ] Usar como tag base la versión real confirmada al comenzar esta fase.
-- [ ] Ejecutar `$notas-modal` cuando Leo pida preparar las novedades.
-- [ ] Mostrar primero el borrador editable con base, rango y novedades sugeridas.
-- [ ] Esperar la selección o reescritura de Leo antes de editar `version.json`.
-- [ ] Mantener un máximo recomendado de ocho novedades concretas.
-- [ ] Agrupar las novedades aprobadas por apartados visibles de TaTeTi.
-- [ ] Preparar primero la versión `es-AR`.
-- [ ] Preparar la traducción `en-US` manteniendo exactamente el mismo significado.
-- [ ] Mostrar ambas versiones a Leo antes de aplicarlas.
-- [ ] Actualizar `cambios.es-AR` y `cambios.en-US` solamente con aprobación.
+- [x] Crear tags de versión para disponer de una base real de comparación.
+- [x] Usar como base el último tag alcanzable desde `HEAD`.
+- [x] Ejecutar `$notas-modal` cuando Leo pida preparar las novedades.
+- [x] Configurar la skill para editar directamente `public/version.json` sin solicitar aprobación previa.
+- [x] Mantener un máximo recomendado de ocho novedades concretas.
+- [x] Agrupar las novedades por apartados visibles de TaTeTi.
+- [x] Preparar las notas en `es-AR` y su equivalente en `en-US`.
+- [x] Actualizar `cambios.es-AR` y `cambios.en-US` en la misma ejecución.
+- [x] Permitir que Leo solicite correcciones después de aplicar las notas.
 - [ ] Activar `mostrarActualizacion` únicamente cuando la versión ya esté publicada o lista para publicación.
-- [ ] No borrar notas antiguas sin confirmación explícita.
+- [ ] Definir en cada release si las notas anteriores se reemplazan o se conservan según el contrato vigente.
 
 ## FASE 9: Alinear el versionado del proyecto
 
@@ -259,10 +257,10 @@ Validar el flujo completo en local, GitHub Pages y Android sin duplicar pruebas.
 - [x] Fase 5: Crear el servicio de actualización
 - [x] Fase 6: Crear el modal bilingüe
 - [x] Fase 7: Integrar la verificación en MainLayout
-- [ ] Fase 8: Integrar notas-modal y el flujo editorial
+- [x] Fase 8: Integrar notas-modal y el flujo editorial
 - [ ] Fase 9: Alinear el versionado del proyecto
 - [ ] Fase Testing
 
 Fecha de creación: 7 de Junio 2026
-Fecha de última actualización: 10 de Junio 2026
+Fecha de última actualización: 12 de junio de 2026
 Estado: EN PROCESO

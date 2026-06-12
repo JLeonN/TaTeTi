@@ -1,357 +1,107 @@
-================================================================================
-PROYECTO: TA-TE-TI (TRES EN RAYA)
-================================================================================
+# Resumen general de TaTeTi
 
-DESCRIPCIÓN GENERAL
---------------------------------------------------------------------------------
-Aplicación móvil de juego Ta-Te-Ti (tres en raya) desarrollada con Vue.js 3
-y Quasar Framework. Incluye dos modos de juego: Jugador vs IA y Multijugador
-(PvP). Sistema de configuración de usuario con almacenamiento persistente.
-Sistema completo de internacionalización (i18n) con español e inglés.
+> Vigencia: 12 de junio de 2026. Versión documentada: `4.0.7`.
+> Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
-TECNOLOGÍAS PRINCIPALES
---------------------------------------------------------------------------------
-- Vue.js 3 (Composition API)
-- Quasar Framework v2
-- Capacitor (para Android)
-- Capacitor Preferences (almacenamiento nativo)
-- Vue I18n (internacionalización)
-- Vue Router
-- JavaScript (ES6+)
-- CSS Variables (theming)
-- Tabler Icons (iconografía)
-- @capacitor-community/admob (publicidad)
+## Propósito
 
-ESTRUCTURA DE CARPETAS
---------------------------------------------------------------------------------
-proyecto/
-├── src/
-│   ├── components/
-│   │   ├── Composables/
-│   │   │   ├── useTaTeTi.js              # Lógica del juego
-│   │   │   ├── useConfiguracion.js       # Lógica de configuración
-│   │   │   ├── useIdioma.js              # Lógica de idiomas
-│   │   │   ├── useIA.js                  # Lógica de la IA
-│   │   │   ├── usePuntuacion.js          # Lógica de puntuación
-│   │   │   ├── usePublicidad.js          # Lógica de publicidad AdMob
-│   │   │   └── useContadorPartidas.js    # Contador para intersticiales
-│   │   ├── Modales/
-│   │   │   └── ModalConfirmacion.vue     # Modal reutilizable
-│   │   ├── Configuracion/
-│   │   │   ├── ConfiguracionUsuario.vue  # Config de nombre
-│   │   │   └── ConfiguracionIdioma.vue   # Config de idioma
-│   │   └── TaTeTi/
-│   │       ├── Compartido/
-│   │       │   ├── CeldaTaTeTi.vue           # Celda individual
-│   │       │   ├── TableroTaTeTi.vue         # Grid 3x3 + línea ganadora
-│   │       │   ├── InfoJuego.vue             # Info turno/ganador/empate
-│   │       │   ├── ControlesJuego.vue        # Botones de control
-│   │       │   ├── ModalResultado.vue        # Modal fin de juego
-│   │       │   └── IndicadorRacha.vue        # Indicador de racha en pantalla
-│   │       └── JugarVsIA/
-│   │           └── SelectorDificultad.vue    # Selector de dificultad IA
-│   ├── pages/
-│   │   ├── JugarContraIA.vue             # Página juego vs IA
-│   │   ├── JugarMultijugador.vue         # Página juego PvP
-│   │   ├── ConfiguracionPage.vue         # Página de configuración
-│   │   └── ErrorNotFound.vue             # Página 404
-│   ├── layouts/
-│   │   └── MainLayout.vue                # Layout con header y drawer
-│   ├── router/
-│   │   ├── index.js                      # Configuración router
-│   │   └── routes.js                     # Definición de rutas
-│   ├── i18n/
-│   │   ├── es-AR/
-│   │   │   └── index.js                  # Traducciones español
-│   │   ├── en-US/
-│   │   │   └── index.js                  # Traducciones inglés
-│   │   └── index.js                      # Exportación idiomas
-│   ├── css/
-│   │   ├── app.css                       # Estilos globales
-│   │   └── variables.css                 # Variables CSS del tema
-│   ├── boot/
-│   │   ├── axios.js                      # Configuración Axios
-│   │   └── i18n.js                       # Configuración i18n
-│   └── App.vue                           # Componente raíz
-├── src-capacitor/                        # Archivos Capacitor (Android)
-├── quasar.config.js                      # Configuración Quasar
-├── package.json                          # Dependencias
-├── capacitor.config.json                 # Configuración Capacitor
-└── eslint.config.js                      # Configuración ESLint
+TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, configuración persistente, puntuación, publicidad AdMob, interfaz bilingüe y un sistema remoto de notas de actualización.
 
-ARQUITECTURA Y PATRONES
---------------------------------------------------------------------------------
+## Rutas
 
-PATRÓN COMPOSABLE:
-- Lógica de negocio separada en composables reutilizables
-- useTaTeTi.js: Lógica del tablero, turnos, detección de ganador
-- useIA.js: Algoritmos de IA (Fácil, Normal, Difícil)
-- useConfiguracion.js: Gestión de nombre de usuario
-- useIdioma.js: Gestión de idioma de la aplicación
-- Componentes presentacionales (reciben props, emiten eventos)
+- `/`: partida contra IA.
+- `/jugador-vs-jugador`: multijugador local.
+- `/configuracion`: nombre e idioma.
+- Cualquier ruta desconocida: página 404.
 
-PATRÓN SINGLETON:
-- useConfiguracion y useIdioma usan refs globales
-- Actualización reactiva automática entre componentes
-- Sincronización del nombre e idioma en toda la app
+## Arquitectura
 
-PATRÓN MODULAR:
-- ConfiguracionPage es contenedor escalable
-- Cada configuración en su propio componente
-- Fácil agregar nuevas funcionalidades
+- `src/layouts/MainLayout.vue`: coordina header, drawer, publicidad, puntuación y actualización remota.
+- `src/pages/JugarContraIA.vue`: orquesta juego, IA, ficha elegida, puntuación y resultado.
+- `src/pages/JugarMultijugador.vue`: orquesta el modo local para dos jugadores.
+- `src/pages/ConfiguracionPage.vue`: contiene las secciones de configuración.
+- `src/components/Composables/`: estado y lógica compartida.
+- `src/components/TaTeTi/`: tablero, celdas, información de turno, dificultad y modales de resultado.
+- `src/components/Actualizacion/`: consulta de versión y modal de novedades.
+- `src/components/Configuracion/ConfiguracionPublicidad.js`: fuente central de IDs y modo de prueba de AdMob.
+- `src/css/Variables.css`: única fuente permitida para colores.
+- `src/css/app.css`: variables y protecciones globales de pantalla.
+- `src-capacitor/android/`: proyecto Android real.
 
-FLUJO DE DATOS:
-- Estado unidireccional y predecible
-- Props hacia abajo, eventos hacia arriba
-- Composables manejan la lógica de negocio
+## Composables principales
 
-MODOS DE JUEGO
---------------------------------------------------------------------------------
+- `useTaTeTi.js`: tablero, turno, ganador, empate y reinicio con ficha inicial parametrizable.
+- `useIA.js`: jugadas fácil, normal y difícil; recibe explícitamente las fichas de IA y usuario.
+- `UseFichaJugador.js`: selección persistente de `X` u `O` para el modo IA.
+- `useConfiguracion.js`: nombre global del usuario.
+- `useIdioma.js`: idioma global y persistente.
+- `usePuntuacion.js`: puntos, rachas y protección por derrotas.
+- `usePublicidad.js`: banner adaptativo, intersticial y reserva dinámica de espacio.
+- `useContadorPartidas.js`: contador persistente para intersticiales.
 
-JUGADOR VS IA:
-- Tres niveles de dificultad (Fácil, Normal, Difícil)
-- Selector de dificultad con persistencia
-- IA responde con delays según dificultad
-- Algoritmo Minimax en nivel difícil
-- Más detalles en Resumen3JugadorVsIA.txt
+## Contratos funcionales
 
-MULTIJUGADOR (PvP):
-- Dos jugadores en el mismo dispositivo
-- Turnos alternados (Jugador 1 vs Jugador 2)
-- Sistema clásico de Ta-Te-Ti
-- Más detalles en Resumen2Multijugador.txt
+- En modo IA el usuario puede elegir `X` u `O`, pero siempre realiza la primera jugada.
+- La IA usa siempre la ficha contraria.
+- La selección de ficha solo se habilita con el tablero vacío y se bloquea tras la primera jugada.
+- En multijugador siempre comienza `X`.
+- Los colores pertenecen a las fichas: `X` roja y `O` azul, sin depender de quién las use.
+- Los nombres largos nunca deben superponer elementos; se recortan con puntos suspensivos como último recurso.
+- El contenido no debe quedar debajo de barras Android, notch, teclado ni banner.
 
-FUNCIONALIDADES IMPLEMENTADAS
---------------------------------------------------------------------------------
+## Persistencia con Capacitor Preferences
 
-JUEGO TA-TE-TI:
-- Tablero 3x3 interactivo
-- Sistema de turnos (X y O)
-- Detección de 8 combinaciones ganadoras
-- Detección de empate
-- Línea ganadora animada con efecto neón
-- Reinicio de partida
-- Animaciones en fichas y celdas
-- Interfaz completamente traducida
+- `nombre_usuario`: nombre del jugador.
+- `idioma_usuario`: `es-AR` o `en-US`.
+- `dificultad_ia`: `facil`, `normal` o `dificil`.
+- `ficha_usuario_ia`: `X` u `O`.
+- `puntuacion_sistema`: puntos y rachas.
+- `contador_partidas_publicidad`: progreso hacia el siguiente intersticial.
 
-CONFIGURACIÓN:
-- Cambio de nombre de usuario
-- Cambio de idioma (Español/Inglés)
-- Almacenamiento persistente (Capacitor Preferences)
-- Validación de datos
-- Notificaciones personalizadas de éxito/error
-- Actualización reactiva en toda la app
-- Más detalles en ResumenConfiguracion.txt
+## Interfaz global
 
-SISTEMA DE IDIOMAS (i18n):
-- Soporte para español (es-AR) e inglés (en-US)
-- Detección automática del idioma del sistema
-- Cambio de idioma en tiempo real
-- Persistencia de preferencia de idioma
-- Toda la app traducida (UI, mensajes, notificaciones)
-- Estructura preparada para agregar más idiomas fácilmente
-- Traducciones organizadas por secciones
+- `MainLayout.vue` centra verticalmente el toolbar y adapta el header mediante `ResizeObserver`.
+- Si falta ancho se ocultan, en orden: logo, copa, icono de usuario y texto `PTS`; después se recorta el nombre.
+- El logo visible navega siempre al juego contra IA.
+- El chip del usuario navega a Configuración y enfoca visualmente la sección Usuario.
+- Las páginas de juego se centran en tablets; no se estira artificialmente el tablero.
+- El tablero se adapta a la altura disponible para evitar scroll innecesario.
+- Los modales, notificaciones y controles respetan las zonas seguras.
 
-INTERFAZ:
-- Header con nombre de usuario
-- Drawer lateral con navegación
-- Diseño responsive (mobile-first)
-- Zonas seguras automáticas para barras, gestos, notch y pantallas bajas en Android
-- Tema oscuro personalizado
-- Iconografía Tabler Icons
-- Notificaciones con gradientes personalizados
+## Android y publicidad
 
-SISTEMA DE PUBLICIDAD:
-- Banner publicitario siempre visible (parte inferior)
-- Intersticial cada 4 partidas (PvP y vs IA)
-- Configuración central para alternar entre anuncios de prueba y producción
-- Header naranja para identificar visualmente las compilaciones de prueba
-- Composables singleton para gestión de ads
-- Contador persistente de partidas (Capacitor Preferences)
-- Preparación automática de intersticiales
+- `src-capacitor/capacitor.config.json` usa `adjustMarginsForEdgeToEdge: "force"`.
+- `index.html` mantiene `viewport-fit=cover`.
+- `app.css` define `--altura-pantalla`, `--altura-header`, `--altura-banner-publicidad`, `--espacio-inferior-contenido` y `--altura-pagina`.
+- Se usa `100dvh` con fallback compatible.
+- AdMob usa `ADAPTIVE_BANNER`.
+- `usePublicidad.js` escucha el tamaño real del banner, actualiza la variable global y libera el espacio si se oculta o falla.
 
-SISTEMA DE PUNTUACIÓN (SOLO VS IA)
---------------------------------------------------------------------------------
-- Puntaje inicial: 0 pts
-- Puntos según dificultad:
-  * Fácil: +3 ganar | -1 perder | +1 empate
-  * Normal: +5 ganar | -2 perder | +1 empate
-  * Difícil: +10 ganar | -5 perder | +1 empate
-- Bonus por racha:
-  * 3 victorias: +1/+2/+3 (Fácil/Normal/Difícil)
-  * 10 victorias: +2/+3/+5 (Fácil/Normal/Difícil)
-- Protección: 5 derrotas seguidas → deja de restar hasta ganar 1
-- Rachas independientes por dificultad
-- Persistencia con Capacitor Preferences
-- Visualización: Header (puntaje total), pantalla (racha), modal (resultado)
+## Actualizaciones remotas
 
-SISTEMA DE PUNTUACIÓN (SOLO VS IA)
---------------------------------------------------------------------------------
-- Puntaje inicial: 0 pts (configurable por el usuario)
-- Mínimo: 0 pts (no permite negativos)
-- Puntos según dificultad:
-  * Fácil: +3 ganar | -1 perder | +1 empate
-  * Normal: +5 ganar | -2 perder | +1 empate
-  * Difícil: +10 ganar | -5 perder | +1 empate
-- Bonus por racha:
-  * 3 victorias seguidas: +1/+2/+3 adicional (Fácil/Normal/Difícil)
-  * 10 victorias seguidas: +2/+3/+5 adicional (Fácil/Normal/Difícil)
-- Protección inteligente: 5 derrotas seguidas → deja de restar hasta ganar 1
-- Rachas independientes por dificultad (no se mezclan ni se pierden)
-- Persistencia total con Capacitor Preferences
-- Visualización:
-  * Header: Puntaje total con trofeo 🏆 (reemplaza nombre de app)
-  * Pantalla: Indicador de racha en esquina superior derecha
-  * Modal: Puntos ganados/perdidos y puntaje total actualizado
-- Traducciones completas (español/inglés)
+- `public/version.json` contiene versión disponible, URL de Play Store, flag de visualización y novedades bilingües.
+- `Scripts/GenerarVersionJson.js` sincroniza la versión sin borrar notas existentes.
+- `ServicioActualizacionApp.js` compara versiones, normaliza notas y tolera errores de red.
+- `ModalActualizacion.vue` muestra las novedades.
+- `MainLayout.vue` abre el modal y permite reabrirlo desde el drawer.
+- La skill `$notas-modal` genera y aplica directamente las notas; no solicita aprobación previa.
 
-SISTEMA DE MODALES REUTILIZABLES
---------------------------------------------------------------------------------
+## Versionado y compilación
 
-COMPONENTE: ModalConfirmacion.vue
-UBICACIÓN: src/components/Modales/
+- La versión debe mantenerse alineada entre `package.json`, archivos de `src-capacitor`, Android y `public/version.json`.
+- Scripts importantes:
+  - `npm run lint`
+  - `npm run build`
+  - `npm run generar-version`
+  - `npm run androidApkPrueba`
+  - `npm run androidReleaseConSimbolos`
+  - `npm run abrir-android`
+- No ejecutar commit, tag ni push salvo pedido explícito o skill que lo incluya.
 
-CARACTERÍSTICAS:
-- Modal genérico con dos botones (Aceptar/Cancelar)
-- Completamente personalizable vía props
-- Slot para contenido personalizado
-- Cierre inteligente (click afuera, Enter, botones)
-- Estilizado con paleta de colores del proyecto
-- Eventos: aceptar, cancelar, update:modelValue
-- Soporta traducciones dinámicas
+## Reglas para cambios futuros
 
-TABLER ICONS
---------------------------------------------------------------------------------
-
-CONFIGURACIÓN:
-- Instalado vía: @tabler/icons-webfont
-- Importado en App.vue
-- No requiere configuración en quasar.config.js
-
-USO EN COMPONENTES:
-<i class="ti ti-nombre-icono"></i>
-
-ICONOS DEL PROYECTO:
-- ti-settings: Configuración
-- ti-user: Usuario
-- ti-user-edit: Editar usuario
-- ti-edit: Editar
-- ti-device-gamepad-2: Juego multijugador
-- ti-robot: Juego vs IA
-- ti-language: Idioma
-- ti-world: Cambiar idioma
-- ti-flag: Banderas de idiomas
-- ti-check: Éxito
-- ti-mood-smile: Dificultad fácil
-- ti-brain: Dificultad normal
-- ti-flame: Dificultad difícil
-
-ALMACENAMIENTO NATIVO
---------------------------------------------------------------------------------
-
-TECNOLOGÍA: Capacitor Preferences
-INSTALACIÓN: @capacitor/preferences
-
-CARACTERÍSTICAS:
-- Almacenamiento clave-valor nativo
-- Persiste entre sesiones
-- Compatible con Android/iOS
-- Asíncrono (Promises)
-
-CLAVES USADAS:
-- nombre_usuario: Nombre del jugador
-- idioma_usuario: Código de idioma (es-AR o en-US)
-- dificultad_ia: Dificultad seleccionada (facil/normal/dificil)
-- puntuacion_sistema: Sistema completo de puntuación (JSON)
-- contador_partidas_publicidad: Contador para mostrar intersticiales
-
-SISTEMA DE INTERNACIONALIZACIÓN (i18n)
---------------------------------------------------------------------------------
-
-TECNOLOGÍA: Vue I18n v11
-CONFIGURACIÓN: src/boot/i18n.js
-
-CARACTERÍSTICAS:
-- Detección automática del idioma del sistema
-- Fallback a inglés si no hay traducción
-- Composition API (useI18n)
-- Cambio de idioma en tiempo real sin recargar
-
-IDIOMAS SOPORTADOS:
-- es-AR: Español (Latinoamérica)
-- en-US: Inglés (Estados Unidos)
-
-USO EN COMPONENTES:
-import { useI18n } from 'vue-i18n'
-const { t } = useI18n()
-<p>{{ t('general.nombreApp') }}</p>
-
-AGREGAR NUEVOS IDIOMAS:
-1. Crear carpeta src/i18n/[codigo-idioma]/
-2. Crear index.js con traducciones
-3. Exportar en src/i18n/index.js
-4. Agregar opción en ConfiguracionIdioma.vue
-
-NOTIFICACIONES PERSONALIZADAS
---------------------------------------------------------------------------------
-
-TECNOLOGÍA: Quasar Notify
-CONFIGURACIÓN: quasar.config.js (plugins: ['Notify'])
-
-ESTILOS PERSONALIZADOS (app.css):
-- Gradientes según tipo (éxito, error, advertencia, info)
-- Bordes redondeados de 12px
-- Sombras de neón
-- Animación de entrada desde arriba
-- Fuente bold
-
-COLORES:
-- Éxito (positive): Verde #00d9a3
-- Error (negative): Rojo #ff4757
-- Advertencia (warning): Amarillo #ffbe0b
-- Info: Azul #1e90ff
-
-TEMA VISUAL - VARIABLES CSS
---------------------------------------------------------------------------------
-
-PALETA DE COLORES:
-- Púrpuras profundos para fondos (#2d1b4e, #3d2b5f)
-- Rojo vibrante para ficha X (#ff4757)
-- Azul eléctrico para ficha O (#1e90ff)
-- Amarillo dorado para estados activos (#ffbe0b)
-- Verde neón para ganador (#00d9a3)
-- Efectos neón con sombras para líneas ganadoras
-
-DEPENDENCIAS PRINCIPALES
---------------------------------------------------------------------------------
-- vue: ^3.5.22
-- quasar: ^2.16.0
-- vue-router: ^4.0.0
-- vue-i18n: ^11.0.0
-- @capacitor/android: ^7.4.2
-- @capacitor/preferences: ^7.0.2
-- @tabler/icons-webfont: ^3.35.0
-- @capacitor-community/admob: ^7.2.0
-
-RUTAS DE LA APLICACIÓN
---------------------------------------------------------------------------------
-- / → JugarContraIA.vue (Página principal)
-- /jugador-vs-jugador → JugarMultijugador.vue
-- /configuracion → ConfiguracionPage.vue
-- /* → ErrorNotFound.vue (404)
-
-NOTAS IMPORTANTES
---------------------------------------------------------------------------------
-- ESLint configurado con reglas estrictas
-- Quasar usa componentes q-* nativos
-- Capacitor permite compilar para Android/iOS
-- Variables CSS centralizadas para fácil theming
-- Composables singleton para estado compartido global
-- Estructura modular preparada para escalabilidad
-- Sistema de clases CSS reutilizables en app.css
-- Sistema de idiomas completamente implementado
-- Fácil agregar más idiomas sin modificar componentes
-
-================================================================================
-FIN DEL RESUMEN
-================================================================================
+- Preservar nombres de código en español y archivos nuevos en PascalCase.
+- Reutilizar composables y modales existentes antes de crear duplicados.
+- Mantener textos visibles en `es-AR` y `en-US`.
+- Verificar teléfonos angostos, tablets, orientación horizontal, navegación gestual y tres botones.
+- Ejecutar ESLint y build cuando se cambie comportamiento; para documentación alcanza validar Markdown y `git diff --check`.

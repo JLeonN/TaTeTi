@@ -1,208 +1,50 @@
-================================================================================
-MODO MULTIJUGADOR (PvP) - TA-TE-TI
-================================================================================
+# Resumen del modo multijugador
 
-DESCRIPCIÓN
---------------------------------------------------------------------------------
-Modo de juego clásico para dos jugadores en el mismo dispositivo. Los jugadores
-se turnan para colocar sus fichas (X y O) hasta que uno gane o se produzca un
-empate. Sistema tradicional de Ta-Te-Ti sin intervención de IA.
+> Vigencia: 12 de junio de 2026. Leer junto con `Resumen1General.md`.
 
-ARCHIVOS PRINCIPALES
---------------------------------------------------------------------------------
+## Alcance
 
-1. src/pages/JugarMultijugador.vue
-   - Página principal del modo PvP
-   - Orquesta todos los componentes del juego
-   - Utiliza composable useTaTeTi con modo 'pvp'
-   - Nombres de jugadores: "Jugador 1" (X) y "Jugador 2" (O)
+Partida local para dos personas en el mismo dispositivo. No usa IA, dificultad, selección persistente de ficha ni puntuación. `X` comienza siempre y luego los turnos alternan.
 
-2. src/components/Composables/useTaTeTi.js
-   - Composable compartido entre ambos modos de juego
-   - Modo 'pvp': Sin lógica de IA, solo alternancia de turnos
-   - Gestiona estado del tablero, turnos y detección de ganador
-   - Funciones principales:
-     * realizarJugada(indice): Coloca ficha y cambia turno
-     * reiniciarJuego(): Resetea el tablero
-     * verificarGanador(): Detecta combinaciones ganadoras
-     * esEmpate: Computed que detecta empates
+## Archivos
 
-3. src/components/TaTeTi/TableroTaTeTi.vue
-   - Grid 3x3 de celdas
-   - Renderiza línea ganadora animada (SVG)
-   - Emite evento 'jugada' con índice de celda clickeada
+- `src/pages/JugarMultijugador.vue`: coordinación de la partida, resultado y publicidad.
+- `src/components/Composables/useTaTeTi.js`: estado compartido del tablero.
+- `src/components/TaTeTi/TableroTaTeTi.vue`: cuadrícula y línea ganadora.
+- `src/components/TaTeTi/CeldaTaTeTi.vue`: ficha y estados de cada celda.
+- `src/components/TaTeTi/InfoJuego.vue`: turno, ganador y empate.
+- `src/components/TaTeTi/Compartido/ModalResultado.vue`: resultado final.
+- `src/components/Composables/useContadorPartidas.js`: frecuencia del intersticial.
 
-4. src/components/TaTeTi/CeldaTaTeTi.vue
-   - Celda individual del tablero
-   - Muestra ficha (X u O) con animación
-   - Estados: vacía, ocupada, clickeable, no-clickeable
-   - Animación de aparición de ficha
+## Flujo
 
-5. src/components/TaTeTi/InfoJuego.vue
-   - Muestra turno actual con nombre del jugador
-   - Anuncia ganador con animación
-   - Muestra mensaje de empate
-   - Adapta texto según modo de juego (PvP o IA)
+1. `JugarMultijugador.vue` crea `useTaTeTi('pvp')`.
+2. El tablero comienza vacío y el turno es `X`.
+3. Una jugada válida coloca la ficha, comprueba ganador o empate y alterna el turno.
+4. Al finalizar se muestra el modal de resultado y se registra la partida para publicidad.
+5. Jugar nuevamente reinicia el tablero con `X`.
 
-6. src/components/Composables/usePublicidad.js
-   - Gestión de banner e intersticial
-   - Inicialización de AdMob
+## Interfaz
 
-7. src/components/Composables/useContadorPartidas.js
-   - Contador de partidas para publicidad
-   - Persiste con Capacitor Preferences
-   - Cada 4 partidas muestra intersticial
+- Los nombres son Jugador 1 para `X` y Jugador 2 para `O`, traducidos por i18n.
+- `InfoJuego.vue` comparte el recorte de nombres largos, pero la opción de seleccionar ficha permanece deshabilitada.
+- La animación del nombre de turno se conserva.
+- La página queda centrada en pantallas anchas y tablets.
+- El tablero adapta su tamaño a la altura disponible para evitar scroll y mantiene sus proporciones.
+- Header, banner, modales y barras Android se resuelven globalmente desde el layout y `app.css`.
 
-FLUJO DE JUEGO
---------------------------------------------------------------------------------
+## Restricciones
 
-1. Usuario accede desde drawer → "Multijugador"
-2. Se carga JugarMultijugador.vue
-3. Se inicializa useTaTeTi con modo 'pvp'
-4. Tablero comienza vacío, turno de X (Jugador 1)
-5. Jugador 1 clickea una celda
-6. Se coloca ficha X, se verifica ganador/empate
-7. Si no hay ganador ni empate, turno pasa a O (Jugador 2)
-8. Jugador 2 clickea una celda
-9. Se repite proceso hasta ganador o empate
-10. Al finalizar, se muestra resultado y botón de reinicio
-11. Al terminar partida, se incrementa contador
-12. Cada 4 partidas se muestra intersticial
-13. Se prepara siguiente intersticial automáticamente
+- No incorporar aquí la selección de ficha del modo IA.
+- No usar `esperandoIA` para controlar el flujo PvP.
+- No asignar colores por jugador: `X` siempre usa el color rojo y `O` el azul.
+- Mantener la detección de las ocho combinaciones ganadoras dentro de `useTaTeTi`.
+- Cualquier cambio compartido en tablero o `InfoJuego` debe probarse también contra IA.
 
-LÓGICA DEL COMPOSABLE (Modo PvP)
---------------------------------------------------------------------------------
+## Validación recomendada
 
-ESTADO:
-- tablero: Array(9).fill(null) - 9 celdas vacías
-- turnoActual: 'X' - Siempre comienza X
-- juegoTerminado: false
-- ganador: null
-- combinacionGanadora: null - Índices [a, b, c]
-- modo: 'pvp'
-- esperandoIA: false - No se usa en PvP
-
-VALIDACIONES EN realizarJugada():
-- Juego no debe estar terminado
-- Celda debe estar vacía (null)
-- No debe estar esperando IA (solo para modo IA)
-
-DETECCIÓN DE GANADOR:
-- 8 combinaciones posibles (3 filas, 3 columnas, 2 diagonales)
-- Se verifica después de cada jugada
-- Si hay 3 fichas iguales en una combinación, hay ganador
-
-DETECCIÓN DE EMPATE:
-- Todas las celdas ocupadas (tablero.every(celda => celda !== null))
-- No hay ganador
-- Computed reactivo
-
-COMPONENTES VISUALES
---------------------------------------------------------------------------------
-
-TABLERO:
-- Grid CSS 3x3 con gap de 8px
-- Tamaño máximo: 400x400px
-- Fondo púrpura con bordes redondeados
-- Sombra personalizada con color del tema
-- Responsive: Se adapta a pantallas móviles
-
-CELDAS:
-- Tamaño proporcional al tablero
-- Mínimo 100px de altura
-- Hover effect en celdas vacías
-- Cursor: pointer (vacía) / not-allowed (ocupada)
-- Animación de aparición de ficha (scale 0 → 1)
-
-LÍNEA GANADORA:
-- SVG absoluto sobre el tablero
-- Coordenadas calculadas dinámicamente según combinación
-- Animación stroke-dasharray (se dibuja progresivamente)
-- Efecto neón pulsante con drop-shadow
-- Color según ganador (rojo para X, azul para O)
-
-INFO DE JUEGO:
-- Muestra turno actual con nombre y ficha
-- Animación de pulso en el turno actual
-- Mensaje de ganador con icono de trofeo
-- Mensaje de empate con icono de apretón de manos
-- Altura mínima: 80px para evitar saltos visuales
-
-CONTROLES:
-- Botón "Reiniciar Juego" con icono de reinicio
-- Icono rota suavemente en loop
-- Al hacer hover, icono rota 360° rápido
-- Efecto de degradado animado en hover
-
-DIFERENCIAS CON MODO IA
---------------------------------------------------------------------------------
-
-MODO PvP:
-- Sin selector de dificultad
-- Sin delays entre turnos
-- Sin lógica de IA
-- Nombres genéricos: "Jugador 1" y "Jugador 2"
-- esperandoIA siempre en false
-- Cualquier jugador puede jugar en cualquier momento (según turno)
-
-MODO IA:
-- Selector de dificultad visible
-- Delays según dificultad antes de jugada de IA
-- Algoritmo minimax y estrategias
-- Nombres: Usuario configurable y "NEXUS" (IA)
-- esperandoIA bloquea interacción durante turno de IA
-- Solo el usuario (X) puede hacer clicks
-
-ESTILOS Y ANIMACIONES
---------------------------------------------------------------------------------
-
-ANIMACIONES:
-- aparecerFicha: Scale 0 → 1 (0.3s)
-- dibujarLinea: stroke-dashoffset 500 → 0 (0.8s)
-- pulsarNeon: Opacity 1 → 0.7 → 1 (1.5s loop)
-- pulsarTurno: Scale 1 → 1.05 → 1 (1.5s loop)
-- aparecerResultado: TranslateY(-20px) → 0, Opacity 0 → 1 (0.5s)
-- rotarIcono: Rotación sutil en loop (2s)
-- rotarIconoRapido: Rotación 360° en hover (0.6s)
-
-COLORES:
-- Ficha X: var(--color-ficha-x) → #ff4757 (rojo vibrante)
-- Ficha O: var(--color-ficha-o) → #1e90ff (azul eléctrico)
-- Ganador: var(--color-ganador) → #00d9a3 (verde neón)
-- Turno activo: var(--color-turno-activo) → #ffbe0b (amarillo dorado)
-
-NAVEGACIÓN Y RUTAS
---------------------------------------------------------------------------------
-
-RUTA: /jugador-vs-jugador
-COMPONENTE: JugarMultijugador.vue
-LAYOUT: MainLayout.vue
-ACCESO: Drawer lateral → "Multijugador"
-
-ÍTEM EN DRAWER:
-- Icono: ti-device-gamepad-2
-- Título: "Multijugador"
-- Caption: "Jugá con otra persona"
-
-CASOS DE USO
---------------------------------------------------------------------------------
-
-1. Dos amigos quieren jugar Ta-Te-Ti en el mismo dispositivo
-2. Usuario quiere jugar modo clásico sin IA
-3. Práctica rápida entre dos personas
-4. Demostración del juego a otra persona
-
-MEJORAS FUTURAS POSIBLES
---------------------------------------------------------------------------------
-
-- Nombres personalizables para Jugador 1 y Jugador 2
-- Contador de victorias por sesión
-- Historial de partidas
-- Sonidos al colocar fichas
-- Vibración al ganar (Capacitor Haptics)
-- Modo oscuro/claro toggle
-- Animaciones más elaboradas
-
-================================================================================
-FIN DEL RESUMEN
-================================================================================
+- Victoria de `X`, victoria de `O`, empate y reinicio.
+- Nombres y mensajes en español e inglés.
+- Teléfono angosto, tablet y orientación horizontal.
+- Navegación gestual y tres botones con banner visible.
+- Confirmar que no aparezcan scroll ni superposiciones.
