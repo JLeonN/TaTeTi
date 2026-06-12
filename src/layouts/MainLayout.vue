@@ -5,7 +5,11 @@
       class="header-personalizado"
       :class="{ 'header-modo-prueba': esModoPruebaPublicidad }"
     >
-      <q-toolbar ref="toolbarHeader" class="toolbar-header">
+      <q-toolbar
+        ref="toolbarHeader"
+        class="toolbar-header"
+        :class="{ 'toolbar-header-compacto': nivelCompactacionHeader > 0 }"
+      >
         <q-btn class="boton-menu-header" dense flat round icon="menu" @click="toggleLeftDrawer" />
 
         <div v-show="nivelCompactacionHeader < 1" class="logo-header">
@@ -32,6 +36,7 @@
           ref="nombreHeader"
           type="button"
           class="nombre-usuario"
+          :class="{ 'nombre-usuario-recortado': nivelCompactacionHeader >= 5 }"
           :title="nombreUsuario"
           :aria-label="`${t('configuracion.cambiarNombre')}: ${nombreUsuario}`"
           @click="irAConfiguracionUsuario"
@@ -170,6 +175,35 @@ const router = useRouter()
 
 const obtenerElementoDom = (referencia) => referencia.value?.$el ?? referencia.value
 
+const sumarMedidasHorizontales = (elemento) => {
+  if (!elemento) return 0
+  const estilos = window.getComputedStyle(elemento)
+  return (
+    (Number.parseFloat(estilos.paddingLeft) || 0) +
+    (Number.parseFloat(estilos.paddingRight) || 0) +
+    (Number.parseFloat(estilos.borderLeftWidth) || 0) +
+    (Number.parseFloat(estilos.borderRightWidth) || 0)
+  )
+}
+
+const calcularAnchoNaturalNombre = (nombre) => {
+  if (!nombre) return 0
+  const texto = nombre.querySelector('.nombre-usuario-texto')
+  const icono = nombre.querySelector('i')
+  const estilos = window.getComputedStyle(nombre)
+  const separacion =
+    icono && window.getComputedStyle(icono).display !== 'none'
+      ? Number.parseFloat(estilos.columnGap) || 0
+      : 0
+
+  return (
+    (texto?.scrollWidth ?? 0) +
+    (icono?.offsetWidth ?? 0) +
+    separacion +
+    sumarMedidasHorizontales(nombre)
+  )
+}
+
 const calcularAnchoRequeridoHeader = () => {
   const toolbar = obtenerElementoDom(toolbarHeader)
   const puntaje = obtenerElementoDom(puntajeHeader)
@@ -194,7 +228,7 @@ const calcularAnchoRequeridoHeader = () => {
     (botonMenu?.offsetWidth ?? 0) +
     (logo?.offsetWidth ?? 0) +
     (puntaje?.scrollWidth ?? 0) +
-    (nombre?.scrollWidth ?? 0) +
+    calcularAnchoNaturalNombre(nombre) +
     separacion * Math.max(0, cantidadElementosVisibles - 1)
   )
 }
@@ -302,6 +336,11 @@ const toggleLeftDrawer = () => {
   gap: 8px;
   overflow: hidden;
 }
+.toolbar-header-compacto {
+  gap: 4px;
+  padding-right: 6px;
+  padding-left: 6px;
+}
 .boton-menu-header,
 .logo-header,
 .puntaje-header {
@@ -342,7 +381,7 @@ const toggleLeftDrawer = () => {
   max-width: 100%;
   display: flex;
   align-items: center;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   gap: 6px;
   font-size: 0.95rem;
   font-family: inherit;
@@ -356,6 +395,9 @@ const toggleLeftDrawer = () => {
   transition:
     border-color 0.2s ease,
     transform 0.2s ease;
+}
+.nombre-usuario-recortado {
+  flex: 1 1 auto;
 }
 .nombre-usuario:hover,
 .nombre-usuario:focus-visible {
@@ -430,6 +472,15 @@ const toggleLeftDrawer = () => {
   border: 1px solid var(--color-turno-activo);
 }
 @media (max-width: 600px) {
+  .toolbar-header {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+  .toolbar-header-compacto {
+    gap: 3px;
+    padding-right: 4px;
+    padding-left: 4px;
+  }
   .puntaje-header {
     font-size: 0.85rem;
     padding: 4px 10px;
@@ -443,6 +494,12 @@ const toggleLeftDrawer = () => {
   .nombre-usuario {
     font-size: 0.85rem;
     padding: 4px 10px;
+  }
+  .toolbar-header-compacto .puntaje-header,
+  .toolbar-header-compacto .nombre-usuario {
+    gap: 4px;
+    padding-right: 7px;
+    padding-left: 7px;
   }
 }
 </style>
