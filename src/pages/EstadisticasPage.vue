@@ -97,7 +97,13 @@
 
         <section class="cuadricula-paneles">
           <article class="panel">
-            <h2>{{ t('estadisticas.distribucionResultados') }}</h2>
+            <EncabezadoPanel
+              identificador="resultados"
+              :titulo="t('estadisticas.distribucionResultados')"
+              :descripcion="t('estadisticas.descripcionResultados')"
+              :abierto="panelesDesplegados.resultados"
+              @alternar="alternarPanel('resultados')"
+            />
             <div class="grafica-circular-contenedor">
               <div
                 class="grafica-circular"
@@ -116,7 +122,13 @@
           </article>
 
           <article class="panel">
-            <h2>{{ t('estadisticas.porDificultad') }}</h2>
+            <EncabezadoPanel
+              identificador="dificultad"
+              :titulo="t('estadisticas.porDificultad')"
+              :descripcion="t('estadisticas.descripcionDificultad')"
+              :abierto="panelesDesplegados.dificultad"
+              @alternar="alternarPanel('dificultad')"
+            />
             <div v-for="fila in dificultadesCompletas" :key="fila.dificultad" class="fila-barra">
               <div class="fila-barra-cabecera">
                 <span>{{ nombreDificultad(fila.dificultad) }}</span>
@@ -150,7 +162,13 @@
           </article>
 
           <article class="panel">
-            <h2>{{ t('estadisticas.evolucionPuntos') }}</h2>
+            <EncabezadoPanel
+              identificador="puntos"
+              :titulo="t('estadisticas.evolucionPuntos')"
+              :descripcion="t('estadisticas.descripcionPuntos')"
+              :abierto="panelesDesplegados.puntos"
+              @alternar="alternarPanel('puntos')"
+            />
             <svg
               class="grafica-linea"
               viewBox="0 0 300 100"
@@ -195,7 +213,13 @@
           </article>
 
           <article class="panel">
-            <h2>{{ t('estadisticas.fichas') }}</h2>
+            <EncabezadoPanel
+              identificador="fichas"
+              :titulo="t('estadisticas.fichas')"
+              :descripcion="t('estadisticas.descripcionFichas')"
+              :abierto="panelesDesplegados.fichas"
+              @alternar="alternarPanel('fichas')"
+            />
             <div class="comparacion-fichas">
               <div v-for="fila in fichasCompletas" :key="fila.ficha" class="ficha-resultado">
                 <button
@@ -245,7 +269,13 @@
         </section>
 
         <section class="panel">
-          <h2>{{ t('estadisticas.tiempos') }}</h2>
+          <EncabezadoPanel
+            identificador="tiempos"
+            :titulo="t('estadisticas.tiempos')"
+            :descripcion="t('estadisticas.descripcionTiempos')"
+            :abierto="panelesDesplegados.tiempos"
+            @alternar="alternarPanel('tiempos')"
+          />
           <div class="cuadricula-datos">
             <DatoSimple
               :etiqueta="t('estadisticas.partidaPromedio')"
@@ -298,7 +328,13 @@
 
         <section class="cuadricula-paneles">
           <article class="panel">
-            <h2>{{ t('estadisticas.rachas') }}</h2>
+            <EncabezadoPanel
+              identificador="rachas"
+              :titulo="t('estadisticas.rachas')"
+              :descripcion="t('estadisticas.descripcionRachas')"
+              :abierto="panelesDesplegados.rachas"
+              @alternar="alternarPanel('rachas')"
+            />
             <div class="cuadricula-datos">
               <DatoSimple
                 :etiqueta="t('estadisticas.mejorRacha')"
@@ -319,7 +355,13 @@
             </div>
           </article>
           <article class="panel">
-            <h2>{{ t('estadisticas.escudo') }}</h2>
+            <EncabezadoPanel
+              identificador="escudo"
+              :titulo="t('estadisticas.escudo')"
+              :descripcion="t('estadisticas.descripcionEscudo')"
+              :abierto="panelesDesplegados.escudo"
+              @alternar="alternarPanel('escudo')"
+            />
             <div class="cuadricula-datos">
               <DatoSimple
                 :etiqueta="t('estadisticas.activaciones')"
@@ -340,7 +382,13 @@
             </div>
           </article>
           <article class="panel">
-            <h2>{{ t('estadisticas.movimientos') }}</h2>
+            <EncabezadoPanel
+              identificador="movimientos"
+              :titulo="t('estadisticas.movimientos')"
+              :descripcion="t('estadisticas.descripcionMovimientos')"
+              :abierto="panelesDesplegados.movimientos"
+              @alternar="alternarPanel('movimientos')"
+            />
             <div class="cuadricula-datos cuadricula-movimientos">
               <DatoSimple
                 :etiqueta="t('estadisticas.victoriasMinimas')"
@@ -387,7 +435,13 @@
 
         <section class="cuadricula-paneles">
           <article class="panel">
-            <h2>{{ t('estadisticas.mapaPosiciones') }}</h2>
+            <EncabezadoPanel
+              identificador="tablero"
+              :titulo="t('estadisticas.usoTablero')"
+              :descripcion="t('estadisticas.descripcionTablero')"
+              :abierto="panelesDesplegados.tablero"
+              @alternar="alternarPanel('tablero')"
+            />
             <div class="posiciones-lineas">
               <div class="mapa-tablero">
                 <div
@@ -399,8 +453,11 @@
                   {{ posicion.cantidad }}
                 </div>
               </div>
-              <div class="lineas-ganadoras">
-                <h3>{{ t('estadisticas.lineasGanadoras') }}</h3>
+              <div
+                class="tarjeta-lineas"
+                role="group"
+                :aria-label="t('estadisticas.lineasGanadoras')"
+              >
                 <div class="lista-simple">
                   <span v-for="linea in datos.lineas" :key="linea.tipo">
                     <strong>{{ nombreLinea(linea.tipo) }}</strong>
@@ -422,6 +479,7 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadistica.vue'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
 
@@ -432,6 +490,17 @@ const datos = ref(null)
 const fichasDesplegadas = reactive({
   X: false,
   O: false,
+})
+const panelesDesplegados = reactive({
+  resultados: false,
+  dificultad: false,
+  puntos: false,
+  fichas: false,
+  tiempos: false,
+  rachas: false,
+  escudo: false,
+  movimientos: false,
+  tablero: false,
 })
 const filtros = reactive({
   periodo: 'total',
@@ -445,6 +514,9 @@ let temporizadorFiltros = 0
 
 const alternarFicha = (ficha) => {
   fichasDesplegadas[ficha] = !fichasDesplegadas[ficha]
+}
+const alternarPanel = (panel) => {
+  panelesDesplegados[panel] = !panelesDesplegados[panel]
 }
 
 const DatoSimple = defineComponent({
@@ -712,14 +784,11 @@ onMounted(cargarEstadisticas)
   color: var(--color-texto-secundario);
 }
 .panel {
+  min-width: 0;
   padding: 16px;
   background-color: var(--color-fondo-alterno);
   border: 1px solid var(--color-borde-tablero);
   border-radius: 12px;
-}
-.panel h2 {
-  margin: 0 0 14px;
-  font-size: 1.1rem;
 }
 .filtros-estadisticas {
   display: grid;
@@ -1002,9 +1071,24 @@ onMounted(cargarEstadisticas)
   gap: 6px;
   margin: 0 auto;
 }
-.lineas-ganadoras h3 {
-  margin: 0 0 14px;
-  font-size: 1rem;
+.tarjeta-lineas {
+  width: min(320px, 100%);
+  margin: 0 auto;
+  padding: 16px;
+  background-color: var(--color-tablero);
+  border: 1px solid var(--color-borde-tablero);
+  border-radius: 10px;
+}
+.tarjeta-lineas .lista-simple {
+  gap: 0;
+}
+.tarjeta-lineas .lista-simple span {
+  min-height: 34px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--color-borde-tablero);
+}
+.tarjeta-lineas .lista-simple span:last-child {
+  border-bottom: 0;
 }
 .casilla-mapa {
   display: grid;
@@ -1050,7 +1134,7 @@ onMounted(cargarEstadisticas)
     padding: 10px;
   }
   .cuadricula-paneles {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .cuadricula-resumen {
     grid-template-columns: repeat(2, minmax(0, 1fr));

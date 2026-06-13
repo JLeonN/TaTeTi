@@ -112,17 +112,27 @@ export default {
     abandonos: 'Abandonos',
     porcentajeVictorias: 'Porcentaje de victorias',
     distribucionResultados: 'Resultados',
+    descripcionResultados:
+      'Muestra cómo se distribuyen tus partidas finalizadas entre victorias, empates y derrotas.',
     porDificultad: 'Rendimiento por dificultad',
+    descripcionDificultad:
+      'Compara tus partidas y tu porcentaje de victorias en los niveles Fácil, Normal y Difícil.',
     dificultadMasJugada: 'Más jugada',
     mejorDificultad: 'Mejor resultado',
     resumenVictorias: '{victorias} victorias en {partidas} partidas',
     evolucionPuntos: 'Evolución de puntos',
+    descripcionPuntos:
+      'Resume los puntos ganados y perdidos, el balance actual y el máximo histórico alcanzado.',
     puntosGanados: 'Puntos ganados',
     puntosPerdidos: 'Puntos perdidos',
     balance: 'Balance',
     maximoHistorico: 'Máximo histórico',
     fichas: 'Resultados por ficha',
+    descripcionFichas:
+      'Compara tus victorias, empates y derrotas según hayas jugado con la ficha X o la ficha O.',
     tiempos: 'Tiempos',
+    descripcionTiempos:
+      'Analiza la duración de tus partidas y turnos, incluyendo los mejores tiempos por dificultad y resultado.',
     partidaPromedio: 'Partida promedio',
     partidaMasCorta: 'Partida más corta',
     partidaMasLarga: 'Partida más larga',
@@ -132,16 +142,22 @@ export default {
     turnoMasCorto: 'Turno más corto',
     turnoMasLargo: 'Turno más largo',
     rachas: 'Rachas',
+    descripcionRachas:
+      'Muestra tu mejor racha, las rachas negativas acumuladas y cuántas veces lograste recuperarte.',
     mejorRacha: 'Mejor racha',
     peorRacha: 'Peor racha negativa',
     rachasNegativas: 'Rachas negativas',
     recuperaciones: 'Recuperaciones',
     escudo: 'Escudo',
+    descripcionEscudo:
+      'Indica cuántas veces se activó la protección y cuánto demoraste en salir de ella.',
     activaciones: 'Activaciones',
     derrotasProtegidas: 'Derrotas protegidas',
     promedioParaSalir: 'Partidas para salir',
     tiempoParaSalir: 'Tiempo para salir',
     movimientos: 'Movimientos y oportunidades',
+    descripcionMovimientos:
+      'Analiza cuántos movimientos necesitas para ganar o perder y las oportunidades creadas o bloqueadas.',
     victoriasMinimas: 'Victorias mínimas',
     derrotasMinimas: 'Derrotas rápidas',
     promedioAlGanar: 'Movimientos al ganar',
@@ -154,6 +170,9 @@ export default {
     cantidadPartidas: '{cantidad} partidas',
     mapaPosiciones: 'Posiciones utilizadas',
     lineasGanadoras: 'Líneas ganadoras',
+    usoTablero: 'Uso del tablero',
+    descripcionTablero:
+      'Relaciona las posiciones que más utilizas con las filas, columnas y diagonales que producen victorias.',
     lineaFila: 'Filas',
     lineaColumna: 'Columnas',
     lineaDiagonal: 'Diagonales',

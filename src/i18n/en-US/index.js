@@ -112,17 +112,27 @@ export default {
     abandonos: 'Abandoned',
     porcentajeVictorias: 'Win rate',
     distribucionResultados: 'Results',
+    descripcionResultados:
+      'Shows how your completed games are distributed among wins, ties, and losses.',
     porDificultad: 'Performance by difficulty',
+    descripcionDificultad:
+      'Compares your games and win rate across Easy, Normal, and Hard difficulty levels.',
     dificultadMasJugada: 'Most played',
     mejorDificultad: 'Best result',
     resumenVictorias: '{victorias} wins in {partidas} games',
     evolucionPuntos: 'Score progression',
+    descripcionPuntos:
+      'Summarizes points earned and lost, your current balance, and the highest score reached.',
     puntosGanados: 'Points earned',
     puntosPerdidos: 'Points lost',
     balance: 'Balance',
     maximoHistorico: 'Highest score',
     fichas: 'Results by symbol',
+    descripcionFichas:
+      'Compares your wins, ties, and losses depending on whether you played as X or O.',
     tiempos: 'Times',
+    descripcionTiempos:
+      'Analyzes game and turn duration, including your best times by difficulty and result.',
     partidaPromedio: 'Average game',
     partidaMasCorta: 'Shortest game',
     partidaMasLarga: 'Longest game',
@@ -132,16 +142,22 @@ export default {
     turnoMasCorto: 'Shortest turn',
     turnoMasLargo: 'Longest turn',
     rachas: 'Streaks',
+    descripcionRachas:
+      'Shows your best streak, accumulated losing streaks, and how often you recovered.',
     mejorRacha: 'Best streak',
     peorRacha: 'Worst losing streak',
     rachasNegativas: 'Losing streaks',
     recuperaciones: 'Recoveries',
     escudo: 'Shield',
+    descripcionEscudo:
+      'Shows how often protection was activated and how long it took you to leave it.',
     activaciones: 'Activations',
     derrotasProtegidas: 'Protected losses',
     promedioParaSalir: 'Games to leave',
     tiempoParaSalir: 'Time to leave',
     movimientos: 'Moves and chances',
+    descripcionMovimientos:
+      'Analyzes the moves needed to win or lose and the chances you created or blocked.',
     victoriasMinimas: 'Minimum-move wins',
     derrotasMinimas: 'Quick losses',
     promedioAlGanar: 'Moves when winning',
@@ -154,6 +170,9 @@ export default {
     cantidadPartidas: '{cantidad} games',
     mapaPosiciones: 'Positions used',
     lineasGanadoras: 'Winning lines',
+    usoTablero: 'Board usage',
+    descripcionTablero:
+      'Connects your most used positions with the rows, columns, and diagonals that produce wins.',
     lineaFila: 'Rows',
     lineaColumna: 'Columns',
     lineaDiagonal: 'Diagonals',
