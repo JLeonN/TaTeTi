@@ -7,66 +7,14 @@
             <i class="ti ti-chart-bar icono-xl icono-primario"></i>
             {{ t('estadisticas.titulo') }}
           </h1>
-          <p v-if="fechaInicioRecopilacion" class="texto-secundario">
-            {{ t('estadisticas.desde', { fecha: fechaInicioRecopilacion }) }}
-          </p>
+          <p class="texto-secundario">{{ t('estadisticas.subtitulo') }}</p>
         </div>
       </header>
 
-      <section class="panel filtros-estadisticas">
-        <q-select
-          v-model="filtros.periodo"
-          outlined
-          dense
-          emit-value
-          map-options
-          :options="opcionesPeriodo"
-          :label="t('estadisticas.periodo')"
-        />
-        <q-select
-          v-model="filtros.dificultad"
-          outlined
-          dense
-          emit-value
-          map-options
-          :options="opcionesDificultad"
-          :label="t('juego.dificultad')"
-        />
-        <q-select
-          v-model="filtros.ficha"
-          outlined
-          dense
-          emit-value
-          map-options
-          :options="opcionesFicha"
-          :label="t('estadisticas.ficha')"
-        />
-        <q-select
-          v-model="filtros.resultado"
-          outlined
-          dense
-          emit-value
-          map-options
-          :options="opcionesResultado"
-          :label="t('estadisticas.resultado')"
-        />
-        <q-input
-          v-model="filtros.fechaDesde"
-          outlined
-          dense
-          type="date"
-          :label="t('estadisticas.fechaDesde')"
-          stack-label
-        />
-        <q-input
-          v-model="filtros.fechaHasta"
-          outlined
-          dense
-          type="date"
-          :label="t('estadisticas.fechaHasta')"
-          stack-label
-        />
-      </section>
+      <BarraFiltrosEstadisticas
+        v-model:dificultad="filtros.dificultad"
+        v-model:ficha="filtros.ficha"
+      />
 
       <div v-if="errorCarga" class="panel estado-mensaje estado-error">
         <i class="ti ti-alert-triangle icono-lg"></i>
@@ -479,11 +427,12 @@
 <script setup>
 import { computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import BarraFiltrosEstadisticas from 'src/components/Estadisticas/BarraFiltrosEstadisticas.vue'
 import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadistica.vue'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
 
-const { t, locale } = useI18n()
+const { t } = useI18n()
 const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
@@ -503,12 +452,8 @@ const panelesDesplegados = reactive({
   tablero: false,
 })
 const filtros = reactive({
-  periodo: 'total',
   dificultad: 'todas',
   ficha: 'todas',
-  resultado: 'todos',
-  fechaDesde: '',
-  fechaHasta: '',
 })
 let temporizadorFiltros = 0
 
@@ -553,37 +498,7 @@ const duracion = (valor) => {
   return `${minutos} min ${segundos % 60} s`
 }
 
-const opcionesPeriodo = computed(() => [
-  { label: t('estadisticas.todoElHistorial'), value: 'total' },
-  { label: t('estadisticas.ultimasPartidas', { cantidad: 10 }), value: 10 },
-  { label: t('estadisticas.ultimasPartidas', { cantidad: 25 }), value: 25 },
-  { label: t('estadisticas.ultimasPartidas', { cantidad: 50 }), value: 50 },
-])
-const opcionesDificultad = computed(() => [
-  { label: t('estadisticas.todas'), value: 'todas' },
-  { label: t('juego.facil'), value: 'facil' },
-  { label: t('juego.normal'), value: 'normal' },
-  { label: t('juego.dificil'), value: 'dificil' },
-])
-const opcionesFicha = computed(() => [
-  { label: t('estadisticas.todas'), value: 'todas' },
-  { label: 'X', value: 'X' },
-  { label: 'O', value: 'O' },
-])
-const opcionesResultado = computed(() => [
-  { label: t('estadisticas.todos'), value: 'todos' },
-  { label: t('estadisticas.victorias'), value: 'victoria' },
-  { label: t('estadisticas.empates'), value: 'empate' },
-  { label: t('estadisticas.derrotas'), value: 'derrota' },
-  { label: t('estadisticas.abandonos'), value: 'abandono' },
-])
-
 const hayPartidas = computed(() => numero(datos.value?.resumen?.partidas) > 0)
-const fechaInicioRecopilacion = computed(() => {
-  const fecha = datos.value?.metadatos?.fechaInicioRecopilacion
-  if (!fecha) return ''
-  return new Intl.DateTimeFormat(locale.value, { dateStyle: 'long' }).format(new Date(fecha))
-})
 const tarjetasResumen = computed(() => [
   {
     etiqueta: t('estadisticas.partidas'),
@@ -761,7 +676,6 @@ onMounted(cargarEstadisticas)
   background-color: var(--color-fondo);
   color: var(--color-texto-principal);
   padding: 16px;
-  overflow-y: auto;
 }
 .contenedor-estadisticas {
   width: min(1100px, 100%);
@@ -789,16 +703,6 @@ onMounted(cargarEstadisticas)
   background-color: var(--color-fondo-alterno);
   border: 1px solid var(--color-borde-tablero);
   border-radius: 12px;
-}
-.filtros-estadisticas {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-}
-.filtros-estadisticas :deep(.q-field__control),
-.filtros-estadisticas :deep(.q-field__native),
-.filtros-estadisticas :deep(.q-field__label) {
-  color: var(--color-texto-principal);
 }
 .cuadricula-resumen {
   display: grid;
@@ -1118,9 +1022,6 @@ onMounted(cargarEstadisticas)
   .cuadricula-resumen {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .filtros-estadisticas {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .fila-datos,
   .cuadricula-datos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1138,9 +1039,6 @@ onMounted(cargarEstadisticas)
   }
   .cuadricula-resumen {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .filtros-estadisticas {
-    grid-template-columns: 1fr;
   }
   .grafica-circular-contenedor {
     flex-direction: column;
