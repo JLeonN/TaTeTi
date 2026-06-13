@@ -104,6 +104,8 @@ export const obtenerEstadisticas = async (filtros = {}) => {
       fichaUsuario AS ficha,
       COUNT(*) AS partidas,
       SUM(CASE WHEN resultado = 'victoria' THEN 1 ELSE 0 END) AS victorias,
+      SUM(CASE WHEN resultado = 'empate' THEN 1 ELSE 0 END) AS empates,
+      SUM(CASE WHEN resultado = 'derrota' THEN 1 ELSE 0 END) AS derrotas,
       ROUND(
         100.0 * SUM(CASE WHEN resultado = 'victoria' THEN 1 ELSE 0 END) /
         NULLIF(SUM(CASE WHEN resultado <> 'abandono' THEN 1 ELSE 0 END), 0),

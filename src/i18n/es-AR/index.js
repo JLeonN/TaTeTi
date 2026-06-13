@@ -111,7 +111,7 @@ export default {
     derrotas: 'Derrotas',
     empates: 'Empates',
     abandonos: 'Abandonos',
-    porcentajeVictorias: 'Victorias',
+    porcentajeVictorias: 'Porcentaje de victorias',
     distribucionResultados: 'Resultados',
     porDificultad: 'Rendimiento por dificultad',
     dificultadMasJugada: 'Más jugada',

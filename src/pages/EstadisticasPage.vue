@@ -206,18 +206,47 @@
             <h2>{{ t('estadisticas.fichas') }}</h2>
             <div class="comparacion-fichas">
               <div v-for="fila in fichasCompletas" :key="fila.ficha" class="ficha-resultado">
-                <span :class="`simbolo-ficha ficha-${fila.ficha.toLowerCase()}`">
-                  {{ fila.ficha }}
-                </span>
-                <strong>{{ porcentaje(fila.porcentajeVictorias) }}</strong>
-                <small>
-                  {{
-                    t('estadisticas.resumenVictorias', {
-                      victorias: numero(fila.victorias),
-                      partidas: numero(fila.partidas),
-                    })
-                  }}
-                </small>
+                <button
+                  type="button"
+                  class="boton-ficha"
+                  :aria-expanded="fichasDesplegadas[fila.ficha]"
+                  :aria-controls="`detalle-ficha-${fila.ficha}`"
+                  @click="alternarFicha(fila.ficha)"
+                >
+                  <span :class="`simbolo-ficha ficha-${fila.ficha.toLowerCase()}`">
+                    {{ fila.ficha }}
+                  </span>
+                  <i
+                    :class="`ti ${
+                      fichasDesplegadas[fila.ficha] ? 'ti-chevron-up' : 'ti-chevron-down'
+                    } icono-sm chevron-ficha`"
+                    aria-hidden="true"
+                  ></i>
+                </button>
+                <transition name="desplegar-ficha">
+                  <ul
+                    v-if="fichasDesplegadas[fila.ficha]"
+                    :id="`detalle-ficha-${fila.ficha}`"
+                    class="detalle-ficha"
+                  >
+                    <li>
+                      <span>{{ t('estadisticas.porcentajeVictorias') }}</span>
+                      <strong>{{ porcentaje(fila.porcentajeVictorias) }}</strong>
+                    </li>
+                    <li>
+                      <span>{{ t('estadisticas.victorias') }}</span>
+                      <strong>{{ numero(fila.victorias) }}</strong>
+                    </li>
+                    <li>
+                      <span>{{ t('estadisticas.empates') }}</span>
+                      <strong>{{ numero(fila.empates) }}</strong>
+                    </li>
+                    <li>
+                      <span>{{ t('estadisticas.derrotas') }}</span>
+                      <strong>{{ numero(fila.derrotas) }}</strong>
+                    </li>
+                  </ul>
+                </transition>
               </div>
             </div>
           </article>
@@ -420,6 +449,10 @@ const { t, locale } = useI18n()
 const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
+const fichasDesplegadas = reactive({
+  X: false,
+  O: false,
+})
 const filtros = reactive({
   periodo: 'total',
   dificultad: 'todas',
@@ -429,6 +462,10 @@ const filtros = reactive({
   fechaHasta: '',
 })
 let temporizadorFiltros = 0
+
+const alternarFicha = (ficha) => {
+  fichasDesplegadas[ficha] = !fichasDesplegadas[ficha]
+}
 
 const DatoSimple = defineComponent({
   props: {
@@ -545,6 +582,8 @@ const fichasCompletas = computed(() =>
         ficha,
         partidas: 0,
         victorias: 0,
+        empates: 0,
+        derrotas: 0,
         porcentajeVictorias: 0,
       },
   ),
@@ -748,18 +787,24 @@ onMounted(cargarEstadisticas)
   gap: 24px;
 }
 .grafica-circular {
+  position: relative;
   width: 150px;
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border: 24px solid transparent;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 30px var(--color-fondo-alterno);
 }
-.grafica-circular span {
-  padding: 8px;
+.grafica-circular::after {
+  content: '';
+  position: absolute;
+  width: 82px;
+  aspect-ratio: 1;
   background-color: var(--color-fondo-alterno);
   border-radius: 50%;
+}
+.grafica-circular span {
+  position: relative;
+  z-index: 1;
   font-size: 1.3rem;
   font-weight: bold;
 }
@@ -871,19 +916,49 @@ onMounted(cargarEstadisticas)
 .comparacion-fichas {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  align-items: start;
   gap: 12px;
 }
 .ficha-resultado {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 16px;
+  width: 100%;
   background-color: var(--color-tablero);
   border-radius: 10px;
+  overflow: hidden;
+}
+.boton-ficha {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  width: 100%;
+  min-height: 68px;
+  padding: 10px 12px;
+  color: var(--color-texto-principal);
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+.boton-ficha:focus-visible {
+  outline: 2px solid var(--color-borde-tablero);
+  outline-offset: -2px;
+}
+@media (hover: hover) {
+  .boton-ficha:hover {
+    background-color: var(--color-fondo-alterno);
+  }
+}
+.boton-ficha .simbolo-ficha {
+  grid-column: 2;
+}
+.chevron-ficha {
+  grid-column: 3;
+  justify-self: end;
+  color: var(--color-texto-secundario);
+  font-size: 0.75rem;
 }
 .simbolo-ficha {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: bold;
 }
 .ficha-x {
@@ -892,8 +967,36 @@ onMounted(cargarEstadisticas)
 .ficha-o {
   color: var(--color-ficha-o);
 }
-.ficha-resultado small {
+.detalle-ficha {
+  width: 100%;
+  margin: 0;
+  padding: 0 12px 10px;
+  list-style: none;
+}
+.detalle-ficha li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
   color: var(--color-texto-secundario);
+  font-size: 0.78rem;
+  border-top: 1px solid var(--color-borde-tablero);
+}
+.detalle-ficha strong {
+  color: var(--color-texto-principal);
+}
+.desplegar-ficha-enter-active,
+.desplegar-ficha-leave-active {
+  max-height: 160px;
+  overflow: hidden;
+  transition:
+    max-height 0.2s ease,
+    opacity 0.2s ease;
+}
+.desplegar-ficha-enter-from,
+.desplegar-ficha-leave-to {
+  max-height: 0;
+  opacity: 0;
 }
 .mapa-tablero {
   width: min(280px, 100%);
