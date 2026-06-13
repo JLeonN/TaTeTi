@@ -1,5 +1,5 @@
 {
-  "versionDisponible": "4.0.7",
+  "versionDisponible": "4.0.8",
   "urlPlayStore": "https://play.google.com/store/apps/details?id=com.leotateti.tateti",
   "mostrarActualizacion": true,
   "cambios": {
@@ -7,8 +7,13 @@
       {
         "apartado": "Actualizaciones",
         "novedades": [
-          "Mejoramos la adaptación de la app a distintos tamaños de pantalla y barras de Android.",
-          "Evitamos que botones, ventanas y contenido queden tapados."
+          "Agregamos una nueva sección de estadísticas con resultados, puntos, tiempos, rachas, escudo y uso del tablero.",
+          "Ahora puedes comparar tu rendimiento por dificultad y según juegues con X u O.",
+          "Las estadísticas se guardan automáticamente y puedes filtrarlas con una barra que permanece visible al desplazarte.",
+          "Ahora puedes elegir X u O contra NEXUS y seguir realizando la primera jugada.",
+          "Mejoramos la adaptación del encabezado, las pantallas y los controles en celulares y tablets.",
+          "El logo y el nombre del jugador ahora ofrecen accesos más directos al juego y a la configuración.",
+          "Mejoramos la presentación de las novedades de actualización."
         ]
       }
     ],
@@ -16,8 +21,13 @@
       {
         "apartado": "Updates",
         "novedades": [
-          "We improved how the app adapts to different screen sizes and Android system bars.",
-          "We prevented buttons, windows, and content from being covered."
+          "We added a new statistics section with results, scores, times, streaks, shield usage, and board usage.",
+          "You can now compare your performance by difficulty and when playing as X or O.",
+          "Statistics are saved automatically and can be filtered with a bar that stays visible while scrolling.",
+          "You can now choose X or O against NEXUS while still making the first move.",
+          "We improved how the header, screens, and controls adapt to phones and tablets.",
+          "The logo and player name now provide quicker access to the game and settings.",
+          "We improved how update notes are displayed."
         ]
       }
     ]
