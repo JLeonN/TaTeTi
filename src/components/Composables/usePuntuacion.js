@@ -5,9 +5,22 @@ const CLAVE_PUNTUACION = 'puntuacion_sistema'
 
 // Estado global (singleton)
 const puntajeTotal = ref(0)
-const estadoFacil = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
-const estadoNormal = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
-const estadoDificil = ref({ racha: 0, derrotasConsecutivas: 0, proteccionActiva: false })
+const crearEstadoInicial = () => ({
+  racha: 0,
+  derrotasConsecutivas: 0,
+  proteccionActiva: false,
+  proteccionActivadaEn: null,
+  partidasConProteccion: 0,
+})
+
+const completarEstado = (estadoGuardado = {}) => ({
+  ...crearEstadoInicial(),
+  ...estadoGuardado,
+})
+
+const estadoFacil = ref(crearEstadoInicial())
+const estadoNormal = ref(crearEstadoInicial())
+const estadoDificil = ref(crearEstadoInicial())
 
 export function usePuntuacion() {
   // ============================================================================
@@ -64,21 +77,9 @@ export function usePuntuacion() {
         const datos = JSON.parse(resultado.value)
         puntajeTotal.value = datos.puntajeTotal || 0
 
-        estadoFacil.value = datos.facil || {
-          racha: 0,
-          derrotasConsecutivas: 0,
-          proteccionActiva: false,
-        }
-        estadoNormal.value = datos.normal || {
-          racha: 0,
-          derrotasConsecutivas: 0,
-          proteccionActiva: false,
-        }
-        estadoDificil.value = datos.dificil || {
-          racha: 0,
-          derrotasConsecutivas: 0,
-          proteccionActiva: false,
-        }
+        estadoFacil.value = completarEstado(datos.facil)
+        estadoNormal.value = completarEstado(datos.normal)
+        estadoDificil.value = completarEstado(datos.dificil)
 
         console.log('✅ Puntuación cargada:', datos)
       } else {
@@ -127,7 +128,15 @@ export function usePuntuacion() {
   const procesarResultado = async (resultado, dificultad) => {
     const config = configuracionPuntos[dificultad]
     const estado = obtenerEstado(dificultad)
+    const rachaAntes = estado.value.racha
+    const derrotasAntes = estado.value.derrotasConsecutivas
+    const proteccionAntes = estado.value.proteccionActiva
     let puntosGanados = 0
+    let activoProteccion = false
+    let derrotaProtegida = false
+    let desactivoProteccion = false
+    let partidasParaDesactivarProteccion = 0
+    let duracionProteccionMs = 0
 
     // VICTORIA
     if (resultado === 'victoria') {
@@ -141,7 +150,19 @@ export function usePuntuacion() {
 
       // Resetear derrotas y desactivar protección
       estado.value.derrotasConsecutivas = 0
+      if (proteccionAntes) {
+        desactivoProteccion = true
+        partidasParaDesactivarProteccion = estado.value.partidasConProteccion
+        if (estado.value.proteccionActivadaEn) {
+          duracionProteccionMs = Math.max(
+            0,
+            Date.now() - new Date(estado.value.proteccionActivadaEn).getTime(),
+          )
+        }
+      }
       estado.value.proteccionActiva = false
+      estado.value.proteccionActivadaEn = null
+      estado.value.partidasConProteccion = 0
 
       console.log(
         `🏆 Victoria en ${dificultad}: +${puntosGanados} pts (Racha: ${estado.value.racha})`,
@@ -155,6 +176,11 @@ export function usePuntuacion() {
 
       // Activar protección si llegó a 5 derrotas
       if (estado.value.derrotasConsecutivas >= 5) {
+        if (!estado.value.proteccionActiva) {
+          activoProteccion = true
+          estado.value.proteccionActivadaEn = new Date().toISOString()
+          estado.value.partidasConProteccion = 0
+        }
         estado.value.proteccionActiva = true
       }
 
@@ -167,7 +193,10 @@ export function usePuntuacion() {
         if (puntajeTotal.value < 10) {
           puntajeTotal.value = 10
         }
+      } else if (estado.value.proteccionActiva) {
+        derrotaProtegida = true
       }
+      if (estado.value.proteccionActiva) estado.value.partidasConProteccion += 1
 
       // Resetear racha
       estado.value.racha = 0
@@ -193,7 +222,16 @@ export function usePuntuacion() {
       puntosGanados,
       puntajeTotal: puntajeTotal.value,
       racha: estado.value.racha,
+      rachaAntes,
+      derrotasAntes,
+      derrotasConsecutivas: estado.value.derrotasConsecutivas,
+      proteccionAntes,
       proteccionActiva: estado.value.proteccionActiva,
+      activoProteccion,
+      derrotaProtegida,
+      desactivoProteccion,
+      partidasParaDesactivarProteccion,
+      duracionProteccionMs,
     }
   }
 
@@ -211,6 +249,16 @@ export function usePuntuacion() {
   const obtenerDerrotasConsecutivas = (dificultad) => {
     const estado = obtenerEstado(dificultad)
     return estado.value.derrotasConsecutivas
+  }
+
+  const obtenerEstadoPuntuacion = (dificultad) => {
+    const estado = obtenerEstado(dificultad)
+    return { ...estado.value }
+  }
+
+  const obtenerProteccionActiva = (dificultad) => {
+    const estado = obtenerEstado(dificultad)
+    return estado.value.proteccionActiva
   }
 
   const calcularPuntosProximaVictoria = (dificultad) => {
@@ -237,6 +285,8 @@ export function usePuntuacion() {
     procesarResultado,
     obtenerRacha,
     obtenerDerrotasConsecutivas,
+    obtenerEstadoPuntuacion,
+    obtenerProteccionActiva,
     calcularPuntosProximaVictoria,
     calcularPuntosProximaDerrota,
   }

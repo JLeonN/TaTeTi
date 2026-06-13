@@ -5,6 +5,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/JugarContraIA.vue') },
       { path: 'jugador-vs-jugador', component: () => import('pages/JugarMultijugador.vue') },
+      { path: 'estadisticas', component: () => import('pages/EstadisticasPage.vue') },
       { path: 'configuracion', component: () => import('pages/ConfiguracionPage.vue') },
     ],
   },

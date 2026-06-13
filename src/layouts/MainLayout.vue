@@ -28,10 +28,7 @@
 
         <!-- Mostrar puntaje -->
         <div ref="puntajeHeader" class="puntaje-header">
-          <i
-            v-show="nivelCompactacionHeader < 2"
-            class="ti ti-trophy icono-sm icono-primario"
-          ></i>
+          <i v-show="nivelCompactacionHeader < 2" class="ti ti-trophy icono-sm icono-primario"></i>
           <span class="puntaje-numero">{{ puntajeTotal }}</span>
           <span v-show="nivelCompactacionHeader < 4" class="puntaje-texto">
             {{ t('puntuacion.puntos') }}
@@ -48,10 +45,7 @@
           :aria-label="`${t('configuracion.cambiarNombre')}: ${nombreUsuario}`"
           @click="irAConfiguracionUsuario"
         >
-          <i
-            v-show="nivelCompactacionHeader < 3"
-            class="ti ti-user icono-sm icono-primario"
-          ></i>
+          <i v-show="nivelCompactacionHeader < 3" class="ti ti-user icono-sm icono-primario"></i>
           <span class="nombre-usuario-texto">{{ nombreUsuario }}</span>
         </button>
       </q-toolbar>
@@ -99,6 +93,16 @@
           </q-item>
 
           <q-separator class="separador-personalizado separador-menu" />
+
+          <q-item clickable to="/estadisticas" exact class="item-menu">
+            <q-item-section avatar>
+              <i class="ti ti-chart-bar icono-md icono-primario"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ t('menu.estadisticas') }}</q-item-label>
+              <q-item-label caption>{{ t('menu.estadisticasDescripcion') }}</q-item-label>
+            </q-item-section>
+          </q-item>
 
           <q-item clickable to="/configuracion" exact class="item-menu">
             <q-item-section avatar>

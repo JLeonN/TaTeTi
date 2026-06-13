@@ -77,7 +77,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { useTaTeTi } from 'src/components/Composables/useTaTeTi'
 import { useIA } from 'src/components/Composables/useIA'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
@@ -91,6 +92,8 @@ import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
 import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
+import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
+import { registroPartida } from 'src/Servicios/Estadisticas/RegistroPartida'
 
 const { t } = useI18n()
 const nombreIA = ref('')
@@ -117,6 +120,8 @@ const {
   procesarResultado,
   obtenerRacha,
   obtenerDerrotasConsecutivas,
+  obtenerEstadoPuntuacion,
+  obtenerProteccionActiva,
   calcularPuntosProximaVictoria,
   calcularPuntosProximaDerrota,
 } = usePuntuacion()
@@ -129,17 +134,13 @@ const mostrarModal = ref(false)
 const mostrarSelectorFicha = ref(false)
 const fichaSeleccionada = ref('X')
 const puntosGanadosPartida = ref(null)
-const proteccionActiva = ref(false)
 
 // Computeds para racha y derrotas actuales
 const rachaActual = computed(() => obtenerRacha(dificultadActual.value))
 const derrotasActuales = computed(() => obtenerDerrotasConsecutivas(dificultadActual.value))
-const puntosProximaVictoria = computed(() =>
-  calcularPuntosProximaVictoria(dificultadActual.value),
-)
-const puntosProximaDerrota = computed(() =>
-  calcularPuntosProximaDerrota(dificultadActual.value),
-)
+const proteccionActiva = computed(() => obtenerProteccionActiva(dificultadActual.value))
+const puntosProximaVictoria = computed(() => calcularPuntosProximaVictoria(dificultadActual.value))
+const puntosProximaDerrota = computed(() => calcularPuntosProximaDerrota(dificultadActual.value))
 const nombreJugadorX = computed(() =>
   fichaUsuario.value === 'X' ? nombreUsuario.value : nombreIA.value,
 )
@@ -162,15 +163,27 @@ onMounted(async () => {
   await cargarPuntuacion()
   await cargarContador()
   nombreIA.value = t('juego.nexus')
+  try {
+    await inicializarBaseEstadisticas()
+    await registroPartida.inicializar()
+    registroPartida.prepararTurnoUsuario()
+  } catch (error) {
+    console.error('Error al inicializar las estadísticas:', error)
+  }
 
   // Preparar intersticial para cuando se necesite
   await prepararIntersticial()
 })
 
 // Cambiar dificultad y reiniciar juego
-const cambiarDificultad = (nuevaDificultad) => {
+const cambiarDificultad = async (nuevaDificultad) => {
+  if (nuevaDificultad === dificultadActual.value) return
+  await registroPartida.abandonar('cambioDificultad')
   dificultadActual.value = nuevaDificultad
-  reiniciarJuego()
+  reiniciarJuegoBase(fichaUsuario.value)
+  mostrarModal.value = false
+  puntosGanadosPartida.value = null
+  registroPartida.prepararTurnoUsuario()
 }
 
 // Manejar jugada del usuario
@@ -185,8 +198,19 @@ const manejarJugada = async (indice) => {
     return
   }
 
+  await registroPartida.iniciarPartida({
+    dificultad: dificultadActual.value,
+    fichaUsuario: fichaUsuario.value,
+    fichaIA: fichaIA.value,
+    puntosIniciales: puntajeTotal.value,
+    estadoInicial: obtenerEstadoPuntuacion(dificultadActual.value),
+  })
+
   // Realizar jugada del usuario
   const jugadaExitosa = realizarJugada(indice)
+  if (jugadaExitosa) {
+    await registroPartida.registrarTurnoUsuario(indice, [...tablero.value])
+  }
 
   // Si la jugada fue exitosa y el juego no terminó, es turno de la IA
   if (jugadaExitosa && !juegoTerminado.value && turnoActual.value === fichaIA.value) {
@@ -210,6 +234,7 @@ const ejecutarTurnoIA = async () => {
   await new Promise((resolve) => setTimeout(resolve, delay))
 
   // Obtener jugada de la IA
+  registroPartida.iniciarTurnoIA()
   const indiceIA = ejecutarJugadaIA(
     tablero.value,
     dificultadActual.value,
@@ -222,17 +247,21 @@ const ejecutarTurnoIA = async () => {
 
   // Realizar jugada de la IA
   realizarJugada(indiceIA)
+  await registroPartida.registrarTurnoIA(indiceIA, [...tablero.value])
 
   console.log('📊 Estado del tablero DESPUÉS:', [...tablero.value])
 
   esperandoIA.value = false
+  if (!juegoTerminado.value) registroPartida.prepararTurnoUsuario()
 }
 
 // Reiniciar juego
-const reiniciarJuego = () => {
+const reiniciarJuego = async () => {
+  await registroPartida.abandonar('reinicio')
   reiniciarJuegoBase(fichaUsuario.value)
   mostrarModal.value = false
   puntosGanadosPartida.value = null
+  registroPartida.prepararTurnoUsuario()
 }
 
 const abrirSelectorFicha = () => {
@@ -244,7 +273,10 @@ const abrirSelectorFicha = () => {
 const confirmarFicha = async () => {
   if (!puedeSeleccionarFicha.value) return
   const guardada = await guardarFichaUsuario(fichaSeleccionada.value)
-  if (guardada) reiniciarJuegoBase(fichaUsuario.value)
+  if (guardada) {
+    reiniciarJuegoBase(fichaUsuario.value)
+    registroPartida.prepararTurnoUsuario()
+  }
 }
 
 const cancelarSeleccionFicha = () => {
@@ -267,7 +299,7 @@ watch(juegoTerminado, async (nuevoValor) => {
     // Procesar puntuación
     const resultadoPuntuacion = await procesarResultado(resultado, dificultadActual.value)
     puntosGanadosPartida.value = resultadoPuntuacion.puntosGanados
-    proteccionActiva.value = resultadoPuntuacion.proteccionActiva
+    await registroPartida.finalizar(resultado, resultadoPuntuacion, combinacionGanadora.value)
 
     console.log('🎯 Resultado procesado:', {
       resultado,
@@ -294,6 +326,22 @@ watch(juegoTerminado, async (nuevoValor) => {
       mostrarModal.value = true
     }, 800) // Delay para que se vea la línea ganadora primero
   }
+})
+
+const abandonarPorSalida = async () => {
+  try {
+    await registroPartida.abandonar('salidaPagina')
+  } catch (error) {
+    console.error('Error al registrar el abandono:', error)
+  }
+}
+
+onBeforeRouteLeave(async () => {
+  await abandonarPorSalida()
+})
+
+onBeforeUnmount(() => {
+  void abandonarPorSalida()
 })
 </script>
 
