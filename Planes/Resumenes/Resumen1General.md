@@ -1,16 +1,17 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 12 de junio de 2026. Versión documentada: `4.0.7`.
+> Vigencia: 13 de junio de 2026. Versión documentada: `4.0.7`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
 
-TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, configuración persistente, puntuación, publicidad AdMob, interfaz bilingüe y un sistema remoto de notas de actualización.
+TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz bilingüe y un sistema remoto de notas de actualización.
 
 ## Rutas
 
 - `/`: partida contra IA.
 - `/jugador-vs-jugador`: multijugador local.
+- `/estadisticas`: rendimiento e historial agregado de partidas contra NEXUS.
 - `/configuracion`: nombre e idioma.
 - Cualquier ruta desconocida: página 404.
 
@@ -20,6 +21,9 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `src/pages/JugarContraIA.vue`: orquesta juego, IA, ficha elegida, puntuación y resultado.
 - `src/pages/JugarMultijugador.vue`: orquesta el modo local para dos jugadores.
 - `src/pages/ConfiguracionPage.vue`: contiene las secciones de configuración.
+- `src/pages/EstadisticasPage.vue`: consulta y presenta estadísticas agregadas.
+- `src/Servicios/Estadisticas/`: esquema SQLite, registro transaccional y consultas.
+- `src/components/Estadisticas/`: filtros sticky y encabezados explicativos.
 - `src/components/Composables/`: estado y lógica compartida.
 - `src/components/TaTeTi/`: tablero, celdas, información de turno, dificultad y modales de resultado.
 - `src/components/Actualizacion/`: consulta de versión y modal de novedades.
@@ -57,6 +61,15 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `ficha_usuario_ia`: `X` u `O`.
 - `puntuacion_sistema`: puntos y rachas.
 - `contador_partidas_publicidad`: progreso hacia el siguiente intersticial.
+
+## Estadísticas con SQLite
+
+- La base `EstadisticasTaTeTi` registra partidas contra NEXUS y sus turnos.
+- En Android usa `@capacitor-community/sqlite`; en web usa `jeep-sqlite` sobre IndexedDB.
+- No existe límite artificial, limpieza automática ni botón para borrar estadísticas.
+- La página filtra visualmente por dificultad y ficha mediante chips.
+- Período, resultado, fechas y horarios activos siguen disponibles en los datos o consultas, pero no se muestran en la interfaz actual.
+- Leer `Planes/Resumenes/Resumen5Estadisticas.md` y `src/Servicios/Estadisticas/ContratoEstadisticas.md` antes de modificar este módulo.
 
 ## Interfaz global
 

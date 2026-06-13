@@ -9,7 +9,7 @@ Las estadísticas comenzarán a ser exactas desde la instalación de esta versi�
 ## Objetivo principal
 
 - Registrar de forma permanente todas las partidas contra la IA y sus turnos
-- Mostrar estadísticas generales y comparativas por dificultad, ficha, resultado y período
+- Mostrar estadísticas generales y comparativas con filtros visibles por dificultad y ficha
 - Medir duración de partidas y tiempos de los turnos del usuario
 - Analizar puntuación, rachas positivas, rachas negativas y uso del escudo
 - Incorporar gráficas claras y adaptadas a dispositivos móviles
@@ -52,7 +52,7 @@ Definir qué información se guardará y cómo se calcularán las estadísticas 
 - [x] Definir cómo registrar la activación, uso y desactivación del escudo
 - [x] Definir cómo contabilizar rachas positivas y episodios de racha negativa
 - [x] Definir acumulados de respaldo para estadísticas globales que deban conservarse de forma eficiente
-- [x] Definir la fecha inicial de recopilación para comunicar que no existen datos completos anteriores
+- [x] Definir y conservar la fecha inicial de recopilación como metadato interno
 
 ## FASE 2: Integrar SQLite
 
@@ -159,7 +159,7 @@ Crear una página móvil clara que priorice los datos principales y permita expl
 - [x] Agregar la ruta de estadísticas al router
 - [x] Agregar el acceso de estadísticas al menú lateral con texto traducido
 - [x] Crear traducciones completas para español e inglés
-- [x] Mostrar la fecha desde la que se recopilan estadísticas
+- [x] Mostrar un subtítulo permanente sin exponer la fecha inicial de recopilación
 - [x] Mostrar un estado vacío claro cuando todavía no existen partidas registradas
 - [x] Crear tarjetas para partidas, victorias, derrotas, empates, abandonos y porcentaje de victoria
 - [x] Crear una sección comparativa por dificultad
@@ -181,21 +181,22 @@ Crear una página móvil clara que priorice los datos principales y permita expl
 
 Permitir comparaciones visuales sin degradar el rendimiento ni sobrecargar la pantalla.
 
-- [x] Definir filtros por período, dificultad, ficha y resultado
-- [x] Incluir opciones de período total, últimas partidas y rango de fechas
-- [x] Mantener filtros compatibles con consultas SQLite paginadas
+- [x] Conservar soporte interno de consultas por período, dificultad, ficha, resultado y fechas
+- [x] Mostrar únicamente filtros por dificultad y ficha mediante chips
+- [x] Crear una barra sticky que permanezca debajo del header durante el desplazamiento
+- [x] Reiniciar los filtros visibles a Todos/Todas al volver a la página
 - [x] Evaluar una librería de gráficas compatible con Vue 3, Quasar, Vite y Capacitor
 - [x] Instalar una librería solo si aporta mejor accesibilidad, mantenimiento y rendimiento que SVG o CSS
 - [x] Crear un gráfico de distribución de victorias, derrotas y empates
 - [x] Crear barras comparativas por dificultad
 - [x] Crear una línea de evolución del puntaje
-- [x] Crear una gráfica de puntos ganados y perdidos por período
+- [x] Crear una gráfica de puntos ganados y perdidos
 - [x] Crear una gráfica de duración de partidas y turnos
 - [x] Crear un mapa de calor del tablero para posiciones utilizadas
 - [x] Crear una visualización de líneas ganadoras frecuentes
 - [x] Mostrar valores textuales equivalentes para no depender solo de colores o gráficas
 - [x] Evitar renderizar miles de puntos sin agregación o paginación
-- [x] Actualizar todas las secciones al cambiar filtros sin realizar consultas duplicadas
+- [x] Actualizar todas las secciones al cambiar dificultad o ficha sin realizar consultas duplicadas
 
 ## FASE 8: Optimizar historial y mantenimiento
 
@@ -242,12 +243,12 @@ Validar de forma ejecutable por IA y revisable por humano que el registro, los c
 - [ ] Verificar cantidad de rachas negativas, peor racha y recuperación posterior
 - [ ] Activar el escudo y verificar activación, derrotas protegidas y desactivación
 - [x] Verificar puntos ganados, perdidos, balance y máximo histórico
-- [x] Verificar estadísticas generales, por dificultad, ficha, resultado y período
-- [x] Verificar últimas 10, 25 y 50 partidas
+- [x] Verificar estadísticas generales y filtros visibles por dificultad y ficha
+- [x] Verificar que las consultas históricas por resultado, período y fechas sigan disponibles internamente
 - [x] Verificar que todas las gráficas coincidan con sus valores textuales
 - [x] Verificar estados vacíos, una sola partida y grandes cantidades de partidas
 - [x] Generar miles de partidas de prueba y medir carga, filtros y consultas
-- [ ] Verificar funcionamiento en Android real
+- [x] Compilar, instalar y abrir la app en Android real
 - [x] Verificar comportamiento de desarrollo en navegador
 - [x] Verificar textos completos en español e inglés
 - [x] Verificar que no exista opción visible ni interna para borrar el historial
@@ -266,5 +267,5 @@ Validar de forma ejecutable por IA y revisable por humano que el registro, los c
 - [ ] Fase Testing
 
 Fecha de creación: 12 de Junio 2026
-Fecha de última actualización: 12 de Junio 2026
+Fecha de última actualización: 13 de Junio 2026
 Estado: EN PROCESO
