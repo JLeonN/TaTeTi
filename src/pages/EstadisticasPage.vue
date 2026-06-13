@@ -117,8 +117,8 @@
               </div>
               <div class="leyenda-resultados">
                 <span><i class="marca victoria"></i>{{ t('estadisticas.victorias') }}</span>
-                <span><i class="marca derrota"></i>{{ t('estadisticas.derrotas') }}</span>
                 <span><i class="marca empate"></i>{{ t('estadisticas.empates') }}</span>
+                <span><i class="marca derrota"></i>{{ t('estadisticas.derrotas') }}</span>
               </div>
             </div>
           </article>
@@ -509,8 +509,8 @@ const opcionesFicha = computed(() => [
 const opcionesResultado = computed(() => [
   { label: t('estadisticas.todos'), value: 'todos' },
   { label: t('estadisticas.victorias'), value: 'victoria' },
-  { label: t('estadisticas.derrotas'), value: 'derrota' },
   { label: t('estadisticas.empates'), value: 'empate' },
+  { label: t('estadisticas.derrotas'), value: 'derrota' },
   { label: t('estadisticas.abandonos'), value: 'abandono' },
 ])
 
@@ -532,14 +532,14 @@ const tarjetasResumen = computed(() => [
     icono: 'ti-trophy',
   },
   {
-    etiqueta: t('estadisticas.derrotas'),
-    valor: numero(datos.value.resumen.derrotas),
-    icono: 'ti-arrow-down',
-  },
-  {
     etiqueta: t('estadisticas.empates'),
     valor: numero(datos.value.resumen.empates),
     icono: 'ti-equal',
+  },
+  {
+    etiqueta: t('estadisticas.derrotas'),
+    valor: numero(datos.value.resumen.derrotas),
+    icono: 'ti-arrow-down',
   },
   {
     etiqueta: t('estadisticas.abandonos'),
@@ -579,11 +579,11 @@ const fichasCompletas = computed(() =>
 const fondoGraficaResultados = computed(() => {
   const total = Math.max(1, numero(datos.value.resumen.finalizadas))
   const victorias = (numero(datos.value.resumen.victorias) / total) * 100
-  const derrotas = victorias + (numero(datos.value.resumen.derrotas) / total) * 100
+  const empates = victorias + (numero(datos.value.resumen.empates) / total) * 100
   return `conic-gradient(
     var(--color-exito) 0 ${victorias}%,
-    var(--color-error) ${victorias}% ${derrotas}%,
-    var(--color-turno-activo) ${derrotas}% 100%
+    var(--color-turno-activo) ${victorias}% ${empates}%,
+    var(--color-error) ${empates}% 100%
   )`
 })
 const barrasPuntuacion = computed(() => {
@@ -658,8 +658,8 @@ const nombreDificultadOpcional = (dificultad) =>
 const nombreResultado = (resultado) => {
   const claves = {
     victoria: 'victorias',
-    derrota: 'derrotas',
     empate: 'empates',
+    derrota: 'derrotas',
     abandono: 'abandonos',
   }
   return t(`estadisticas.${claves[resultado]}`)
