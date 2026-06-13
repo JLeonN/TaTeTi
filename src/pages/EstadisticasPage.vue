@@ -349,7 +349,7 @@
           </article>
           <article class="panel">
             <h2>{{ t('estadisticas.movimientos') }}</h2>
-            <div class="cuadricula-datos">
+            <div class="cuadricula-datos cuadricula-movimientos">
               <DatoSimple
                 :etiqueta="t('estadisticas.victoriasMinimas')"
                 :valor="numero(datos.movimientos.victoriasMinimas)"
@@ -391,46 +391,34 @@
               />
             </div>
           </article>
-          <article class="panel">
-            <h2>{{ t('estadisticas.horarios') }}</h2>
-            <div v-if="datos.actividad.length" class="lista-simple">
-              <span v-for="fila in datos.actividad" :key="fila.hora">
-                <strong>{{ formatoHora(fila.hora) }}</strong>
-                {{ t('estadisticas.cantidadPartidas', { cantidad: numero(fila.cantidad) }) }}
-              </span>
-              <span v-for="fila in datos.actividadDias" :key="`dia-${fila.dia}`">
-                <strong>{{ nombreDia(fila.dia) }}</strong>
-                {{ t('estadisticas.cantidadPartidas', { cantidad: numero(fila.cantidad) }) }}
-              </span>
-            </div>
-            <span v-else class="texto-secundario">{{ t('estadisticas.sinDatos') }}</span>
-          </article>
         </section>
 
         <section class="cuadricula-paneles">
           <article class="panel">
             <h2>{{ t('estadisticas.mapaPosiciones') }}</h2>
-            <div class="mapa-tablero">
-              <div
-                v-for="posicion in mapaPosiciones"
-                :key="posicion.indice"
-                class="casilla-mapa"
-                :style="{ opacity: posicion.opacidad }"
-              >
-                {{ posicion.cantidad }}
+            <div class="posiciones-lineas">
+              <div class="mapa-tablero">
+                <div
+                  v-for="posicion in mapaPosiciones"
+                  :key="posicion.indice"
+                  class="casilla-mapa"
+                  :style="{ opacity: posicion.opacidad }"
+                >
+                  {{ posicion.cantidad }}
+                </div>
               </div>
-            </div>
-          </article>
-          <article class="panel">
-            <h2>{{ t('estadisticas.lineasGanadoras') }}</h2>
-            <div class="lista-simple">
-              <span v-for="linea in datos.lineas" :key="linea.tipo">
-                <strong>{{ nombreLinea(linea.tipo) }}</strong>
-                {{ numero(linea.cantidad) }}
-              </span>
-              <span v-if="!datos.lineas.length" class="texto-secundario">
-                {{ t('estadisticas.sinDatos') }}
-              </span>
+              <div class="lineas-ganadoras">
+                <h3>{{ t('estadisticas.lineasGanadoras') }}</h3>
+                <div class="lista-simple">
+                  <span v-for="linea in datos.lineas" :key="linea.tipo">
+                    <strong>{{ nombreLinea(linea.tipo) }}</strong>
+                    {{ numero(linea.cantidad) }}
+                  </span>
+                  <span v-if="!datos.lineas.length" class="texto-secundario">
+                    {{ t('estadisticas.sinDatos') }}
+                  </span>
+                </div>
+              </div>
             </div>
           </article>
         </section>
@@ -618,11 +606,19 @@ const barrasPuntuacion = computed(() => {
   ]
 })
 const barrasTiempos = computed(() => {
-  const filas = datos.value.tiemposComparados.map((fila) => ({
-    etiqueta: `${nombreDificultad(fila.dificultad)} · ${nombreResultado(fila.resultado)}`,
-    valor: numero(fila.duracionPartidaMs),
-    valorTexto: duracion(fila.duracionPartidaMs),
-  }))
+  const ordenDificultades = { facil: 0, normal: 1, dificil: 2 }
+  const ordenResultados = { victoria: 0, empate: 1, derrota: 2 }
+  const filas = [...datos.value.tiemposComparados]
+    .sort(
+      (filaA, filaB) =>
+        ordenDificultades[filaA.dificultad] - ordenDificultades[filaB.dificultad] ||
+        ordenResultados[filaA.resultado] - ordenResultados[filaB.resultado],
+    )
+    .map((fila) => ({
+      etiqueta: `${nombreDificultad(fila.dificultad)} · ${nombreResultado(fila.resultado)}`,
+      valor: numero(fila.duracionPartidaMs),
+      valorTexto: duracion(fila.duracionPartidaMs),
+    }))
   const maximo = Math.max(1, ...filas.map((fila) => fila.valor))
   return filas.map((fila) => ({
     ...fila,
@@ -669,11 +665,6 @@ const nombreResultado = (resultado) => {
   return t(`estadisticas.${claves[resultado]}`)
 }
 const nombreLinea = (tipo) => t(`estadisticas.linea${tipo[0].toUpperCase()}${tipo.slice(1)}`)
-const nombreDia = (dia) => {
-  const fecha = new Date(2026, 5, 7 + numero(dia))
-  return new Intl.DateTimeFormat(locale.value, { weekday: 'long' }).format(fecha)
-}
-const formatoHora = (hora) => `${String(numero(hora)).padStart(2, '0')}:00`
 
 const cargarEstadisticas = async () => {
   cargando.value = true
@@ -779,6 +770,10 @@ onMounted(cargarEstadisticas)
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+}
+.cuadricula-paneles > .panel:only-child,
+.cuadricula-paneles > .panel:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
 }
 .grafica-circular-contenedor {
   display: flex;
@@ -896,6 +891,9 @@ onMounted(cargarEstadisticas)
   gap: 8px;
   margin-top: 12px;
 }
+.cuadricula-movimientos {
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+}
 .dato-simple {
   min-width: 0;
   display: flex;
@@ -998,6 +996,12 @@ onMounted(cargarEstadisticas)
   max-height: 0;
   opacity: 0;
 }
+.posiciones-lineas {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(220px, 1fr);
+  align-items: center;
+  gap: 32px;
+}
 .mapa-tablero {
   width: min(280px, 100%);
   aspect-ratio: 1;
@@ -1005,6 +1009,10 @@ onMounted(cargarEstadisticas)
   grid-template-columns: repeat(3, 1fr);
   gap: 6px;
   margin: 0 auto;
+}
+.lineas-ganadoras h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
 }
 .casilla-mapa {
   display: grid;
@@ -1041,6 +1049,9 @@ onMounted(cargarEstadisticas)
   .cuadricula-datos {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .cuadricula-movimientos {
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  }
 }
 @media (max-width: 600px) {
   .pagina-estadisticas {
@@ -1057,6 +1068,13 @@ onMounted(cargarEstadisticas)
   }
   .grafica-circular-contenedor {
     flex-direction: column;
+  }
+  .posiciones-lineas {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .cuadricula-movimientos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 </style>
