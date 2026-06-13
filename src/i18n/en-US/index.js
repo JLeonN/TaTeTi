@@ -91,7 +91,6 @@ export default {
   estadisticas: {
     titulo: 'Statistics',
     desde: 'Data recorded since {fecha}',
-    actualizar: 'Refresh statistics',
     cargando: 'Loading statistics...',
     errorCarga: 'Statistics could not be loaded.',
     sinDatosTitulo: 'No statistics yet',

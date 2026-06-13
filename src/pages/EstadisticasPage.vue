@@ -11,14 +11,6 @@
             {{ t('estadisticas.desde', { fecha: fechaInicioRecopilacion }) }}
           </p>
         </div>
-        <q-btn
-          flat
-          round
-          icon="refresh"
-          :aria-label="t('estadisticas.actualizar')"
-          :loading="cargando"
-          @click="cargarEstadisticas"
-        />
       </header>
 
       <section class="panel filtros-estadisticas">
