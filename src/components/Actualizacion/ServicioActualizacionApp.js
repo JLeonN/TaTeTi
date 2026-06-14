@@ -1,7 +1,14 @@
+import { IDIOMA_PREDETERMINADO } from '../../i18n/ConfiguracionIdiomas.js'
+
 const URL_VERSION_REMOTA = process.env.URL_VERSION_REMOTA
 const URL_PLAY_STORE_POR_DEFECTO = process.env.URL_PLAY_STORE
 const VERSION_INSTALADA = process.env.VERSION_APP
 const TIEMPO_LIMITE_MS = 8000
+const PAQUETE_ANDROID = 'com.leotateti.tateti'
+const MAXIMO_GRUPOS = 4
+const MAXIMO_NOVEDADES = 8
+const MAXIMO_CARACTERES_APARTADO = 80
+const MAXIMO_CARACTERES_NOVEDAD = 500
 
 const crearEstadoSinActualizacion = () => ({
   hayActualizacion: false,
@@ -47,13 +54,18 @@ const normalizarGrupos = (cambios) => {
   }
 
   const grupos = []
+  let cantidadNovedades = 0
 
-  cambios.forEach((cambio) => {
+  cambios.slice(0, MAXIMO_GRUPOS).forEach((cambio) => {
     if (typeof cambio === 'string' && cambio.trim()) {
+      if (cantidadNovedades >= MAXIMO_NOVEDADES) {
+        return
+      }
       grupos.push({
         apartado: '',
-        novedades: [cambio.trim()],
+        novedades: [cambio.trim().slice(0, MAXIMO_CARACTERES_NOVEDAD)],
       })
+      cantidadNovedades += 1
       return
     }
 
@@ -63,13 +75,18 @@ const normalizarGrupos = (cambios) => {
 
     const novedades = cambio.novedades
       .filter((novedad) => typeof novedad === 'string' && novedad.trim())
-      .map((novedad) => novedad.trim())
+      .slice(0, Math.max(0, MAXIMO_NOVEDADES - cantidadNovedades))
+      .map((novedad) => novedad.trim().slice(0, MAXIMO_CARACTERES_NOVEDAD))
 
     if (novedades.length > 0) {
       grupos.push({
-        apartado: typeof cambio.apartado === 'string' ? cambio.apartado.trim() : '',
+        apartado:
+          typeof cambio.apartado === 'string'
+            ? cambio.apartado.trim().slice(0, MAXIMO_CARACTERES_APARTADO)
+            : '',
         novedades,
       })
+      cantidadNovedades += novedades.length
     }
   })
 
@@ -85,9 +102,34 @@ const normalizarCambios = (cambios, idiomaActual) => {
     return []
   }
 
-  const cambiosDelIdioma = cambios[idiomaActual] ?? cambios['es-AR']
+  const cambiosDelIdioma = cambios[idiomaActual] ?? cambios[IDIOMA_PREDETERMINADO]
   return normalizarGrupos(cambiosDelIdioma)
 }
+
+const validarUrlPlayStore = (url) => {
+  if (typeof url !== 'string' || !url.trim()) {
+    return ''
+  }
+
+  try {
+    const destino = new URL(url.trim())
+    const esRutaAplicacion = destino.pathname === '/store/apps/details'
+    const esPaqueteEsperado = destino.searchParams.get('id') === PAQUETE_ANDROID
+    const esDominioPermitido = destino.hostname === 'play.google.com'
+
+    return destino.protocol === 'https:' &&
+      esDominioPermitido &&
+      esRutaAplicacion &&
+      esPaqueteEsperado
+      ? destino.toString()
+      : ''
+  } catch {
+    return ''
+  }
+}
+
+const obtenerUrlPlayStoreSegura = (url) =>
+  validarUrlPlayStore(url) || validarUrlPlayStore(URL_PLAY_STORE_POR_DEFECTO)
 
 const obtenerEstadoActualizacion = async (idiomaActual) => {
   const estadoSinActualizacion = crearEstadoSinActualizacion()
@@ -119,10 +161,7 @@ const obtenerEstadoActualizacion = async (idiomaActual) => {
       hayActualizacion: true,
       versionInstalada: VERSION_INSTALADA,
       versionDisponible,
-      urlPlayStore:
-        typeof datos.urlPlayStore === 'string' && datos.urlPlayStore.trim()
-          ? datos.urlPlayStore.trim()
-          : URL_PLAY_STORE_POR_DEFECTO,
+      urlPlayStore: obtenerUrlPlayStoreSegura(datos.urlPlayStore),
       cambios: normalizarCambios(datos.cambios, idiomaActual),
     }
   } catch {
@@ -133,7 +172,10 @@ const obtenerEstadoActualizacion = async (idiomaActual) => {
 }
 
 const abrirActualizacionEnTienda = (urlPlayStore = URL_PLAY_STORE_POR_DEFECTO) => {
-  const urlDestino = urlPlayStore || URL_PLAY_STORE_POR_DEFECTO
+  const urlDestino = obtenerUrlPlayStoreSegura(urlPlayStore)
+  if (!urlDestino) {
+    return
+  }
   const ventana = window.open(urlDestino, '_blank')
 
   if (ventana) {
@@ -148,5 +190,7 @@ export {
   abrirActualizacionEnTienda,
   crearEstadoSinActualizacion,
   normalizarCambios,
+  obtenerUrlPlayStoreSegura,
   obtenerEstadoActualizacion,
+  validarUrlPlayStore,
 }

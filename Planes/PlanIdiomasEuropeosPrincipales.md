@@ -31,24 +31,24 @@ Agregar portugués de Brasil, francés de Francia, italiano y alemán a TaTeTi. 
 
 Crear una única fuente de verdad para los idiomas disponibles y eliminar las listas duplicadas del flujo actual.
 
-- [ ] Crear `src/i18n/IdiomasApp.json` en UTF-8
-- [ ] Definir para cada idioma su código de aplicación, código de Google Play, nombre nativo, región, alias de detección y estado habilitado
-- [ ] Identificar explícitamente `es-AR` como idioma fuente y predeterminado, y `en-US` como fallback
-- [ ] Incluir inicialmente `es-AR`, `en-US`, `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
-- [ ] Definir un esquema estable para el catálogo y rechazar códigos duplicados, alias repetidos o idiomas sin código de Google Play
-- [ ] Migrar los módulos existentes a rutas nuevas con PascalCase, por ejemplo `src/i18n/EsAR/Index.js` y `src/i18n/EnUS/Index.js`
-- [ ] Crear los nuevos módulos bajo rutas PascalCase, por ejemplo `PtBR/Index.js`, sin usar códigos BCP 47 como nombres de carpetas
-- [ ] Refactorizar `src/i18n/index.js` para registrar solamente módulos locales conocidos y comprobar que coincidan con los idiomas habilitados
-- [ ] No construir rutas de importación directamente desde valores JSON ni aceptar rutas arbitrarias en el catálogo
-- [ ] Crear una función reutilizable que canonicalice códigos BCP 47 y normalice los idiomas del sistema a uno habilitado
-- [ ] Evaluar `navigator.languages` en orden de preferencia antes de recurrir a `navigator.language`
-- [ ] Admitir coincidencia exacta, alias declarado y coincidencia por idioma base antes de usar el predeterminado
-- [ ] Reemplazar la detección binaria de español o inglés en `src/boot/i18n.js`
-- [ ] Reutilizar la misma normalización en `src/components/Composables/useIdioma.js`
-- [ ] Validar el idioma guardado antes de asignarlo y usar el fallback cuando ya no esté habilitado
-- [ ] Actualizar `document.documentElement.lang` cada vez que cambie el idioma
-- [ ] Crear `Scripts/ValidarIdiomas.js` para validar catálogo, módulos, claves, interpolaciones y códigos de Google Play
-- [ ] Agregar un comando npm para ejecutar la validación de idiomas de forma independiente y dentro del release
+- [x] Crear `src/i18n/IdiomasApp.json` en UTF-8
+- [x] Definir para cada idioma su código de aplicación, código de Google Play, nombre nativo, región, alias de detección y estado habilitado
+- [x] Identificar explícitamente `es-AR` como idioma fuente y predeterminado, y `en-US` como fallback
+- [x] Incluir inicialmente `es-AR`, `en-US`, `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
+- [x] Definir un esquema estable para el catálogo y rechazar códigos duplicados, alias repetidos o idiomas sin código de Google Play
+- [x] Migrar los módulos existentes a rutas nuevas con PascalCase, por ejemplo `src/i18n/EsAR/Index.js` y `src/i18n/EnUS/Index.js`
+- [x] Crear los nuevos módulos bajo rutas PascalCase, por ejemplo `PtBR/Index.js`, sin usar códigos BCP 47 como nombres de carpetas
+- [x] Refactorizar `src/i18n/index.js` para registrar solamente módulos locales conocidos y comprobar que coincidan con los idiomas habilitados
+- [x] No construir rutas de importación directamente desde valores JSON ni aceptar rutas arbitrarias en el catálogo
+- [x] Crear una función reutilizable que canonicalice códigos BCP 47 y normalice los idiomas del sistema a uno habilitado
+- [x] Evaluar `navigator.languages` en orden de preferencia antes de recurrir a `navigator.language`
+- [x] Admitir coincidencia exacta, alias declarado y coincidencia por idioma base antes de usar el predeterminado
+- [x] Reemplazar la detección binaria de español o inglés en `src/boot/i18n.js`
+- [x] Reutilizar la misma normalización en `src/components/Composables/useIdioma.js`
+- [x] Validar el idioma guardado antes de asignarlo y usar el fallback cuando ya no esté habilitado
+- [x] Actualizar `document.documentElement.lang` cada vez que cambie el idioma
+- [x] Crear `Scripts/ValidarIdiomas.js` para validar catálogo, módulos, claves, interpolaciones y códigos de Google Play
+- [x] Agregar un comando npm para ejecutar la validación de idiomas de forma independiente y dentro del release
 
 ## FASE 2: Convertir el selector en una interfaz dinámica
 
@@ -56,14 +56,14 @@ Crear una única fuente de verdad para los idiomas disponibles y eliminar las li
 
 Hacer que la configuración de idioma consuma el catálogo central sin agregar botones manuales por cada idioma.
 
-- [ ] Refactorizar `ConfiguracionIdioma.vue` para renderizar los idiomas habilitados desde `IdiomasApp.json`
-- [ ] Mostrar cada idioma mediante su nombre nativo para que siempre sea reconocible
-- [ ] Sustituir el cálculo binario del nombre actual por una búsqueda en el catálogo
-- [ ] Mantener selección, guardado, cancelación y notificaciones existentes
-- [ ] Ajustar el modal para que la lista siga siendo usable con seis idiomas
-- [ ] Incorporar desplazamiento interno, foco visible y navegación por teclado en la lista
+- [x] Refactorizar `ConfiguracionIdioma.vue` para renderizar los idiomas habilitados desde `IdiomasApp.json`
+- [x] Mostrar cada idioma mediante su nombre nativo para que siempre sea reconocible
+- [x] Sustituir el cálculo binario del nombre actual por una búsqueda en el catálogo
+- [x] Mantener selección, guardado, cancelación y notificaciones existentes
+- [x] Ajustar el modal para que la lista siga siendo usable con seis idiomas
+- [x] Incorporar desplazamiento interno, foco visible y navegación por teclado en la lista
 - [ ] Verificar que el idioma seleccionado se anuncie correctamente a tecnologías de asistencia
-- [ ] Verificar que los estilos usen únicamente variables de `src/css/Variables.css`
+- [x] Verificar que los estilos usen únicamente variables de `src/css/Variables.css`
 
 ## FASE 3: Traducir la aplicación
 
@@ -71,19 +71,19 @@ Hacer que la configuración de idioma consuma el catálogo central sin agregar b
 
 Agregar traducciones completas y consistentes para portugués, francés, italiano y alemán.
 
-- [ ] Crear `src/i18n/PtBR/Index.js`
-- [ ] Crear `src/i18n/FrFR/Index.js`
-- [ ] Crear `src/i18n/ItIT/Index.js`
-- [ ] Crear `src/i18n/DeDE/Index.js`
-- [ ] Conservar exactamente la misma estructura de claves que `es-AR` y `en-US`
-- [ ] Traducir textos generales, configuración, menú, juego, puntuación, estadísticas y actualización
-- [ ] Conservar interpolaciones como `{puntos}`, `{victorias}`, `{partidas}` y `{cantidad}`
-- [ ] Auditar componentes y páginas para detectar textos visibles fuera de `vue-i18n`
-- [ ] Mover a `vue-i18n` cualquier texto visible que todavía esté escrito directamente en la interfaz
-- [ ] Traducir `ErrorNotFound.vue` y eliminar los valores visibles fijos de los componentes compartidos, como los textos predeterminados de `ModalConfirmacion.vue`
-- [ ] Revisar pluralización y concordancia en textos que dependen de cantidades, sin concatenar singulares y plurales manualmente
-- [ ] Usar `Intl.NumberFormat` y formatos dependientes del idioma cuando se muestren números, porcentajes, fechas o duraciones
-- [ ] Revisar que el vocabulario del juego sea natural y consistente en cada idioma
+- [x] Crear `src/i18n/PtBR/Index.js`
+- [x] Crear `src/i18n/FrFR/Index.js`
+- [x] Crear `src/i18n/ItIT/Index.js`
+- [x] Crear `src/i18n/DeDE/Index.js`
+- [x] Conservar exactamente la misma estructura de claves que `es-AR` y `en-US`
+- [x] Traducir textos generales, configuración, menú, juego, puntuación, estadísticas y actualización
+- [x] Conservar interpolaciones como `{puntos}`, `{victorias}`, `{partidas}` y `{cantidad}`
+- [x] Auditar componentes y páginas para detectar textos visibles fuera de `vue-i18n`
+- [x] Mover a `vue-i18n` cualquier texto visible que todavía esté escrito directamente en la interfaz
+- [x] Traducir `ErrorNotFound.vue` y eliminar los valores visibles fijos de los componentes compartidos, como los textos predeterminados de `ModalConfirmacion.vue`
+- [x] Revisar pluralización y concordancia en textos que dependen de cantidades, sin concatenar singulares y plurales manualmente
+- [x] Usar `Intl.NumberFormat` y formatos dependientes del idioma cuando se muestren números, porcentajes, fechas o duraciones
+- [x] Revisar que el vocabulario del juego sea natural y consistente en cada idioma
 
 ## FASE 4: Versionar la ficha de Google Play
 
@@ -91,17 +91,17 @@ Agregar traducciones completas y consistentes para portugués, francés, italian
 
 Mantener en el repositorio los textos oficiales de Google Play para todos los idiomas publicados.
 
-- [ ] Crear la carpeta `PublicacionGooglePlay`
-- [ ] Crear `PublicacionGooglePlay/FichaGooglePlay.json` en UTF-8
-- [ ] Definir por idioma el nombre de la app, descripción corta y descripción completa
-- [ ] Incluir `es-419`, `en-US`, `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
-- [ ] Validar los límites vigentes de Google Play: 30 caracteres para el nombre, 80 para la descripción corta y 4000 para la descripción completa
-- [ ] Mantener el mismo posicionamiento y las mismas funciones destacadas en todos los idiomas
-- [ ] Evitar afirmaciones promocionales no comprobables o términos que incumplan las políticas de metadatos
-- [ ] Documentar en el mismo archivo o en un campo descriptivo la correspondencia entre idioma de app y código de Google Play
-- [ ] Mantener el archivo como datos puros y no guardar credenciales, tokens ni identificadores sensibles de Play Console
-- [ ] Revisar si las capturas contienen texto y preparar recursos localizados solo cuando aporten valor
-- [ ] Preparar los textos finales para cargarlos manualmente en Play Console
+- [x] Crear la carpeta `PublicacionGooglePlay`
+- [x] Crear `PublicacionGooglePlay/FichaGooglePlay.json` en UTF-8
+- [x] Definir por idioma el nombre de la app, descripción corta y descripción completa
+- [x] Incluir `es-419`, `en-US`, `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
+- [x] Validar los límites vigentes de Google Play: 30 caracteres para el nombre, 80 para la descripción corta y 4000 para la descripción completa
+- [x] Mantener el mismo posicionamiento y las mismas funciones destacadas en todos los idiomas
+- [x] Evitar afirmaciones promocionales no comprobables o términos que incumplan las políticas de metadatos
+- [x] Documentar en el mismo archivo o en un campo descriptivo la correspondencia entre idioma de app y código de Google Play
+- [x] Mantener el archivo como datos puros y no guardar credenciales, tokens ni identificadores sensibles de Play Console
+- [x] Revisar si las capturas contienen texto y preparar recursos localizados solo cuando aporten valor
+- [x] Preparar los textos finales para cargarlos manualmente en Play Console
 
 ## FASE 5: Generalizar la skill de notas del modal
 
@@ -109,21 +109,21 @@ Mantener en el repositorio los textos oficiales de Google Play para todos los id
 
 Hacer que `notas-modal` detecte los idiomas de cada proyecto y aplique novedades sin imponer una combinación fija.
 
-- [ ] Actualizar la documentación de la skill global `notas-modal`
-- [ ] Modificar `scripts/NotasModal.py` para leer primero un catálogo de idiomas del proyecto cuando exista
-- [ ] Detectar `src/i18n/IdiomasApp.json` como contrato preferente en TaTeTi
-- [ ] Incorporar un fallback que detecte idiomas desde la estructura i18n o desde las claves existentes de `version.json`
-- [ ] Usar español como idioma fuente predeterminado cuando el proyecto no declare otro idioma fuente
-- [ ] Reemplazar los argumentos fijos `--novedades-es` y `--novedades-en` por un archivo JSON estructurado por código de idioma
-- [ ] Validar esquema, códigos, cantidad máxima de ítems y longitud antes de modificar el archivo de destino
-- [ ] Resolver y validar rutas para impedir escrituras fuera del repositorio objetivo
-- [ ] Mantener compatibilidad con proyectos antiguos que solo tengan español o español e inglés
-- [ ] Reemplazar únicamente `cambios` y conservar los demás campos de `version.json`
-- [ ] Generar el apartado de novedades traducido de forma natural para cada idioma detectado
-- [ ] Validar que todos los idiomas habilitados tengan novedades antes de aplicar el archivo
-- [ ] Escribir primero en un archivo temporal y reemplazar el destino de forma atómica para evitar un JSON truncado
-- [ ] Evitar interpolar traducciones dentro de comandos de shell para no depender del escapado de comillas o caracteres especiales
-- [ ] Actualizar los ejemplos de uso y la salida final de la skill
+- [x] Actualizar la documentación de la skill global `notas-modal`
+- [x] Modificar `scripts/NotasModal.py` para leer primero un catálogo de idiomas del proyecto cuando exista
+- [x] Detectar `src/i18n/IdiomasApp.json` como contrato preferente en TaTeTi
+- [x] Incorporar un fallback que detecte idiomas desde la estructura i18n o desde las claves existentes de `version.json`
+- [x] Usar español como idioma fuente predeterminado cuando el proyecto no declare otro idioma fuente
+- [x] Reemplazar los argumentos fijos `--novedades-es` y `--novedades-en` por un archivo JSON estructurado por código de idioma
+- [x] Validar esquema, códigos, cantidad máxima de ítems y longitud antes de modificar el archivo de destino
+- [x] Resolver y validar rutas para impedir escrituras fuera del repositorio objetivo
+- [x] Mantener compatibilidad con proyectos antiguos que solo tengan español o español e inglés
+- [x] Reemplazar únicamente `cambios` y conservar los demás campos de `version.json`
+- [x] Generar el apartado de novedades traducido de forma natural para cada idioma detectado
+- [x] Validar que todos los idiomas habilitados tengan novedades antes de aplicar el archivo
+- [x] Escribir primero en un archivo temporal y reemplazar el destino de forma atómica para evitar un JSON truncado
+- [x] Evitar interpolar traducciones dentro de comandos de shell para no depender del escapado de comillas o caracteres especiales
+- [x] Actualizar los ejemplos de uso y la salida final de la skill
 
 ## FASE 6: Generalizar la skill de release
 
@@ -131,16 +131,16 @@ Hacer que `notas-modal` detecte los idiomas de cada proyecto y aplique novedades
 
 Hacer que `release-notas-de-parche` prepare notas para los idiomas reales del proyecto.
 
-- [ ] Actualizar la documentación de la skill global `release-notas-de-parche`
-- [ ] Reutilizar el mismo orden de detección de idiomas definido para `notas-modal`
-- [ ] Usar español como idioma fuente predeterminado cuando el proyecto no declare otro
-- [ ] Eliminar la obligación fija de entregar únicamente `es-419` y `en-US`
-- [ ] Generar una sección de notas por cada código de Google Play detectado
-- [ ] Mantener el límite máximo de 450 caracteres por idioma
-- [ ] Detener el release si falta una traducción requerida por un idioma habilitado
-- [ ] Ejecutar el validador de idiomas y metadatos antes del build y antes de crear commit o tag
-- [ ] Mantener sin cambios las reglas de AdMob, compilación, commit, tag, ausencia de push y apertura final de Android Studio
-- [ ] Verificar que proyectos monolingües y bilingües sigan funcionando sin configuración adicional
+- [x] Actualizar la documentación de la skill global `release-notas-de-parche`
+- [x] Reutilizar el mismo orden de detección de idiomas definido para `notas-modal`
+- [x] Usar español como idioma fuente predeterminado cuando el proyecto no declare otro
+- [x] Eliminar la obligación fija de entregar únicamente `es-419` y `en-US`
+- [x] Generar una sección de notas por cada código de Google Play detectado
+- [x] Mantener el límite máximo de 450 caracteres por idioma
+- [x] Detener el release si falta una traducción requerida por un idioma habilitado
+- [x] Ejecutar el validador de idiomas y metadatos antes del build y antes de crear commit o tag
+- [x] Mantener sin cambios las reglas de AdMob, compilación, commit, tag, ausencia de push y apertura final de Android Studio
+- [x] Verificar que proyectos monolingües y bilingües sigan funcionando sin configuración adicional
 
 ## FASE 7: Endurecer el contrato remoto de actualización
 
@@ -148,13 +148,13 @@ Hacer que `release-notas-de-parche` prepare notas para los idiomas reales del pr
 
 Evitar que datos remotos inválidos, excesivos o manipulados alteren el flujo de actualización.
 
-- [ ] Validar que `urlPlayStore` use HTTPS, el dominio oficial `play.google.com` y el identificador esperado `com.leotateti.tateti`
-- [ ] Ignorar cualquier URL remota que no cumpla la lista permitida y usar `URL_PLAY_STORE_POR_DEFECTO`
-- [ ] Limitar la cantidad de apartados, novedades y caracteres aceptados desde `version.json`
-- [ ] Validar el tipo y tamaño razonable de los campos antes de mostrarlos
-- [ ] Mantener el renderizado como texto y no introducir `v-html` para las novedades
-- [ ] Agregar pruebas unitarias para URL válida, dominio falso, paquete incorrecto, notas excesivas y estructura inválida
-- [ ] Mantener el timeout y el comportamiento no bloqueante ante errores de red
+- [x] Validar que `urlPlayStore` use HTTPS, el dominio oficial `play.google.com` y el identificador esperado `com.leotateti.tateti`
+- [x] Ignorar cualquier URL remota que no cumpla la lista permitida y usar `URL_PLAY_STORE_POR_DEFECTO`
+- [x] Limitar la cantidad de apartados, novedades y caracteres aceptados desde `version.json`
+- [x] Validar el tipo y tamaño razonable de los campos antes de mostrarlos
+- [x] Mantener el renderizado como texto y no introducir `v-html` para las novedades
+- [x] Agregar pruebas unitarias para URL válida, dominio falso, paquete incorrecto, notas excesivas y estructura inválida
+- [x] Mantener el timeout y el comportamiento no bloqueante ante errores de red
 
 ## FASE 8: Integrar novedades y publicación
 
@@ -162,10 +162,10 @@ Evitar que datos remotos inválidos, excesivos o manipulados alteren el flujo de
 
 Conectar los nuevos idiomas con el modal y preparar su publicación coordinada en Google Play.
 
-- [ ] Actualizar `Scripts/GenerarVersionJson.js` para inicializar novedades según los idiomas habilitados sin sobrescribir las existentes
-- [ ] Revisar `Scripts/ValidarVersionPublicacion.js` para exigir novedades válidas en todos los idiomas habilitados cuando `mostrarActualizacion` sea `true`
-- [ ] Cambiar el fallback de `ServicioActualizacionApp.js` para usar la configuración central en lugar de depender directamente de `es-AR`
-- [ ] Agregar novedades traducidas a `public/version.json` para los seis idiomas
+- [x] Actualizar `Scripts/GenerarVersionJson.js` para inicializar novedades según los idiomas habilitados sin sobrescribir las existentes
+- [x] Revisar `Scripts/ValidarVersionPublicacion.js` para exigir novedades válidas en todos los idiomas habilitados cuando `mostrarActualizacion` sea `true`
+- [x] Cambiar el fallback de `ServicioActualizacionApp.js` para usar la configuración central en lugar de depender directamente de `es-AR`
+- [x] Agregar novedades traducidas a `public/version.json` para los seis idiomas
 - [ ] Cargar en Play Console las fichas `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
 - [ ] Agregar notas de la versión en los códigos correspondientes de Google Play
 - [ ] Publicar la app y las fichas nuevas de forma coordinada para evitar una experiencia parcialmente traducida
@@ -176,35 +176,35 @@ Conectar los nuevos idiomas con el modal y preparar su publicación coordinada e
 
 Validar la infraestructura compartida y los cuatro idiomas en la aplicación, las skills y Google Play.
 
-- [ ] Ejecutar ESLint y corregir todos los errores
-- [ ] Ejecutar `Scripts/ValidarIdiomas.js` y detectar claves faltantes, adicionales, tipos incompatibles e interpolaciones distintas
+- [x] Ejecutar ESLint y corregir todos los errores
+- [x] Ejecutar `Scripts/ValidarIdiomas.js` y detectar claves faltantes, adicionales, tipos incompatibles e interpolaciones distintas
 - [ ] Ejecutar pruebas unitarias de normalización, persistencia, fallback y validación del contrato remoto
 - [ ] Confirmar que cada idioma puede seleccionarse, guardarse y restaurarse al reiniciar
-- [ ] Simular códigos completos, códigos base, mayúsculas distintas y preferencias múltiples para portugués, francés, italiano y alemán
-- [ ] Verificar que un dispositivo sin idioma soportado use `es-AR` como idioma predeterminado y que las claves faltantes recurran a `en-US`
+- [x] Simular códigos completos, códigos base, mayúsculas distintas y preferencias múltiples para portugués, francés, italiano y alemán
+- [x] Verificar que un dispositivo sin idioma soportado use `es-AR` como idioma predeterminado y que las claves faltantes recurran a `en-US`
 - [ ] Recorrer juego contra IA, multijugador, estadísticas, configuración y modal de actualización en cada idioma
 - [ ] Revisar desbordes, cortes, saltos de línea y botones con textos largos en celular y tablet
 - [ ] Verificar el atributo `lang`, foco, navegación por teclado y lectura del selector con tecnología de asistencia
-- [ ] Revisar pluralización y formatos de números, porcentajes y duraciones en cada idioma
-- [ ] Probar novedades traducidas en `public/version.json` para cada idioma
-- [ ] Ejecutar `notas-modal` en un proyecto monolingüe, uno bilingüe y TaTeTi
+- [x] Revisar pluralización y formatos de números, porcentajes y duraciones en cada idioma
+- [x] Probar novedades traducidas en `public/version.json` para cada idioma
+- [x] Ejecutar `notas-modal` en un proyecto monolingüe, uno bilingüe y TaTeTi
 - [ ] Ejecutar una validación controlada de `release-notas-de-parche` sin publicar ni cerrar un release real
-- [ ] Validar automáticamente el JSON de `FichaGooglePlay.json` y sus límites de caracteres
+- [x] Validar automáticamente el JSON de `FichaGooglePlay.json` y sus límites de caracteres
 - [ ] Revisar manualmente en Play Console las cuatro fichas antes de publicarlas
-- [ ] Ejecutar el build de producción y confirmar que incluye todos los archivos de traducción
+- [x] Ejecutar el build de producción y confirmar que incluye todos los archivos de traducción
 
 ## Progreso del plan
 
-- [ ] Fase 1: Centralizar la configuración de idiomas
+- [x] Fase 1: Centralizar la configuración de idiomas
 - [ ] Fase 2: Convertir el selector en una interfaz dinámica
-- [ ] Fase 3: Traducir la aplicación
-- [ ] Fase 4: Versionar la ficha de Google Play
-- [ ] Fase 5: Generalizar la skill de notas del modal
-- [ ] Fase 6: Generalizar la skill de release
-- [ ] Fase 7: Endurecer el contrato remoto de actualización
+- [x] Fase 3: Traducir la aplicación
+- [x] Fase 4: Versionar la ficha de Google Play
+- [x] Fase 5: Generalizar la skill de notas del modal
+- [x] Fase 6: Generalizar la skill de release
+- [x] Fase 7: Endurecer el contrato remoto de actualización
 - [ ] Fase 8: Integrar novedades y publicación
 - [ ] Fase Testing
 
 Fecha de creación: 13 de Junio 2026
-Fecha de última actualización: 13 de Junio 2026
-Estado: BORRADOR
+Fecha de última actualización: 14 de Junio 2026
+Estado: EN PROCESO

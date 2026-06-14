@@ -17,38 +17,36 @@
       </button>
     </div>
 
-    <!-- Modal para cambiar idioma -->
     <ModalConfirmacion
       v-model="mostrarModal"
       :titulo="t('configuracion.cambiarIdioma')"
       icono="world"
       :texto-boton-aceptar="t('general.guardar')"
       :texto-boton-cancelar="t('general.cancelar')"
+      contenido-desplazable
       @aceptar="guardarNuevoIdioma"
       @cancelar="cancelarCambioIdioma"
     >
-      <div class="selector-idiomas">
+      <div
+        ref="selectorIdiomas"
+        class="selector-idiomas"
+        role="radiogroup"
+        :aria-label="t('configuracion.cambiarIdioma')"
+      >
         <button
+          v-for="idioma in idiomasHabilitados"
+          :key="idioma.codigoApp"
+          type="button"
           class="boton-idioma"
-          :class="{ activo: idiomaSeleccionado === 'es-AR' }"
-          @click="idiomaSeleccionado = 'es-AR'"
+          :class="{ activo: idiomaSeleccionado === idioma.codigoApp }"
+          role="radio"
+          :aria-checked="idiomaSeleccionado === idioma.codigoApp"
+          @click="idiomaSeleccionado = idioma.codigoApp"
         >
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
-            <span class="nombre-idioma">{{ t('configuracion.espanol') }}</span>
-            <span class="codigo-idioma">{{ t('configuracion.latinoamerica') }}</span>
-          </div>
-        </button>
-
-        <button
-          class="boton-idioma"
-          :class="{ activo: idiomaSeleccionado === 'en-US' }"
-          @click="idiomaSeleccionado = 'en-US'"
-        >
-          <i class="ti ti-flag icono-lg"></i>
-          <div class="info-idioma">
-            <span class="nombre-idioma">{{ t('configuracion.ingles') }}</span>
-            <span class="codigo-idioma">{{ t('configuracion.estadosUnidos') }}</span>
+            <span class="nombre-idioma" :lang="idioma.codigoApp">{{ idioma.nombreNativo }}</span>
+            <span class="codigo-idioma" :lang="idioma.codigoApp">{{ idioma.regionNativa }}</span>
           </div>
         </button>
       </div>
@@ -57,11 +55,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
+import {
+  IDIOMA_PREDETERMINADO,
+  idiomasHabilitados,
+  obtenerIdioma,
+} from 'src/i18n/ConfiguracionIdiomas'
 
 const $q = useQuasar()
 const { t } = useI18n()
@@ -69,11 +72,11 @@ const { t } = useI18n()
 const { idiomaActual, cargarIdioma, guardarIdioma } = useIdioma()
 
 const mostrarModal = ref(false)
-const idiomaSeleccionado = ref('es-AR')
+const idiomaSeleccionado = ref(IDIOMA_PREDETERMINADO)
+const selectorIdiomas = ref(null)
 
-// Nombre del idioma para mostrar
 const nombreIdiomaActual = computed(() => {
-  return idiomaActual.value === 'es-AR' ? t('configuracion.espanol') : t('configuracion.ingles')
+  return obtenerIdioma(idiomaActual.value)?.nombreNativo ?? idiomaActual.value
 })
 
 onMounted(async () => {
@@ -83,6 +86,14 @@ onMounted(async () => {
 const abrirModalCambiarIdioma = () => {
   idiomaSeleccionado.value = idiomaActual.value
   mostrarModal.value = true
+}
+
+const enfocarIdiomaSeleccionado = async () => {
+  await nextTick()
+  requestAnimationFrame(() => {
+    const botonSeleccionado = selectorIdiomas.value?.querySelector('[aria-checked="true"]')
+    botonSeleccionado?.scrollIntoView({ block: 'nearest' })
+  })
 }
 
 const guardarNuevoIdioma = async () => {
@@ -119,9 +130,11 @@ const cancelarCambioIdioma = () => {
 }
 
 watch(mostrarModal, (nuevoValor) => {
-  if (!nuevoValor) {
-    idiomaSeleccionado.value = idiomaActual.value
+  if (nuevoValor) {
+    enfocarIdiomaSeleccionado()
+    return
   }
+  idiomaSeleccionado.value = idiomaActual.value
 })
 </script>
 
@@ -163,23 +176,30 @@ watch(mostrarModal, (nuevoValor) => {
 .selector-idiomas {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  padding: 2px;
 }
 .boton-idioma {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: 12px;
+  min-height: 72px;
+  padding: 12px 14px;
   background-color: var(--color-tablero);
   border: 2px solid var(--color-borde-tablero);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 100%;
 }
 .boton-idioma:hover {
   background-color: var(--color-fondo-alterno);
   border-color: var(--color-turno-activo);
   transform: translateX(4px);
+}
+.boton-idioma:focus-visible {
+  outline: 3px solid var(--color-turno-activo);
+  outline-offset: 2px;
 }
 .boton-idioma.activo {
   background: linear-gradient(135deg, var(--color-boton) 0%, var(--color-turno-activo) 100%);
@@ -204,6 +224,34 @@ watch(mostrarModal, (nuevoValor) => {
 @media (max-width: 600px) {
   .seccion-config {
     padding: 16px;
+  }
+}
+@media (max-height: 700px) {
+  .selector-idiomas {
+    gap: 8px;
+  }
+  .boton-idioma {
+    gap: 10px;
+    min-height: 62px;
+    padding: 9px 12px;
+  }
+  .boton-idioma .icono-lg {
+    font-size: 1.6rem;
+  }
+  .nombre-idioma {
+    font-size: 1rem;
+  }
+  .codigo-idioma {
+    font-size: 0.78rem;
+  }
+}
+@media (max-height: 560px) {
+  .selector-idiomas {
+    gap: 6px;
+  }
+  .boton-idioma {
+    min-height: 56px;
+    padding: 7px 10px;
   }
 }
 </style>

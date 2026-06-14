@@ -30,6 +30,62 @@
           "We improved how update notes are displayed."
         ]
       }
+    ],
+    "pt-BR": [
+      {
+        "apartado": "Atualizações",
+        "novedades": [
+          "Adicionamos uma nova seção de estatísticas com resultados, pontos, tempos, sequências, escudo e uso do tabuleiro.",
+          "Agora você pode comparar seu desempenho por dificuldade e ao jogar com X ou O.",
+          "As estatísticas são salvas automaticamente e podem ser filtradas por uma barra que permanece visível durante a rolagem.",
+          "Agora você pode escolher X ou O contra o NEXUS e continuar fazendo a primeira jogada.",
+          "Melhoramos a adaptação do cabeçalho, das telas e dos controles em celulares e tablets.",
+          "O logotipo e o nome do jogador agora oferecem acessos mais rápidos ao jogo e às configurações.",
+          "Melhoramos a apresentação das novidades de atualização."
+        ]
+      }
+    ],
+    "fr-FR": [
+      {
+        "apartado": "Mises à jour",
+        "novedades": [
+          "Nous avons ajouté une section de statistiques avec les résultats, points, temps, séries, bouclier et utilisation de la grille.",
+          "Vous pouvez maintenant comparer vos performances par difficulté et selon que vous jouez avec X ou O.",
+          "Les statistiques sont enregistrées automatiquement et peuvent être filtrées avec une barre qui reste visible pendant le défilement.",
+          "Vous pouvez maintenant choisir X ou O contre NEXUS tout en jouant le premier coup.",
+          "Nous avons amélioré l’adaptation de l’en-tête, des écrans et des commandes sur téléphones et tablettes.",
+          "Le logo et le nom du joueur permettent maintenant d’accéder plus rapidement au jeu et aux paramètres.",
+          "Nous avons amélioré la présentation des nouveautés."
+        ]
+      }
+    ],
+    "it-IT": [
+      {
+        "apartado": "Aggiornamenti",
+        "novedades": [
+          "Abbiamo aggiunto una sezione di statistiche con risultati, punti, tempi, serie, scudo e utilizzo della griglia.",
+          "Ora puoi confrontare le prestazioni per difficoltà e quando giochi con X o O.",
+          "Le statistiche vengono salvate automaticamente e possono essere filtrate con una barra sempre visibile durante lo scorrimento.",
+          "Ora puoi scegliere X o O contro NEXUS continuando a fare la prima mossa.",
+          "Abbiamo migliorato l’adattamento di intestazione, schermate e comandi su telefoni e tablet.",
+          "Il logo e il nome del giocatore ora offrono accessi più rapidi al gioco e alle impostazioni.",
+          "Abbiamo migliorato la presentazione delle novità."
+        ]
+      }
+    ],
+    "de-DE": [
+      {
+        "apartado": "Aktualisierungen",
+        "novedades": [
+          "Wir haben einen neuen Statistikbereich mit Ergebnissen, Punkten, Zeiten, Serien, Schutzschild und Spielfeldnutzung hinzugefügt.",
+          "Du kannst deine Leistung jetzt nach Schwierigkeit und beim Spielen mit X oder O vergleichen.",
+          "Statistiken werden automatisch gespeichert und lassen sich über eine beim Scrollen sichtbare Leiste filtern.",
+          "Du kannst jetzt X oder O gegen NEXUS wählen und weiterhin den ersten Zug machen.",
+          "Wir haben die Darstellung von Kopfzeile, Ansichten und Steuerung auf Smartphones und Tablets verbessert.",
+          "Über Logo und Spielernamen gelangst du jetzt schneller zum Spiel und zu den Einstellungen.",
+          "Wir haben die Darstellung der Update-Neuigkeiten verbessert."
+        ]
+      }
     ]
   }
 }

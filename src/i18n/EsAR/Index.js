@@ -114,6 +114,9 @@ export default {
     dificultadMasJugada: 'Más jugada',
     mejorDificultad: 'Mejor resultado',
     resumenVictorias: '{victorias} victorias en {partidas} partidas',
+    resumenUnaVictoria: '1 victoria en {partidas} partidas',
+    resumenUnaPartida: '{victorias} victorias en 1 partida',
+    resumenUnaVictoriaUnaPartida: '1 victoria en 1 partida',
     evolucionPuntos: 'Evolución de puntos',
     descripcionPuntos:
       'Resume los puntos ganados y perdidos, el balance actual y el máximo histórico alcanzado.',
@@ -181,5 +184,9 @@ export default {
     novedades: 'Novedades de esta versión',
     actualizar: 'Actualizar',
     abrirNovedades: 'Actualización disponible',
+  },
+  error: {
+    paginaNoEncontrada: 'Esta página no existe.',
+    volverInicio: 'Volver al inicio',
   },
 }

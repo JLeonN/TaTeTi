@@ -90,10 +90,7 @@
               </div>
               <small>
                 {{
-                  t('estadisticas.resumenVictorias', {
-                    victorias: numero(fila.victorias),
-                    partidas: numero(fila.partidas),
-                  })
+                  resumenVictorias(fila.victorias, fila.partidas)
                 }}
               </small>
             </div>
@@ -432,7 +429,7 @@ import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadist
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
 
-const { t } = useI18n()
+const { locale, t } = useI18n()
 const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
@@ -479,23 +476,46 @@ const DatoSimple = defineComponent({
 })
 
 const numero = (valor) => Number(valor) || 0
-const porcentaje = (valor) => `${numero(valor)}%`
+const formateadorNumero = computed(() => new Intl.NumberFormat(locale.value))
+const formateadorPorcentaje = computed(
+  () => new Intl.NumberFormat(locale.value, { style: 'percent', maximumFractionDigits: 1 }),
+)
+const porcentaje = (valor) => formateadorPorcentaje.value.format(numero(valor) / 100)
 const conSigno = (valor) => {
   const cantidad = numero(valor)
-  return cantidad > 0 ? `+${cantidad}` : String(cantidad)
+  const cantidadFormateada = formateadorNumero.value.format(cantidad)
+  return cantidad > 0 ? `+${cantidadFormateada}` : cantidadFormateada
 }
 const rangoMovimientos = (minimo, maximo) => {
   if (!numero(minimo) && !numero(maximo)) return t('estadisticas.sinDatos')
-  return `${numero(minimo)} - ${numero(maximo)}`
+  return `${formateadorNumero.value.format(numero(minimo))} - ${formateadorNumero.value.format(numero(maximo))}`
 }
 const duracion = (valor) => {
   const milisegundos = numero(valor)
   if (!milisegundos) return t('estadisticas.sinDatos')
-  if (milisegundos < 1000) return `${milisegundos} ms`
+  if (milisegundos < 1000) return `${formateadorNumero.value.format(milisegundos)} ms`
   const segundos = Math.round(milisegundos / 1000)
-  if (segundos < 60) return `${segundos} s`
+  if (segundos < 60) return `${formateadorNumero.value.format(segundos)} s`
   const minutos = Math.floor(segundos / 60)
-  return `${minutos} min ${segundos % 60} s`
+  return `${formateadorNumero.value.format(minutos)} min ${formateadorNumero.value.format(segundos % 60)} s`
+}
+const resumenVictorias = (victorias, partidas) => {
+  const cantidadVictorias = numero(victorias)
+  const cantidadPartidas = numero(partidas)
+  let clave = 'estadisticas.resumenVictorias'
+
+  if (cantidadVictorias === 1 && cantidadPartidas === 1) {
+    clave = 'estadisticas.resumenUnaVictoriaUnaPartida'
+  } else if (cantidadVictorias === 1) {
+    clave = 'estadisticas.resumenUnaVictoria'
+  } else if (cantidadPartidas === 1) {
+    clave = 'estadisticas.resumenUnaPartida'
+  }
+
+  return t(clave, {
+    victorias: formateadorNumero.value.format(cantidadVictorias),
+    partidas: formateadorNumero.value.format(cantidadPartidas),
+  })
 }
 
 const hayPartidas = computed(() => numero(datos.value?.resumen?.partidas) > 0)

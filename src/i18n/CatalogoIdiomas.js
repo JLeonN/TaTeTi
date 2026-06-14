@@ -1,0 +1,78 @@
+// Archivo generado desde IdiomasApp.json. No editar manualmente.
+export default {
+  "idiomaFuente": "es-AR",
+  "idiomaPredeterminado": "es-AR",
+  "idiomaFallback": "en-US",
+  "idiomas": [
+    {
+      "codigoApp": "es-AR",
+      "codigoGooglePlay": "es-419",
+      "nombreNativo": "Español",
+      "regionNativa": "Latinoamérica",
+      "alias": [
+        "es",
+        "es-419",
+        "es-AR",
+        "es-ES",
+        "es-UY"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "en-US",
+      "codigoGooglePlay": "en-US",
+      "nombreNativo": "English",
+      "regionNativa": "United States",
+      "alias": [
+        "en",
+        "en-US",
+        "en-GB"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "pt-BR",
+      "codigoGooglePlay": "pt-BR",
+      "nombreNativo": "Português",
+      "regionNativa": "Brasil",
+      "alias": [
+        "pt",
+        "pt-BR"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "fr-FR",
+      "codigoGooglePlay": "fr-FR",
+      "nombreNativo": "Français",
+      "regionNativa": "France",
+      "alias": [
+        "fr",
+        "fr-FR"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "it-IT",
+      "codigoGooglePlay": "it-IT",
+      "nombreNativo": "Italiano",
+      "regionNativa": "Italia",
+      "alias": [
+        "it",
+        "it-IT"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "de-DE",
+      "codigoGooglePlay": "de-DE",
+      "nombreNativo": "Deutsch",
+      "regionNativa": "Deutschland",
+      "alias": [
+        "de",
+        "de-DE"
+      ],
+      "habilitado": true
+    }
+  ]
+}

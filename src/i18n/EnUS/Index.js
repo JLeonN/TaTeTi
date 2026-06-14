@@ -1,4 +1,4 @@
-// inglés
+// Inglés
 export default {
   // General
   general: {
@@ -114,6 +114,9 @@ export default {
     dificultadMasJugada: 'Most played',
     mejorDificultad: 'Best result',
     resumenVictorias: '{victorias} wins in {partidas} games',
+    resumenUnaVictoria: '1 win in {partidas} games',
+    resumenUnaPartida: '{victorias} wins in 1 game',
+    resumenUnaVictoriaUnaPartida: '1 win in 1 game',
     evolucionPuntos: 'Score progression',
     descripcionPuntos:
       'Summarizes points earned and lost, your current balance, and the highest score reached.',
@@ -181,5 +184,9 @@ export default {
     novedades: "What's new in this version",
     actualizar: 'Update',
     abrirNovedades: 'Update available',
+  },
+  error: {
+    paginaNoEncontrada: 'This page does not exist.',
+    volverInicio: 'Go home',
   },
 }

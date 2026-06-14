@@ -1,0 +1,40 @@
+{
+  "idiomas": {
+    "es-419": {
+      "codigoApp": "es-AR",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Juega al Ta-Te-Ti contra NEXUS o con otra persona.",
+      "descripcionCompleta": "Disfruta del clásico Ta-Te-Ti en una experiencia rápida y clara.\n\nJuega contra NEXUS con tres niveles de dificultad o comparte el tablero con otra persona. Elige X u O, sigue tu puntuación y consulta estadísticas detalladas sobre tus partidas, rachas, tiempos y movimientos.\n\nPersonaliza tu nombre e idioma, juega sin crear una cuenta y conserva tu progreso directamente en el dispositivo."
+    },
+    "en-US": {
+      "codigoApp": "en-US",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Play Tic-Tac-Toe against NEXUS or another person.",
+      "descripcionCompleta": "Enjoy classic Tic-Tac-Toe in a fast and clear experience.\n\nPlay against NEXUS at three difficulty levels or share the board with another person. Choose X or O, track your score, and explore detailed statistics about your games, streaks, times, and moves.\n\nCustomize your name and language, play without creating an account, and keep your progress directly on your device."
+    },
+    "pt-BR": {
+      "codigoApp": "pt-BR",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Jogue o Jogo da Velha contra o NEXUS ou outra pessoa.",
+      "descripcionCompleta": "Divirta-se com o clássico Jogo da Velha em uma experiência rápida e clara.\n\nJogue contra o NEXUS em três níveis de dificuldade ou compartilhe o tabuleiro com outra pessoa. Escolha X ou O, acompanhe sua pontuação e consulte estatísticas detalhadas sobre partidas, sequências, tempos e jogadas.\n\nPersonalize seu nome e idioma, jogue sem criar uma conta e mantenha seu progresso diretamente no dispositivo."
+    },
+    "fr-FR": {
+      "codigoApp": "fr-FR",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Jouez au Morpion contre NEXUS ou une autre personne.",
+      "descripcionCompleta": "Retrouvez le classique Morpion dans une expérience rapide et claire.\n\nAffrontez NEXUS avec trois niveaux de difficulté ou partagez la grille avec une autre personne. Choisissez X ou O, suivez votre score et consultez des statistiques détaillées sur vos parties, séries, temps et coups.\n\nPersonnalisez votre nom et votre langue, jouez sans créer de compte et conservez votre progression directement sur votre appareil."
+    },
+    "it-IT": {
+      "codigoApp": "it-IT",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Gioca a Tris contro NEXUS o con un'altra persona.",
+      "descripcionCompleta": "Divertiti con il classico Tris in un'esperienza rapida e chiara.\n\nSfida NEXUS con tre livelli di difficoltà oppure condividi la griglia con un'altra persona. Scegli X o O, controlla il punteggio e consulta statistiche dettagliate su partite, serie, tempi e mosse.\n\nPersonalizza il tuo nome e la lingua, gioca senza creare un account e conserva i progressi direttamente sul dispositivo."
+    },
+    "de-DE": {
+      "codigoApp": "de-DE",
+      "nombre": "Ta-Te-Ti",
+      "descripcionCorta": "Spiele Tic-Tac-Toe gegen NEXUS oder eine andere Person.",
+      "descripcionCompleta": "Erlebe den Klassiker Tic-Tac-Toe in einer schnellen und übersichtlichen App.\n\nSpiele auf drei Schwierigkeitsstufen gegen NEXUS oder teile das Spielfeld mit einer anderen Person. Wähle X oder O, verfolge deinen Punktestand und sieh dir detaillierte Statistiken zu Spielen, Serien, Zeiten und Zügen an.\n\nPasse deinen Namen und deine Sprache an, spiele ohne Konto und speichere deinen Fortschritt direkt auf deinem Gerät."
+    }
+  }
+}

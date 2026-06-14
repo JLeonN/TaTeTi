@@ -1,69 +1,65 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Preferences } from '@capacitor/preferences'
+import {
+  IDIOMA_PREDETERMINADO,
+  actualizarIdiomaDocumento,
+  esIdiomaHabilitado,
+  normalizarIdioma,
+  obtenerPreferenciasIdiomaSistema,
+} from 'src/i18n/ConfiguracionIdiomas'
 
-// Estado compartido global (singleton)
-const idiomaActual = ref('es-AR')
+const idiomaActual = ref(IDIOMA_PREDETERMINADO)
 const cargandoIdioma = ref(false)
-
-// Clave para el storage
 const CLAVE_IDIOMA = 'idioma_usuario'
 
 export function useIdioma() {
   const { locale } = useI18n()
 
-  // Cargar idioma del storage
+  const aplicarIdioma = (codigo) => {
+    idiomaActual.value = codigo
+    locale.value = codigo
+    actualizarIdiomaDocumento(codigo)
+  }
+
   const cargarIdioma = async () => {
     try {
       cargandoIdioma.value = true
       const resultado = await Preferences.get({ key: CLAVE_IDIOMA })
 
-      console.log('🌍 CAPACITOR - Idioma guardado:', resultado.value)
-
-      if (resultado.value) {
-        idiomaActual.value = resultado.value
-        locale.value = resultado.value
-        console.log('✅ Idioma cargado:', idiomaActual.value)
+      if (esIdiomaHabilitado(resultado.value)) {
+        aplicarIdioma(resultado.value)
       } else {
-        // Si no hay idioma guardado, detectar del navegador
-        const idiomaNavegador = navigator.language || navigator.userLanguage
-        const idiomaDetectado = idiomaNavegador.startsWith('es') ? 'es-AR' : 'en-US'
-
-        idiomaActual.value = idiomaDetectado
-        locale.value = idiomaDetectado
-        console.log('🌐 Idioma detectado del navegador:', idiomaDetectado)
+        aplicarIdioma(normalizarIdioma(obtenerPreferenciasIdiomaSistema()))
       }
     } catch (error) {
-      console.error('❌ Error al cargar idioma:', error)
+      aplicarIdioma(IDIOMA_PREDETERMINADO)
+      console.error('Error al cargar el idioma:', error)
     } finally {
       cargandoIdioma.value = false
     }
   }
 
-  // Guardar idioma en el storage
   const guardarIdioma = async (nuevoIdioma) => {
     try {
-      if (!nuevoIdioma) {
-        console.log('⚠️ Idioma vacío, no se guarda')
+      if (!esIdiomaHabilitado(nuevoIdioma)) {
         return false
       }
-
-      console.log('💾 Intentando guardar idioma:', nuevoIdioma)
 
       await Preferences.set({
         key: CLAVE_IDIOMA,
         value: nuevoIdioma,
       })
 
-      // Verificar que se guardó
       const verificacion = await Preferences.get({ key: CLAVE_IDIOMA })
-      console.log('✅ Verificación guardado:', verificacion.value)
+      if (verificacion.value !== nuevoIdioma) {
+        return false
+      }
 
-      idiomaActual.value = nuevoIdioma
-      locale.value = nuevoIdioma
+      aplicarIdioma(nuevoIdioma)
       return true
     } catch (error) {
-      console.error('❌ Error al guardar idioma:', error)
+      console.error('Error al guardar el idioma:', error)
       return false
     }
   }
