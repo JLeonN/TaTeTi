@@ -18,8 +18,10 @@ Agregar sueco y noruego a TaTeTi reutilizando la infraestructura multidioma ya i
 - Reutilizar el catálogo, selector, skills, validadores y ficha central existentes
 - Mantener `en-US` como fallback
 - No duplicar infraestructura ya resuelta
+- Actualizar los registros controlados existentes; agregar el idioma al catálogo no importa automáticamente su módulo de mensajes
 - Usar rutas PascalCase para los módulos y mantener los códigos BCP 47 únicamente como datos
 - Conservar nombres propios como `TaTeTi` y `NEXUS` salvo decisión explícita
+- Mantener `es-AR` como idioma predeterminado para variantes no soportadas, incluido Nynorsk
 
 ## FASE 1: Registrar los idiomas
 
@@ -31,7 +33,10 @@ Habilitar sueco y noruego en el catálogo central.
 - [ ] Agregar noruego Bokmål con código de app `nb-NO` y código de Google Play `no-NO`
 - [ ] Definir los nombres nativos `Svenska` y `Norsk bokmål`
 - [ ] Declarar los alias `nb`, `nb-NO`, `no` y `no-NO` para detectar noruego Bokmål sin confundirlo con Nynorsk
-- [ ] Confirmar que el registro dinámico de mensajes incluya ambos idiomas
+- [ ] Confirmar en Play Console que la ficha noruega se identifica como `no-NO` antes de cerrar el catálogo
+- [ ] Agregar los imports y entradas controladas de `sv-SE` y `nb-NO` en `src/i18n/index.js`
+- [ ] Agregar las rutas controladas `SvSE/Index.js` y `NbNO/Index.js` en `Scripts/ValidarIdiomas.js`
+- [ ] Ejecutar `npm run generar-idiomas` después de modificar el catálogo
 - [ ] Confirmar que la detección del sistema normaliza variantes compatibles
 - [ ] Confirmar que el selector dinámico los muestra como opciones independientes
 - [ ] Confirmar que `document.documentElement.lang` use `sv-SE` o `nb-NO`
@@ -64,6 +69,7 @@ Preparar las fichas y notas necesarias para publicar ambos idiomas.
 - [ ] Respetar los límites vigentes de caracteres de Google Play
 - [ ] Agregar novedades de actualización para ambos idiomas en `public/version.json`
 - [ ] Confirmar que las skills detectan ambos idiomas automáticamente
+- [ ] Ejecutar una simulación controlada de `release-notas-de-parche` y comprobar notas para `sv-SE` y `no-NO`
 - [ ] Cargar ambas fichas y sus notas de versión en Play Console
 - [ ] Revisar manualmente las traducciones antes de publicarlas
 
@@ -76,12 +82,15 @@ Validar que sueco y noruego funcionen como idiomas independientes en toda la exp
 - [ ] Ejecutar ESLint y los validadores de idiomas y publicación
 - [ ] Comparar claves, tipos e interpolaciones de `sv-SE` y `nb-NO` contra el idioma fuente
 - [ ] Simular dispositivos configurados en sueco y noruego
-- [ ] Probar específicamente `nb-NO`, `nb`, `no-NO`, `no` y `nn-NO`, confirmando que `nn-NO` no se trate como Bokmål
+- [ ] Ampliar `Scripts/ProbarIdiomas.js` con `sv`, `sv-SE`, `nb-NO`, `nb`, `no-NO` y `no`; la prueba de persistencia recorrerá automáticamente todos los idiomas habilitados
+- [ ] Probar `nn-NO` de forma aislada y confirmar que use `es-AR`, sin tratarlo como Bokmål
 - [ ] Seleccionar ambos idiomas, reiniciar la app y confirmar su persistencia
 - [ ] Recorrer juego contra IA, multijugador, estadísticas, configuración y actualización
 - [ ] Revisar botones y tarjetas con las traducciones más largas
 - [ ] Confirmar que no se mezclen textos suecos y noruegos
 - [ ] Probar el modal con novedades reales en ambos idiomas
+- [ ] Verificar técnicamente `lang`, roles ARIA, foco y navegación por teclado
+- [ ] Confirmar manualmente con TalkBack la pronunciación y el anuncio de selección
 - [ ] Validar ambas fichas de Google Play y sus límites de caracteres
 - [ ] Ejecutar el build de producción antes de publicar
 
@@ -93,5 +102,5 @@ Validar que sueco y noruego funcionen como idiomas independientes en toda la exp
 - [ ] Fase Testing
 
 Fecha de creación: 13 de Junio 2026
-Fecha de última actualización: 13 de Junio 2026
-Estado: BORRADOR
+Fecha de última actualización: 14 de Junio 2026
+Estado: LISTO PARA EJECUTAR
