@@ -95,6 +95,30 @@ export default {
         "ko-KR"
       ],
       "habilitado": true
+    },
+    {
+      "codigoApp": "sv-SE",
+      "codigoGooglePlay": "sv-SE",
+      "nombreNativo": "Svenska",
+      "regionNativa": "Sverige",
+      "alias": [
+        "sv",
+        "sv-SE"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "nb-NO",
+      "codigoGooglePlay": "no-NO",
+      "nombreNativo": "Norsk bokmål",
+      "regionNativa": "Norge",
+      "alias": [
+        "nb",
+        "nb-NO",
+        "no",
+        "no-NO"
+      ],
+      "habilitado": true
     }
   ]
 }

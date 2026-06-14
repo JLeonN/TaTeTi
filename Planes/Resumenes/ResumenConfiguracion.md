@@ -16,7 +16,7 @@ La página `/configuracion` permite cambiar el nombre y el idioma. Ambos valores
 - `src/layouts/MainLayout.vue`: carga inicial y navegación desde el chip del usuario.
 - `src/i18n/IdiomasApp.json`: catálogo central de idiomas habilitados.
 - `src/i18n/ConfiguracionIdiomas.js`: normalización, detección y fallback.
-- `src/i18n/EsAR/`, `EnUS/`, `PtBR/`, `FrFR/`, `ItIT/`, `DeDE/`, `JaJP/` y `KoKR/`: textos visibles.
+- `src/i18n/EsAR/`, `EnUS/`, `PtBR/`, `FrFR/`, `ItIT/`, `DeDE/`, `JaJP/`, `KoKR/`, `SvSE/` y `NbNO/`: textos visibles.
 
 ## Nombre
 
@@ -38,14 +38,14 @@ La página `/configuracion` permite cambiar el nombre y el idioma. Ambos valores
 ## Idioma
 
 - Clave: `idioma_usuario`.
-- Idiomas disponibles: `es-AR`, `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP` y `ko-KR`.
+- Idiomas disponibles: `es-AR`, `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `nb-NO`.
 - Si no existe una preferencia, se revisan los idiomas del sistema en orden, se normalizan códigos completos, alias y códigos base, y se aplica `es-AR` si ninguno está soportado.
 - `en-US` es el fallback técnico para claves de traducción faltantes.
 - El cambio es inmediato y afecta páginas, drawer, juego, modales, notificaciones y actualización remota.
 - La selección persiste después de cerrar completamente y volver a abrir la aplicación.
 - El modal renderiza el catálogo de forma dinámica, mantiene `Cancelar` y `Guardar` visibles y desplaza únicamente la lista.
 - El selector usa un grupo de radios accesible; flechas, Inicio y Fin cambian la selección manteniendo un único elemento en el orden de foco.
-- Todo texto nuevo visible debe agregarse con la misma estructura de claves en los ocho idiomas.
+- Todo texto nuevo visible debe agregarse con la misma estructura de claves en los diez idiomas.
 
 ## Preferencias relacionadas
 

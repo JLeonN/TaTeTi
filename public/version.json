@@ -114,6 +114,34 @@
           "업데이트 내용을 더 읽기 쉽게 개선했습니다."
         ]
       }
+    ],
+    "sv-SE": [
+      {
+        "apartado": "Uppdateringar",
+        "novedades": [
+          "Vi har lagt till statistik över resultat, poäng, tider, sviter, sköldar och hur spelplanen används.",
+          "Nu kan du jämföra dina resultat efter svårighetsgrad och när du spelar med X eller O.",
+          "Statistiken sparas automatiskt och kan filtreras med en rad som är synlig medan du rullar.",
+          "Nu kan du välja X eller O mot NEXUS och ändå göra det första draget.",
+          "Vi har förbättrat hur sidhuvud, skärmar och kontroller anpassas till mobiler och surfplattor.",
+          "Logotypen och spelarnamnet ger nu snabbare åtkomst till spelet och inställningarna.",
+          "Vi har förbättrat visningen av uppdateringsnyheter."
+        ]
+      }
+    ],
+    "nb-NO": [
+      {
+        "apartado": "Oppdateringer",
+        "novedades": [
+          "Vi har lagt til statistikk over resultater, poeng, tider, rekker, skjold og bruk av brettet.",
+          "Nå kan du sammenligne resultatene dine etter vanskelighetsgrad og når du spiller med X eller O.",
+          "Statistikken lagres automatisk og kan filtreres med en rad som forblir synlig mens du ruller.",
+          "Nå kan du velge X eller O mot NEXUS og fortsatt gjøre det første trekket.",
+          "Vi har forbedret hvordan topptekst, skjermer og kontroller tilpasses mobiltelefoner og nettbrett.",
+          "Logoen og spillernavnet gir nå raskere tilgang til spillet og innstillingene.",
+          "Vi har forbedret visningen av oppdateringsnyheter."
+        ]
+      }
     ]
   }
 }

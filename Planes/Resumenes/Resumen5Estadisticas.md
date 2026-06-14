@@ -70,4 +70,4 @@ Cada panel principal incluye una explicación de una línea, cerrada por defecto
 - Cuatro chips de dificultad verificados en una fila móvil sin desbordamiento.
 - Filtros, estado sin datos y reinicio a `Todos/Todas` verificados en navegador.
 - APK debug instalado y abierto en un dispositivo Android real.
-- Recorrido funcional realizado en los seis idiomas anteriores, con números, porcentajes, duraciones y resúmenes adaptados al idioma activo. Japonés y coreano están validados técnicamente y pendientes del recorrido visual manual.
+- Recorrido funcional realizado en los ocho idiomas anteriores, con números, porcentajes, duraciones y resúmenes adaptados al idioma activo. Sueco y noruego están validados técnicamente y pendientes del recorrido visual manual.

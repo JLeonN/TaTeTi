@@ -15,6 +15,8 @@ const RUTAS_MENSAJES = {
   'de-DE': 'src/i18n/DeDE/Index.js',
   'ja-JP': 'src/i18n/JaJP/Index.js',
   'ko-KR': 'src/i18n/KoKR/Index.js',
+  'sv-SE': 'src/i18n/SvSE/Index.js',
+  'nb-NO': 'src/i18n/NbNO/Index.js',
 }
 
 const extraerInterpolaciones = (texto) =>

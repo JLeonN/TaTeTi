@@ -5,7 +5,9 @@ import frFR from './FrFR/Index.js'
 import itIT from './ItIT/Index.js'
 import jaJP from './JaJP/Index.js'
 import koKR from './KoKR/Index.js'
+import nbNO from './NbNO/Index.js'
 import ptBR from './PtBR/Index.js'
+import svSE from './SvSE/Index.js'
 import { idiomasHabilitados } from './ConfiguracionIdiomas'
 
 const mensajesPorIdioma = {
@@ -17,6 +19,8 @@ const mensajesPorIdioma = {
   'de-DE': deDE,
   'ja-JP': jaJP,
   'ko-KR': koKR,
+  'sv-SE': svSE,
+  'nb-NO': nbNO,
 }
 
 const codigosSinMensajes = idiomasHabilitados
