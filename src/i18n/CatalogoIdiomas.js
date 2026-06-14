@@ -73,6 +73,28 @@ export default {
         "de-DE"
       ],
       "habilitado": true
+    },
+    {
+      "codigoApp": "ja-JP",
+      "codigoGooglePlay": "ja-JP",
+      "nombreNativo": "日本語",
+      "regionNativa": "日本",
+      "alias": [
+        "ja",
+        "ja-JP"
+      ],
+      "habilitado": true
+    },
+    {
+      "codigoApp": "ko-KR",
+      "codigoGooglePlay": "ko-KR",
+      "nombreNativo": "한국어",
+      "regionNativa": "대한민국",
+      "alias": [
+        "ko",
+        "ko-KR"
+      ],
+      "habilitado": true
     }
   ]
 }

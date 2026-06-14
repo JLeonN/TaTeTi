@@ -23,6 +23,9 @@ body,
 }
 body {
   overflow-x: hidden;
+  font-family:
+    Roboto, "Noto Sans JP", "Noto Sans KR", "Yu Gothic", Meiryo, "Malgun Gothic", system-ui,
+    sans-serif;
 }
 .q-layout {
   min-height: var(--altura-pantalla);

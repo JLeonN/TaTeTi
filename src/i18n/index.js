@@ -3,6 +3,8 @@ import enUS from './EnUS/Index.js'
 import esAR from './EsAR/Index.js'
 import frFR from './FrFR/Index.js'
 import itIT from './ItIT/Index.js'
+import jaJP from './JaJP/Index.js'
+import koKR from './KoKR/Index.js'
 import ptBR from './PtBR/Index.js'
 import { idiomasHabilitados } from './ConfiguracionIdiomas'
 
@@ -13,6 +15,8 @@ const mensajesPorIdioma = {
   'fr-FR': frFR,
   'it-IT': itIT,
   'de-DE': deDE,
+  'ja-JP': jaJP,
+  'ko-KR': koKR,
 }
 
 const codigosSinMensajes = idiomasHabilitados

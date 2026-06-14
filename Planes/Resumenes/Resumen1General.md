@@ -5,7 +5,7 @@
 
 ## Propósito
 
-TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz en seis idiomas y un sistema remoto de notas de actualización.
+TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz en ocho idiomas y un sistema remoto de notas de actualización.
 
 ## Rutas
 

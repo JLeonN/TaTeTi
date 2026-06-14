@@ -13,6 +13,8 @@ const RUTAS_MENSAJES = {
   'fr-FR': 'src/i18n/FrFR/Index.js',
   'it-IT': 'src/i18n/ItIT/Index.js',
   'de-DE': 'src/i18n/DeDE/Index.js',
+  'ja-JP': 'src/i18n/JaJP/Index.js',
+  'ko-KR': 'src/i18n/KoKR/Index.js',
 }
 
 const extraerInterpolaciones = (texto) =>
