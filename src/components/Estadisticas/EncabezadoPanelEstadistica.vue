@@ -1,11 +1,15 @@
 <template>
   <header class="encabezado-panel">
     <h2>{{ titulo }}</h2>
-    <div class="fila-descripcion">
+    <div ref="filaDescripcion" class="fila-descripcion">
       <p :id="idDescripcion" class="descripcion-panel" :class="{ abierta: abierto }">
         {{ descripcion }}
       </p>
+      <span ref="medidorDescripcion" class="medidor-descripcion" aria-hidden="true">
+        {{ descripcion }}
+      </span>
       <button
+        v-if="descripcionRecortada"
         type="button"
         class="boton-descripcion"
         :aria-label="titulo"
@@ -23,7 +27,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 defineEmits(['alternar'])
 
@@ -35,6 +39,34 @@ const props = defineProps({
 })
 
 const idDescripcion = computed(() => `descripcion-panel-${props.identificador}`)
+const filaDescripcion = ref(null)
+const medidorDescripcion = ref(null)
+const descripcionRecortada = ref(false)
+let observadorTamano = null
+
+const actualizarDescripcionRecortada = () => {
+  if (!filaDescripcion.value || !medidorDescripcion.value) return
+  descripcionRecortada.value =
+    medidorDescripcion.value.scrollWidth > filaDescripcion.value.clientWidth + 1
+}
+
+watch(
+  () => props.descripcion,
+  async () => {
+    await nextTick()
+    actualizarDescripcionRecortada()
+  },
+)
+
+onMounted(() => {
+  actualizarDescripcionRecortada()
+  observadorTamano = new ResizeObserver(actualizarDescripcionRecortada)
+  observadorTamano.observe(filaDescripcion.value)
+})
+
+onBeforeUnmount(() => {
+  observadorTamano?.disconnect()
+})
 </script>
 
 <style scoped>
@@ -51,10 +83,20 @@ const idDescripcion = computed(() => `descripcion-panel-${props.identificador}`)
   line-height: 1.25;
 }
 .fila-descripcion {
+  position: relative;
   min-width: 0;
   display: flex;
   align-items: flex-start;
   gap: 6px;
+}
+.medidor-descripcion {
+  position: absolute;
+  visibility: hidden;
+  max-width: none;
+  font-size: 0.75rem;
+  line-height: 1.35;
+  white-space: nowrap;
+  pointer-events: none;
 }
 .descripcion-panel {
   min-width: 0;

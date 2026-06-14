@@ -56,7 +56,7 @@ Crear traducciones completas y naturales para sueco y noruego.
 - [x] Evitar copiar traducciones entre sueco y noruego sin revisión individual
 - [x] Mantener un tono claro, breve e informal
 - [x] Revisar pluralización y concordancia de textos dependientes de cantidades
-- [ ] Solicitar una revisión humana o independiente de los textos críticos antes de publicar
+- [x] Solicitar una revisión humana o independiente de los textos críticos antes de publicar
 
 ## FASE 3: Traducir Google Play y las novedades
 
@@ -71,7 +71,7 @@ Preparar las fichas y notas necesarias para publicar ambos idiomas.
 - [x] Confirmar que las skills detectan ambos idiomas automáticamente
 - [x] Ejecutar una simulación controlada de `release-notas-de-parche` y comprobar el mapeo para `sv-SE` y `no-NO`
 - [ ] Cargar ambas fichas y sus notas de versión en Play Console
-- [ ] Revisar manualmente las traducciones antes de publicarlas
+- [x] Revisar manualmente las traducciones antes de publicarlas
 
 ## FASE TESTING
 
@@ -84,22 +84,22 @@ Validar que sueco y noruego funcionen como idiomas independientes en toda la exp
 - [x] Simular dispositivos configurados en sueco y noruego
 - [x] Ampliar `Scripts/ProbarIdiomas.js` con `sv`, `sv-SE`, `nb-NO`, `nb`, `no-NO` y `no`; la prueba de persistencia recorrerá automáticamente todos los idiomas habilitados
 - [x] Probar `nn-NO` de forma aislada y confirmar que use `es-AR`, sin tratarlo como Bokmål
-- [ ] Seleccionar ambos idiomas, reiniciar la app y confirmar su persistencia
-- [ ] Recorrer juego contra IA, multijugador, estadísticas, configuración y actualización
-- [ ] Revisar botones y tarjetas con las traducciones más largas
-- [ ] Confirmar que no se mezclen textos suecos y noruegos
+- [x] Seleccionar ambos idiomas, reiniciar la app y confirmar su persistencia
+- [x] Recorrer juego contra IA, multijugador, estadísticas, configuración y actualización
+- [x] Revisar botones y tarjetas con las traducciones más largas
+- [x] Confirmar que no se mezclen textos suecos y noruegos
 - [x] Probar el contrato del modal con novedades reales en ambos idiomas
 - [x] Verificar técnicamente `lang`, roles ARIA, foco y navegación por teclado
-- [ ] Confirmar manualmente con TalkBack la pronunciación y el anuncio de selección
+- [x] Confirmar manualmente con TalkBack la pronunciación y el anuncio de selección
 - [x] Validar ambas fichas de Google Play y sus límites de caracteres
 - [x] Ejecutar el build de producción antes de publicar
 
 ## Progreso del plan
 
 - [x] Fase 1: Registrar los idiomas
-- [ ] Fase 2: Traducir la aplicación
+- [x] Fase 2: Traducir la aplicación
 - [ ] Fase 3: Traducir Google Play y las novedades
-- [ ] Fase Testing
+- [x] Fase Testing
 
 Fecha de creación: 13 de Junio 2026
 Fecha de última actualización: 14 de Junio 2026
@@ -111,4 +111,5 @@ Estado: EN PROCESO
 - Catálogo, traducciones, detección, fallback, persistencia automatizada, fichas y novedades validados para diez idiomas.
 - ESLint, pruebas automatizadas, validadores y build Android de producción completados correctamente.
 - APK de prueba instalada y abierta en el dispositivo Android `M2102J20SG`.
-- Quedan pendientes la revisión lingüística independiente, la persistencia manual tras reiniciar, el recorrido visual y funcional, TalkBack y la carga en Play Console.
+- Leo confirmó la revisión lingüística, la persistencia tras reiniciar, el recorrido visual y funcional, los textos largos, la separación entre idiomas y TalkBack.
+- Solo queda cargar las fichas y notas de versión en Play Console junto con los demás idiomas.
