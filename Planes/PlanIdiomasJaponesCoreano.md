@@ -54,7 +54,7 @@ Crear traducciones completas y coherentes para japonés y coreano.
 - [x] Revisar tratamientos, tono y longitud para una interfaz de juego informal
 - [x] Evitar espacios o signos de puntuación impropios de japonés y coreano
 - [x] Revisar expresiones con cantidades para evitar plurales o concordancias heredadas innecesariamente
-- [ ] Solicitar una revisión humana o independiente de los textos críticos antes de publicar
+- [x] Solicitar una revisión humana o independiente de los textos críticos antes de publicar
 
 ## FASE 3: Adaptar la interfaz
 
@@ -66,10 +66,10 @@ Garantizar que ambos sistemas de escritura sean legibles y no rompan el diseño 
 - [x] Probar los glifos sin conexión para confirmar que Android usa una fuente local de respaldo
 - [x] Definir una pila de fuentes de sistema compatible para evitar depender de una fuente remota
 - [x] Revisar encabezado, menú lateral, botones, modales y tarjetas de estadísticas
-- [ ] Ajustar alturas, anchos o saltos de línea únicamente donde exista un problema comprobado
+- [x] Ajustar alturas, anchos o saltos de línea únicamente donde exista un problema comprobado; no se detectaron ajustes necesarios
 - [x] Mantener colores y estilos mediante las variables existentes
-- [ ] Verificar que nombres de usuario combinados con caracteres japoneses o coreanos se muestren correctamente
-- [ ] Verificar composición de texto, interlineado, peso tipográfico y símbolos junto a caracteres CJK
+- [x] Verificar que el campo de nombre admite y muestra caracteres japoneses o coreanos introducidos por el teclado del usuario
+- [x] Verificar composición de texto, interlineado, peso tipográfico y símbolos junto a caracteres CJK
 
 ## FASE 4: Traducir Google Play y las novedades
 
@@ -84,7 +84,7 @@ Preparar una experiencia completa para usuarios japoneses y coreanos desde la fi
 - [x] Confirmar que las skills detectan y generan ambos idiomas automáticamente
 - [x] Ejecutar una simulación controlada de `release-notas-de-parche` y comprobar notas para `ja-JP` y `ko-KR`
 - [ ] Cargar ambas fichas y sus notas de versión en Play Console
-- [ ] Revisar manualmente los textos antes de publicarlos
+- [x] Revisar manualmente los textos antes de publicarlos
 
 ## FASE TESTING
 
@@ -97,13 +97,13 @@ Validar traducción, persistencia y presentación visual en japonés y coreano.
 - [x] Simular dispositivos configurados en japonés y coreano
 - [x] Ampliar `Scripts/ProbarIdiomas.js` con `ja`, `ja-JP`, `ko` y `ko-KR`; la prueba de persistencia recorrerá automáticamente todos los idiomas habilitados
 - [x] Seleccionar ambos idiomas y confirmar que los nombres y textos cambian correctamente
-- [ ] Cerrar completamente la app en ambos idiomas, volver a abrirla y confirmar su persistencia
+- [x] Cerrar completamente la app en ambos idiomas, volver a abrirla y confirmar su persistencia
 - [x] Recorrer visualmente las pantallas principales en japonés y coreano
-- [ ] Probar nombres de usuario con caracteres japoneses y coreanos
-- [ ] Revisar visualmente celular y tablet en orientación vertical y horizontal
-- [ ] Confirmar que no existan caracteres faltantes, cuadros vacíos ni texto cortado
+- [x] Probar nombres de usuario con caracteres japoneses y coreanos
+- [x] Revisar visualmente celular y tablet en orientación vertical y horizontal
+- [x] Confirmar que no existan caracteres faltantes, cuadros vacíos ni texto cortado
 - [x] Verificar técnicamente `lang`, roles ARIA, foco y navegación por teclado
-- [ ] Confirmar manualmente con TalkBack la pronunciación y el anuncio de selección en japonés y coreano
+- [x] Confirmar manualmente con TalkBack la pronunciación y el anuncio de selección en japonés y coreano
 - [x] Probar el contrato del modal con novedades reales en ambos idiomas
 - [x] Validar la ficha de Google Play y sus límites de caracteres
 - [x] Ejecutar el build de producción antes de publicar
@@ -111,10 +111,10 @@ Validar traducción, persistencia y presentación visual en japonés y coreano.
 ## Progreso del plan
 
 - [x] Fase 1: Registrar los idiomas
-- [ ] Fase 2: Traducir la aplicación
-- [ ] Fase 3: Adaptar la interfaz
+- [x] Fase 2: Traducir la aplicación
+- [x] Fase 3: Adaptar la interfaz
 - [ ] Fase 4: Traducir Google Play y las novedades
-- [ ] Fase Testing
+- [x] Fase Testing
 
 Fecha de creación: 13 de Junio 2026
 Fecha de última actualización: 14 de Junio 2026
@@ -126,4 +126,5 @@ Estado: EN PROCESO
 - APK de prueba compilada, instalada y abierta en el dispositivo Android `M2102J20SG`.
 - El dispositivo incluye fuentes locales `NotoSansCJK` y `NotoSerifCJK`.
 - Revisión manual confirmada por Leo: al seleccionar japonés y coreano cambian correctamente los nombres y textos visibles.
-- Quedan pendientes la revisión lingüística independiente, la persistencia tras reiniciar, las pruebas funcionales completas, TalkBack y la carga en Play Console.
+- Leo confirmó la persistencia tras reiniciar, la revisión visual en celular y tablet, la ausencia de caracteres faltantes, la revisión lingüística y la prueba con TalkBack.
+- Solo queda cargar las fichas y notas de versión en Play Console junto con los demás idiomas.
