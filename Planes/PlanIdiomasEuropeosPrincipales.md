@@ -178,17 +178,18 @@ Validar la infraestructura compartida y los cuatro idiomas en la aplicación, la
 
 - [x] Ejecutar ESLint y corregir todos los errores
 - [x] Ejecutar `Scripts/ValidarIdiomas.js` y detectar claves faltantes, adicionales, tipos incompatibles e interpolaciones distintas
-- [ ] Ejecutar pruebas unitarias de normalización, persistencia, fallback y validación del contrato remoto
+- [x] Ejecutar pruebas unitarias de normalización, persistencia, fallback y validación del contrato remoto
 - [x] Confirmar que cada idioma puede seleccionarse, guardarse y restaurarse al reiniciar
 - [x] Simular códigos completos, códigos base, mayúsculas distintas y preferencias múltiples para portugués, francés, italiano y alemán
 - [x] Verificar que un dispositivo sin idioma soportado use `es-AR` como idioma predeterminado y que las claves faltantes recurran a `en-US`
 - [x] Recorrer juego contra IA, multijugador, estadísticas, configuración y modal de actualización en cada idioma
 - [x] Revisar desbordes, cortes, saltos de línea y botones con textos largos en celular y tablet
-- [ ] Verificar el atributo `lang`, foco, navegación por teclado y lectura del selector con tecnología de asistencia
+- [x] Verificar técnicamente el atributo `lang`, roles ARIA, foco y navegación por teclado
+- [ ] Confirmar manualmente la lectura del selector con TalkBack
 - [x] Revisar pluralización y formatos de números, porcentajes y duraciones en cada idioma
 - [x] Probar novedades traducidas en `public/version.json` para cada idioma
 - [x] Ejecutar `notas-modal` en un proyecto monolingüe, uno bilingüe y TaTeTi
-- [ ] Ejecutar una validación controlada de `release-notas-de-parche` sin publicar ni cerrar un release real
+- [x] Ejecutar una validación controlada de `release-notas-de-parche` sin publicar ni cerrar un release real
 - [x] Validar automáticamente el JSON de `FichaGooglePlay.json` y sus límites de caracteres
 - [x] Revisar manualmente en Play Console las cuatro fichas antes de publicarlas
 - [x] Ejecutar el build de producción y confirmar que incluye todos los archivos de traducción

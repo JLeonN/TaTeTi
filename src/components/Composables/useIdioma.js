@@ -4,14 +4,12 @@ import { Preferences } from '@capacitor/preferences'
 import {
   IDIOMA_PREDETERMINADO,
   actualizarIdiomaDocumento,
-  esIdiomaHabilitado,
-  normalizarIdioma,
   obtenerPreferenciasIdiomaSistema,
 } from 'src/i18n/ConfiguracionIdiomas'
+import { crearGestorIdioma } from 'src/components/Composables/GestorIdioma'
 
 const idiomaActual = ref(IDIOMA_PREDETERMINADO)
 const cargandoIdioma = ref(false)
-const CLAVE_IDIOMA = 'idioma_usuario'
 
 export function useIdioma() {
   const { locale } = useI18n()
@@ -22,18 +20,17 @@ export function useIdioma() {
     actualizarIdiomaDocumento(codigo)
   }
 
+  const gestorIdioma = crearGestorIdioma({
+    almacenamiento: Preferences,
+    aplicarIdioma,
+    obtenerIdiomasSistema: obtenerPreferenciasIdiomaSistema,
+  })
+
   const cargarIdioma = async () => {
     try {
       cargandoIdioma.value = true
-      const resultado = await Preferences.get({ key: CLAVE_IDIOMA })
-
-      if (esIdiomaHabilitado(resultado.value)) {
-        aplicarIdioma(resultado.value)
-      } else {
-        aplicarIdioma(normalizarIdioma(obtenerPreferenciasIdiomaSistema()))
-      }
+      await gestorIdioma.cargarIdioma()
     } catch (error) {
-      aplicarIdioma(IDIOMA_PREDETERMINADO)
       console.error('Error al cargar el idioma:', error)
     } finally {
       cargandoIdioma.value = false
@@ -42,22 +39,7 @@ export function useIdioma() {
 
   const guardarIdioma = async (nuevoIdioma) => {
     try {
-      if (!esIdiomaHabilitado(nuevoIdioma)) {
-        return false
-      }
-
-      await Preferences.set({
-        key: CLAVE_IDIOMA,
-        value: nuevoIdioma,
-      })
-
-      const verificacion = await Preferences.get({ key: CLAVE_IDIOMA })
-      if (verificacion.value !== nuevoIdioma) {
-        return false
-      }
-
-      aplicarIdioma(nuevoIdioma)
-      return true
+      return await gestorIdioma.guardarIdioma(nuevoIdioma)
     } catch (error) {
       console.error('Error al guardar el idioma:', error)
       return false

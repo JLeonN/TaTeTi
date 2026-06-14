@@ -41,7 +41,9 @@
           :class="{ activo: idiomaSeleccionado === idioma.codigoApp }"
           role="radio"
           :aria-checked="idiomaSeleccionado === idioma.codigoApp"
+          :tabindex="idiomaSeleccionado === idioma.codigoApp ? 0 : -1"
           @click="idiomaSeleccionado = idioma.codigoApp"
+          @keydown="manejarNavegacionTeclado($event, idioma.codigoApp)"
         >
           <i class="ti ti-flag icono-lg"></i>
           <div class="info-idioma">
@@ -94,6 +96,36 @@ const enfocarIdiomaSeleccionado = async () => {
     const botonSeleccionado = selectorIdiomas.value?.querySelector('[aria-checked="true"]')
     botonSeleccionado?.scrollIntoView({ block: 'nearest' })
   })
+}
+
+const seleccionarIdiomaPorIndice = (indice) => {
+  const cantidadIdiomas = idiomasHabilitados.length
+  const indiceNormalizado = (indice + cantidadIdiomas) % cantidadIdiomas
+  idiomaSeleccionado.value = idiomasHabilitados[indiceNormalizado].codigoApp
+  nextTick(() => {
+    selectorIdiomas.value?.querySelector('[aria-checked="true"]')?.focus()
+  })
+}
+
+const manejarNavegacionTeclado = (evento, codigoIdioma) => {
+  const indiceActual = idiomasHabilitados.findIndex((idioma) => idioma.codigoApp === codigoIdioma)
+  const desplazamientos = {
+    ArrowDown: 1,
+    ArrowRight: 1,
+    ArrowUp: -1,
+    ArrowLeft: -1,
+  }
+
+  if (evento.key in desplazamientos) {
+    evento.preventDefault()
+    seleccionarIdiomaPorIndice(indiceActual + desplazamientos[evento.key])
+  } else if (evento.key === 'Home') {
+    evento.preventDefault()
+    seleccionarIdiomaPorIndice(0)
+  } else if (evento.key === 'End') {
+    evento.preventDefault()
+    seleccionarIdiomaPorIndice(idiomasHabilitados.length - 1)
+  }
 }
 
 const guardarNuevoIdioma = async () => {

@@ -44,6 +44,7 @@ La página `/configuracion` permite cambiar el nombre y el idioma. Ambos valores
 - El cambio es inmediato y afecta páginas, drawer, juego, modales, notificaciones y actualización remota.
 - La selección persiste después de cerrar completamente y volver a abrir la aplicación.
 - El modal renderiza el catálogo de forma dinámica, mantiene `Cancelar` y `Guardar` visibles y desplaza únicamente la lista.
+- El selector usa un grupo de radios accesible; flechas, Inicio y Fin cambian la selección manteniendo un único elemento en el orden de foco.
 - Todo texto nuevo visible debe agregarse con la misma estructura de claves en los seis idiomas.
 
 ## Preferencias relacionadas
