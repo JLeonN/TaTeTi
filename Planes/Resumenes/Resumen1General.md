@@ -1,6 +1,6 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 14 de junio de 2026. Versión documentada: `4.0.8`.
+> Vigencia: 14 de junio de 2026. Versión documentada: `4.0.9`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito

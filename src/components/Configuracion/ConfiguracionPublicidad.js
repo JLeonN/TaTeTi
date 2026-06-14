@@ -1,5 +1,5 @@
 // Las skills de instalación y release cambian este valor: true para pruebas y false para producción.
-export const esModoPruebaPublicidad = true
+export const esModoPruebaPublicidad = false
 
 const idsPublicidadPrueba = {
   banner: 'ca-app-pub-3940256099942544/6300978111',
