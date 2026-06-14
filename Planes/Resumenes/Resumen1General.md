@@ -1,11 +1,11 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 13 de junio de 2026. Versión documentada: `4.0.8`.
+> Vigencia: 14 de junio de 2026. Versión documentada: `4.0.8`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
 
-TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz bilingüe y un sistema remoto de notas de actualización.
+TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz en seis idiomas y un sistema remoto de notas de actualización.
 
 ## Rutas
 
@@ -28,6 +28,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `src/components/TaTeTi/`: tablero, celdas, información de turno, dificultad y modales de resultado.
 - `src/components/Actualizacion/`: consulta de versión y modal de novedades.
 - `src/components/Configuracion/ConfiguracionPublicidad.js`: fuente central de IDs y modo de prueba de AdMob.
+- `src/i18n/IdiomasApp.json`: fuente central de idiomas habilitados, códigos de aplicación y códigos de Google Play.
+- `src/i18n/ConfiguracionIdiomas.js`: normalización, detección y fallback de idiomas.
 - `src/css/Variables.css`: única fuente permitida para colores.
 - `src/css/app.css`: variables y protecciones globales de pantalla.
 - `src-capacitor/android/`: proyecto Android real.
@@ -56,7 +58,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 ## Persistencia con Capacitor Preferences
 
 - `nombre_usuario`: nombre del jugador.
-- `idioma_usuario`: `es-AR` o `en-US`.
+- `idioma_usuario`: uno de los idiomas habilitados en `IdiomasApp.json`.
 - `dificultad_ia`: `facil`, `normal` o `dificil`.
 - `ficha_usuario_ia`: `X` u `O`.
 - `puntuacion_sistema`: puntos y rachas.
@@ -80,6 +82,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - Las páginas de juego se centran en tablets; no se estira artificialmente el tablero.
 - El tablero se adapta a la altura disponible para evitar scroll innecesario.
 - Los modales, notificaciones y controles respetan las zonas seguras.
+- El selector de idiomas conserva cabecera y acciones visibles; solo la lista central se desplaza y se compacta según la altura disponible.
 
 ## Android y publicidad
 
@@ -92,7 +95,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 
 ## Actualizaciones remotas
 
-- `public/version.json` contiene versión disponible, URL de Play Store, flag de visualización y novedades bilingües.
+- `public/version.json` contiene versión disponible, URL de Play Store, flag de visualización y novedades para todos los idiomas habilitados.
 - `Scripts/GenerarVersionJson.js` sincroniza la versión sin borrar notas existentes.
 - `ServicioActualizacionApp.js` compara versiones, normaliza notas y tolera errores de red.
 - `ModalActualizacion.vue` muestra las novedades.
@@ -104,6 +107,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - La versión debe mantenerse alineada entre `package.json`, archivos de `src-capacitor`, Android y `public/version.json`.
 - Scripts importantes:
   - `npm run lint`
+  - `npm run validar-idiomas`
+  - `npm test`
   - `npm run build`
   - `npm run generar-version`
   - `npm run androidApkPrueba`
@@ -115,6 +120,6 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 
 - Preservar nombres de código en español y archivos nuevos en PascalCase.
 - Reutilizar composables y modales existentes antes de crear duplicados.
-- Mantener textos visibles en `es-AR` y `en-US`.
+- Mantener la misma estructura de claves y textos naturales en todos los idiomas habilitados.
 - Verificar teléfonos angostos, tablets, orientación horizontal, navegación gestual y tres botones.
 - Ejecutar ESLint y build cuando se cambie comportamiento; para documentación alcanza validar Markdown y `git diff --check`.

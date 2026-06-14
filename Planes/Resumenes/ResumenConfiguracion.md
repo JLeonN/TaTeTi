@@ -1,6 +1,6 @@
 # Resumen de configuración
 
-> Vigencia: 12 de junio de 2026.
+> Vigencia: 14 de junio de 2026.
 
 ## Alcance
 
@@ -14,7 +14,9 @@ La página `/configuracion` permite cambiar el nombre y el idioma. Ambos valores
 - `src/components/Composables/useConfiguracion.js`: estado global del nombre.
 - `src/components/Composables/useIdioma.js`: estado global del idioma.
 - `src/layouts/MainLayout.vue`: carga inicial y navegación desde el chip del usuario.
-- `src/i18n/es-AR/index.js` y `src/i18n/en-US/index.js`: textos visibles.
+- `src/i18n/IdiomasApp.json`: catálogo central de idiomas habilitados.
+- `src/i18n/ConfiguracionIdiomas.js`: normalización, detección y fallback.
+- `src/i18n/EsAR/`, `EnUS/`, `PtBR/`, `FrFR/`, `ItIT/` y `DeDE/`: textos visibles.
 
 ## Nombre
 
@@ -36,10 +38,13 @@ La página `/configuracion` permite cambiar el nombre y el idioma. Ambos valores
 ## Idioma
 
 - Clave: `idioma_usuario`.
-- Idiomas disponibles: `es-AR` y `en-US`.
-- Si no existe una preferencia, se detecta el idioma del sistema y se aplica el fallback configurado.
+- Idiomas disponibles: `es-AR`, `en-US`, `pt-BR`, `fr-FR`, `it-IT` y `de-DE`.
+- Si no existe una preferencia, se revisan los idiomas del sistema en orden, se normalizan códigos completos, alias y códigos base, y se aplica `es-AR` si ninguno está soportado.
+- `en-US` es el fallback técnico para claves de traducción faltantes.
 - El cambio es inmediato y afecta páginas, drawer, juego, modales, notificaciones y actualización remota.
-- Todo texto nuevo visible debe agregarse en ambos idiomas.
+- La selección persiste después de cerrar completamente y volver a abrir la aplicación.
+- El modal renderiza el catálogo de forma dinámica, mantiene `Cancelar` y `Guardar` visibles y desplaza únicamente la lista.
+- Todo texto nuevo visible debe agregarse con la misma estructura de claves en los seis idiomas.
 
 ## Preferencias relacionadas
 
@@ -57,6 +62,7 @@ No mezclar esas responsabilidades dentro de `useConfiguracion.js`.
 - Crear cada ajuste nuevo como componente independiente dentro de `src/components/configuración/`.
 - Mantener `ConfiguracionPage.vue` como coordinador liviano.
 - Reutilizar `ModalConfirmacion.vue` cuando el flujo encaje.
+- Activar `contenidoDesplazable` cuando un modal necesite cabecera y acciones fijas con contenido central desplazable.
 - Usar variables de `src/css/Variables.css`.
 - Comprobar el teclado Android: campos, botones y notificaciones deben permanecer visibles.
 - Mantener nombres, funciones y comentarios en español.

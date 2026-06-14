@@ -1,5 +1,7 @@
 # PLAN INTEGRAR MODAL DE NOTAS DE PARCHE
 
+> Documento histórico del diseño bilingüe original. Desde el 14 de junio de 2026, el contrato vigente detecta los idiomas habilitados mediante `src/i18n/IdiomasApp.json`; consultar `Resumen1General.md` y `PlanIdiomasEuropeosPrincipales.md`.
+
 ## Descripción del plan
 
 Integrar en TaTeTi un sistema completo de actualización para Android. GitHub Pages publicará el archivo remoto `version.json`; la aplicación consultará ese archivo, comparará la versión publicada con la instalada y mostrará un modal bilingüe con las novedades generadas desde el historial real.

@@ -166,7 +166,7 @@ Conectar los nuevos idiomas con el modal y preparar su publicación coordinada e
 - [x] Revisar `Scripts/ValidarVersionPublicacion.js` para exigir novedades válidas en todos los idiomas habilitados cuando `mostrarActualizacion` sea `true`
 - [x] Cambiar el fallback de `ServicioActualizacionApp.js` para usar la configuración central en lugar de depender directamente de `es-AR`
 - [x] Agregar novedades traducidas a `public/version.json` para los seis idiomas
-- [ ] Cargar en Play Console las fichas `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
+- [x] Cargar en Play Console las fichas `pt-BR`, `fr-FR`, `it-IT` y `de-DE`
 - [ ] Agregar notas de la versión en los códigos correspondientes de Google Play
 - [ ] Publicar la app y las fichas nuevas de forma coordinada para evitar una experiencia parcialmente traducida
 
@@ -179,18 +179,18 @@ Validar la infraestructura compartida y los cuatro idiomas en la aplicación, la
 - [x] Ejecutar ESLint y corregir todos los errores
 - [x] Ejecutar `Scripts/ValidarIdiomas.js` y detectar claves faltantes, adicionales, tipos incompatibles e interpolaciones distintas
 - [ ] Ejecutar pruebas unitarias de normalización, persistencia, fallback y validación del contrato remoto
-- [ ] Confirmar que cada idioma puede seleccionarse, guardarse y restaurarse al reiniciar
+- [x] Confirmar que cada idioma puede seleccionarse, guardarse y restaurarse al reiniciar
 - [x] Simular códigos completos, códigos base, mayúsculas distintas y preferencias múltiples para portugués, francés, italiano y alemán
 - [x] Verificar que un dispositivo sin idioma soportado use `es-AR` como idioma predeterminado y que las claves faltantes recurran a `en-US`
-- [ ] Recorrer juego contra IA, multijugador, estadísticas, configuración y modal de actualización en cada idioma
-- [ ] Revisar desbordes, cortes, saltos de línea y botones con textos largos en celular y tablet
+- [x] Recorrer juego contra IA, multijugador, estadísticas, configuración y modal de actualización en cada idioma
+- [x] Revisar desbordes, cortes, saltos de línea y botones con textos largos en celular y tablet
 - [ ] Verificar el atributo `lang`, foco, navegación por teclado y lectura del selector con tecnología de asistencia
 - [x] Revisar pluralización y formatos de números, porcentajes y duraciones en cada idioma
 - [x] Probar novedades traducidas en `public/version.json` para cada idioma
 - [x] Ejecutar `notas-modal` en un proyecto monolingüe, uno bilingüe y TaTeTi
 - [ ] Ejecutar una validación controlada de `release-notas-de-parche` sin publicar ni cerrar un release real
 - [x] Validar automáticamente el JSON de `FichaGooglePlay.json` y sus límites de caracteres
-- [ ] Revisar manualmente en Play Console las cuatro fichas antes de publicarlas
+- [x] Revisar manualmente en Play Console las cuatro fichas antes de publicarlas
 - [x] Ejecutar el build de producción y confirmar que incluye todos los archivos de traducción
 
 ## Progreso del plan

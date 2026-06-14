@@ -1,6 +1,6 @@
 # Resumen de interfaz responsive y Android
 
-> Vigencia: 12 de junio de 2026. Este documento concentra las reglas globales de pantalla.
+> Vigencia: 14 de junio de 2026. Este documento concentra las reglas globales de pantalla.
 
 ## Objetivo
 
@@ -66,6 +66,9 @@ Evitar que header, contenido, tablero, botones, modales o notificaciones queden 
 - Diálogos Quasar, modal de resultado y notificaciones tienen ajustes globales de zonas seguras.
 - Al abrir el teclado, la altura dinámica debe permitir acceder a inputs y acciones.
 - Los componentes con posición fija son excepciones y deben revisar explícitamente insets y banner.
+- `ModalConfirmacion.vue` ofrece `contenidoDesplazable`: cabecera y acciones quedan fijas y solo el contenido central puede desplazarse.
+- El selector de idiomas oculta la barra visual, mantiene el desplazamiento táctil y conserva `Cancelar` y `Guardar` horizontales salvo anchos extremos.
+- En pantallas bajas reduce espacios y tarjetas; en alturas muy limitadas oculta el icono decorativo para priorizar las acciones.
 
 ## Matriz mínima de prueba
 
@@ -76,7 +79,7 @@ Evitar que header, contenido, tablero, botones, modales o notificaciones queden 
 - Teléfono angosto, pantalla baja y tablet.
 - Banner visible, oculto y fallo al cargar.
 - Teclado abierto en Configuración.
-- Juego IA, multijugador, drawer, modal de resultado, modal de actualización y notificaciones.
+- Juego IA, multijugador, drawer, modal de resultado, modal de actualización, selector de idiomas y notificaciones.
 
 ## Restricciones
 

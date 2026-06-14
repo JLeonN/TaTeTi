@@ -1,6 +1,6 @@
 # Resumen del sistema de estadísticas
 
-> Vigencia: 13 de junio de 2026. Registra únicamente partidas contra la IA NEXUS.
+> Vigencia: 14 de junio de 2026. Registra únicamente partidas contra la IA NEXUS.
 
 ## Propósito
 
@@ -58,7 +58,7 @@ Cada panel principal incluye una explicación de una línea, cerrada por defecto
 - No borrar columnas ni modificar migraciones publicadas; agregar una migración nueva.
 - No añadir controles para borrar o reiniciar el historial.
 - No contar abandonos como derrotas.
-- Mantener textos en `es-AR` y `en-US`.
+- Mantener textos, pluralización y formatos numéricos en todos los idiomas habilitados.
 - Usar únicamente colores de `src/css/Variables.css`.
 - Conservar el orden visual victoria, empate y derrota.
 - Probar chips y paneles en celular, tablet y escritorio.
@@ -70,3 +70,4 @@ Cada panel principal incluye una explicación de una línea, cerrada por defecto
 - Cuatro chips de dificultad verificados en una fila móvil sin desbordamiento.
 - Filtros, estado sin datos y reinicio a `Todos/Todas` verificados en navegador.
 - APK debug instalado y abierto en un dispositivo Android real.
+- Recorrido funcional realizado en los seis idiomas, con números, porcentajes, duraciones y resúmenes adaptados al idioma activo.
