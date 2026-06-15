@@ -75,7 +75,7 @@
           </router-link>
         </template>
         <button
-          v-for="articulo in catalogoColores"
+          v-for="articulo in catalogoColoresOrdenados"
           :key="articulo.id"
           class="cuadro-color"
           type="button"
@@ -122,7 +122,7 @@
 </template>
 
 <script setup>
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
@@ -214,6 +214,15 @@ const esArticuloAdquirido = (articulo) => articulosAdquiridos.value.has(articulo
 
 const puedeComprarArticulo = (articulo) =>
   !esArticuloAdquirido(articulo) && puntajeTotal.value >= articulo.precio
+
+const catalogoColoresOrdenados = computed(() =>
+  [...catalogoColores].sort((articuloA, articuloB) => {
+    const adquiridoA = esArticuloAdquirido(articuloA)
+    const adquiridoB = esArticuloAdquirido(articuloB)
+    if (adquiridoA !== adquiridoB) return adquiridoA ? 1 : -1
+    return articuloA.precio - articuloB.precio
+  }),
+)
 
 const textoAccesibleArticulo = (articulo) => {
   const nombre = t(articulo.claveNombre)
@@ -388,7 +397,7 @@ onBeforeUnmount(() => {
   gap: 8px;
   font-size: 2rem;
   font-weight: bold;
-  text-shadow: 0 0 12px currentColor;
+  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
 }
 .estado-color,
 .precio-color {
