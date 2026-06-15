@@ -73,7 +73,6 @@
 
 <script setup>
 import { computed, onMounted } from 'vue'
-import { Notify } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import { catalogoColores, obtenerArticulo } from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
@@ -92,20 +91,11 @@ const nombreColor = (id) => {
 }
 
 const equipar = async (ficha, articuloId) => {
-  const intercambiado = equipamiento.value[ficha === 'X' ? 'O' : 'X'] === articuloId
-  const guardado = await equiparArticulo(ficha, articuloId)
-  if (guardado) {
-    Notify.create({
-      type: 'positive',
-      message: t(intercambiado ? 'inventario.coloresIntercambiados' : 'inventario.colorEquipado'),
-    })
-  }
+  await equiparArticulo(ficha, articuloId)
 }
 
 const seleccionarFicha = async (ficha) => {
-  if (await guardarFichaUsuario(ficha)) {
-    Notify.create({ type: 'positive', message: t('inventario.fichaActualizada') })
-  }
+  await guardarFichaUsuario(ficha)
 }
 
 onMounted(async () => {
@@ -203,4 +193,3 @@ onMounted(async () => {
   }
 }
 </style>
-

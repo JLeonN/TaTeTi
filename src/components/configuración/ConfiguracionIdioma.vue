@@ -60,7 +60,6 @@
 import { ref, onMounted, watch, computed, nextTick } from 'vue'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
-import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 import {
   IDIOMA_PREDETERMINADO,
@@ -68,7 +67,6 @@ import {
   obtenerIdioma,
 } from 'src/i18n/ConfiguracionIdiomas'
 
-const $q = useQuasar()
 const { t } = useI18n()
 
 const { idiomaActual, cargarIdioma, guardarIdioma } = useIdioma()
@@ -130,11 +128,6 @@ const manejarNavegacionTeclado = (evento, codigoIdioma) => {
 
 const guardarNuevoIdioma = async () => {
   if (!idiomaSeleccionado.value) {
-    $q.notify({
-      type: 'negative',
-      message: t('configuracion.debeSeleccionarIdioma'),
-      position: 'top',
-    })
     return
   }
 
@@ -142,17 +135,6 @@ const guardarNuevoIdioma = async () => {
 
   if (exito) {
     mostrarModal.value = false
-    $q.notify({
-      type: 'positive',
-      message: t('configuracion.idiomaActualizado'),
-      position: 'top',
-    })
-  } else {
-    $q.notify({
-      type: 'negative',
-      message: t('configuracion.errorGuardarIdioma'),
-      position: 'top',
-    })
   }
 }
 

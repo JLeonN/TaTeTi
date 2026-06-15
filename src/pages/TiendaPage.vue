@@ -122,8 +122,7 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { Notify } from 'quasar'
+import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
   catalogoColores,
@@ -145,7 +144,6 @@ import { usePublicidad } from 'src/components/Composables/usePublicidad'
 
 const { t } = useI18n()
 const route = useRoute()
-const router = useRouter()
 const { puntajeTotal, articulosAdquiridos, economiaDisponible } = usarEconomia()
 const { regaloDisponible, anunciosRestantes, recompensasBloqueadas } = usarRecompensas()
 const {
@@ -164,23 +162,12 @@ const tarjetaRegalo = ref(null)
 const tarjetaAnuncios = ref(null)
 let temporizadorResaltado = 0
 
-const notificarError = (error) => {
-  const claves = {
-    fondosInsuficientes: 'tienda.sinPuntos',
-    economiaNoDisponible: 'tienda.economiaNoDisponible',
-    relojBloqueado: 'tienda.relojBloqueado',
-    limiteAnuncios: 'tienda.sinAnuncios',
-  }
-  Notify.create({ type: 'negative', message: t(claves[error.message] ?? 'tienda.errorOperacion') })
-}
-
 const reclamarRegalo = async () => {
   procesando.value = true
   try {
     await reclamarRegaloDiario()
-    Notify.create({ type: 'positive', message: t('tienda.regaloRecibido') })
-  } catch (error) {
-    notificarError(error)
+  } catch {
+    // La pantalla ya refleja si la recompensa no está disponible.
   } finally {
     procesando.value = false
   }
@@ -192,10 +179,9 @@ const verAnuncio = async () => {
     const recompensa = await mostrarRecompensado()
     if (!recompensa) throw new Error('anuncioIncompleto')
     await registrarAnuncioRecompensado()
-    Notify.create({ type: 'positive', message: t('tienda.puntosAnuncioRecibidos') })
     if (anunciosRestantes.value > 0) void prepararRecompensado()
-  } catch (error) {
-    notificarError(error)
+  } catch {
+    // La pantalla conserva el estado actual si el anuncio no completa recompensa.
   } finally {
     procesando.value = false
   }
@@ -211,14 +197,9 @@ const confirmarCompra = async () => {
   procesando.value = true
   try {
     await comprarArticulo(articuloPendiente.value.id)
-    Notify.create({
-      type: 'positive',
-      message: t('tienda.compraExitosa'),
-      actions: [{ label: t('tienda.irInventario'), handler: () => router.push('/inventario') }],
-    })
     mostrarConfirmacion.value = false
-  } catch (error) {
-    notificarError(error)
+  } catch {
+    // Los botones deshabilitados evitan compras inválidas en el flujo normal.
   } finally {
     procesando.value = false
   }

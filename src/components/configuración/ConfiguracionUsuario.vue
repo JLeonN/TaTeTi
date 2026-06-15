@@ -46,10 +46,8 @@
 import { ref, onBeforeUnmount, onMounted, watch } from 'vue'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
-import { useQuasar } from 'quasar'
 import { useI18n } from 'vue-i18n'
 
-const $q = useQuasar()
 const { t } = useI18n()
 
 const { nombreUsuario, cargarNombre, guardarNombre } = useConfiguracion()
@@ -88,11 +86,6 @@ defineExpose({ enfocarSeccion })
 
 const guardarNuevoNombre = async () => {
   if (!nuevoNombre.value || nuevoNombre.value.trim() === '') {
-    $q.notify({
-      type: 'negative',
-      message: t('configuracion.nombreVacio'),
-      position: 'top',
-    })
     return
   }
 
@@ -100,17 +93,6 @@ const guardarNuevoNombre = async () => {
 
   if (exito) {
     mostrarModal.value = false
-    $q.notify({
-      type: 'positive',
-      message: t('configuracion.nombreActualizado'),
-      position: 'top',
-    })
-  } else {
-    $q.notify({
-      type: 'negative',
-      message: t('configuracion.errorGuardar'),
-      position: 'top',
-    })
   }
 }
 
