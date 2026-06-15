@@ -21,7 +21,6 @@
           <div class="contenido-recompensa">
             <h2>{{ t('tienda.regaloDiario') }}</h2>
             <strong>+{{ RECOMPENSA_DIARIA }} {{ t('puntuacion.puntos') }}</strong>
-            <span>{{ regaloDisponible ? t('tienda.reclamar') : t('tienda.regaloReclamado') }}</span>
           </div>
           <button
             class="boton-cuadrado"
@@ -45,7 +44,6 @@
               +{{ RECOMPENSA_ANUNCIO }} {{ t('puntuacion.puntos') }} ·
               {{ anunciosRestantes }}/{{ MAXIMO_ANUNCIOS_DIARIOS }}
             </strong>
-            <span>{{ recompensadoCargando ? t('tienda.cargandoAnuncio') : t('tienda.verVideo') }}</span>
           </div>
           <button
             class="boton-cuadrado"
@@ -253,7 +251,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .pagina-tienda {
-  padding: 4px 12px 16px;
+  padding: 10px 12px 16px;
   color: var(--color-texto-principal);
   background-color: var(--color-fondo);
 }
@@ -268,7 +266,7 @@ onBeforeUnmount(() => {
   line-height: 1.15;
 }
 .cabecera-tienda .titulo-h1-con-icono {
-  margin: 2px 0 2px;
+  margin: 8px 0 3px;
   font-size: 1.7rem;
   line-height: 1.1;
 }
@@ -295,22 +293,23 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin: 8px 0;
+  margin: 12px 0 8px;
 }
 .cuadro-recompensa {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  min-height: 132px;
-  padding: 12px;
+  gap: 10px;
+  min-height: 154px;
+  padding: 16px 12px;
   text-align: center;
   background-color: var(--color-fondo-alterno);
   border: 1px solid var(--color-borde-tablero);
   border-radius: 16px;
 }
 .cuadro-recompensa > i {
-  font-size: 2.35rem;
+  font-size: 3.15rem;
 }
 .cuadro-recompensa.regalo > i {
   color: var(--color-turno-activo);
@@ -323,16 +322,16 @@ onBeforeUnmount(() => {
   font-size: 1rem;
   line-height: 1.1;
 }
-.contenido-recompensa strong,
-.contenido-recompensa span {
+.contenido-recompensa strong {
   display: block;
-  margin-top: 4px;
+  margin-top: 8px;
   color: var(--color-texto-secundario);
   font-size: 0.82rem;
   line-height: 1.15;
 }
 .boton-cuadrado {
   min-height: 30px;
+  margin-top: 2px;
   padding: 6px 10px;
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
@@ -431,8 +430,8 @@ onBeforeUnmount(() => {
 }
 @media (max-width: 700px) {
   .cuadro-recompensa {
-    min-height: 126px;
-    padding: 10px;
+    min-height: 148px;
+    padding: 14px 10px;
   }
 }
 @media (max-width: 340px) {

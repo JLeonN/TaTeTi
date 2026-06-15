@@ -49,7 +49,10 @@ defineProps({
   padding: 2px 2px 10px;
   scroll-padding-inline: 2px;
   scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
+  scrollbar-width: none;
+}
+.pista-carrusel::-webkit-scrollbar {
+  display: none;
 }
 .pista-carrusel > :slotted(*) {
   scroll-snap-align: start;
