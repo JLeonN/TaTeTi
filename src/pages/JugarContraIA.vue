@@ -297,7 +297,12 @@ watch(juegoTerminado, async (nuevoValor) => {
     }
 
     // Procesar puntuación
-    const resultadoPuntuacion = await procesarResultado(resultado, dificultadActual.value)
+    const idPartida = registroPartida.obtenerIdPartida()
+    const resultadoPuntuacion = await procesarResultado(
+      resultado,
+      dificultadActual.value,
+      idPartida ? `partida:${idPartida}` : `partida:${Date.now()}`,
+    )
     puntosGanadosPartida.value = resultadoPuntuacion.puntosGanados
     await registroPartida.finalizar(resultado, resultadoPuntuacion, combinacionGanadora.value)
 

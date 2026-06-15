@@ -27,13 +27,19 @@
         <div class="espaciador-header"></div>
 
         <!-- Mostrar puntaje -->
-        <div ref="puntajeHeader" class="puntaje-header">
+        <button
+          ref="puntajeHeader"
+          type="button"
+          class="puntaje-header"
+          :aria-label="t('tienda.abrirTienda')"
+          @click="irATienda"
+        >
           <i v-show="nivelCompactacionHeader < 2" class="ti ti-trophy icono-sm icono-primario"></i>
           <span class="puntaje-numero">{{ puntajeTotal }}</span>
           <span v-show="nivelCompactacionHeader < 4" class="puntaje-texto">
             {{ t('puntuacion.puntos') }}
           </span>
-        </div>
+        </button>
 
         <!-- Mostrar nombre del usuario -->
         <button
@@ -89,6 +95,26 @@
             <q-item-section>
               <q-item-label>{{ t('menu.multijugador') }}</q-item-label>
               <q-item-label caption>{{ t('menu.multijugadorDescripcion') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable to="/tienda" exact class="item-menu">
+            <q-item-section avatar>
+              <i class="ti ti-shopping-bag icono-md icono-primario"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ t('tienda.titulo') }}</q-item-label>
+              <q-item-label caption>{{ t('tienda.menuDescripcion') }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item clickable to="/inventario" exact class="item-menu">
+            <q-item-section avatar>
+              <i class="ti ti-backpack icono-md icono-primario"></i>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ t('inventario.titulo') }}</q-item-label>
+              <q-item-label caption>{{ t('inventario.menuDescripcion') }}</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -161,7 +187,9 @@ import {
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 import { useIdioma } from 'src/components/Composables/useIdioma'
 import { usePuntuacion } from 'src/components/Composables/usePuntuacion'
+import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
 import { usePublicidad } from 'src/components/Composables/usePublicidad'
+import { inicializarRecompensas } from 'src/Servicios/Economia/ServicioRecompensas'
 import { esModoPruebaPublicidad } from 'src/components/Configuracion/ConfiguracionPublicidad'
 import { useI18n } from 'vue-i18n'
 
@@ -180,6 +208,7 @@ let fotogramaAjusteHeader = 0
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const { idiomaActual, cargarIdioma } = useIdioma()
 const { puntajeTotal, cargarPuntuacion } = usePuntuacion()
+const { cargarEquipamiento } = useEquipamiento()
 const { inicializarAdMob, mostrarBanner } = usePublicidad()
 const { t } = useI18n()
 const router = useRouter()
@@ -284,6 +313,10 @@ const irAJugarContraIA = () => {
   void router.push('/')
 }
 
+const irATienda = () => {
+  void router.push('/tienda')
+}
+
 const verificarActualizacion = async () => {
   estadoActualizacion.value = await obtenerEstadoActualizacion(idiomaActual.value)
   mostrarModalActualizacion.value = estadoActualizacion.value.hayActualizacion
@@ -303,6 +336,8 @@ onMounted(async () => {
   await cargarIdioma()
   idiomaPreparado = true
   await cargarPuntuacion()
+  await cargarEquipamiento()
+  await inicializarRecompensas()
   console.log('🎯 Nombre después de cargar:', nombreUsuario.value)
   console.log('🏆 Puntaje después de cargar:', puntajeTotal.value)
 
@@ -359,6 +394,7 @@ const toggleLeftDrawer = () => {
 .boton-menu-header,
 .logo-header,
 .puntaje-header {
+  appearance: none;
   flex: 0 0 auto;
 }
 .logo-header {
@@ -395,6 +431,15 @@ const toggleLeftDrawer = () => {
   border: 2px solid var(--color-turno-activo);
   box-shadow: 0 4px 12px rgba(255, 190, 11, 0.3);
   white-space: nowrap;
+  cursor: pointer;
+  font-family: inherit;
+}
+.puntaje-header:focus-visible {
+  outline: 2px solid var(--color-texto-principal);
+  outline-offset: 2px;
+}
+.puntaje-header:active {
+  transform: scale(0.97);
 }
 .puntaje-numero {
   font-weight: bold;

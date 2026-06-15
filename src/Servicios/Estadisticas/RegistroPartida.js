@@ -59,6 +59,10 @@ class RegistroPartida {
     await this.guardarPartidaPendiente()
   }
 
+  obtenerIdPartida() {
+    return this.partida?.id ?? null
+  }
+
   async registrarTurnoUsuario(posicion, tablero) {
     if (!this.partida) return
     const fin = crearMarcaTiempo()

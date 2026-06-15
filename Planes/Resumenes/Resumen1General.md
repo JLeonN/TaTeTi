@@ -12,6 +12,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `/`: partida contra IA.
 - `/jugador-vs-jugador`: multijugador local.
 - `/estadisticas`: rendimiento e historial agregado de partidas contra NEXUS.
+- `/tienda`: recompensas diarias, anuncios recompensados y compra de colores.
+- `/inventario`: equipamiento de colores y ficha preferida contra NEXUS.
 - `/configuracion`: nombre e idioma.
 - Cualquier ruta desconocida: página 404.
 
@@ -43,6 +45,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `useIdioma.js`: idioma global y persistente.
 - `usePuntuacion.js`: puntos, rachas y protección por derrotas.
 - `usePublicidad.js`: banner adaptativo, intersticial y reserva dinámica de espacio.
+- `src/Servicios/Economia/`: catálogo, saldo, compras, equipamiento y recompensas.
 - `useContadorPartidas.js`: contador persistente para intersticiales.
 
 ## Contratos funcionales
@@ -63,6 +66,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `ficha_usuario_ia`: `X` u `O`.
 - `puntuacion_sistema`: puntos y rachas.
 - `contador_partidas_publicidad`: progreso hacia el siguiente intersticial.
+- `estado_recompensas`: disponibilidad diaria y protección horaria local.
+- `equipamiento_fichas`: respaldo del color equipado en `X` y `O`.
 
 ## Estadísticas con SQLite
 

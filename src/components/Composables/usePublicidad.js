@@ -4,6 +4,7 @@ import {
   BannerAdPluginEvents,
   BannerAdPosition,
   BannerAdSize,
+  RewardAdPluginEvents,
 } from '@capacitor-community/admob'
 import {
   esModoPruebaPublicidad,
@@ -18,7 +19,11 @@ console.log(`AdMob en modo: ${esModoPruebaPublicidad ? 'PRUEBA' : 'PRODUCCIÓN'}
 // ============================================================================
 const admobInicializado = ref(false)
 const bannerVisible = ref(false)
+const recompensadoDisponible = ref(false)
+const recompensadoCargando = ref(false)
+const recompensadoMostrando = ref(false)
 const manejadoresEventosBanner = []
+const manejadoresEventosRecompensado = []
 
 const actualizarAlturaBanner = (altura = 0) => {
   if (typeof document === 'undefined') {
@@ -52,6 +57,36 @@ const registrarEventosBanner = async () => {
     actualizarAlturaBanner()
   })
   manejadoresEventosBanner.push(manejadorError)
+}
+
+const eliminarManejadoresRecompensado = async () => {
+  const manejadoresPendientes = manejadoresEventosRecompensado.splice(0)
+  await Promise.allSettled(manejadoresPendientes.map((manejador) => manejador.remove()))
+}
+
+const registrarEventosRecompensado = async () => {
+  if (manejadoresEventosRecompensado.length > 0) return
+  manejadoresEventosRecompensado.push(
+    await AdMob.addListener(RewardAdPluginEvents.Loaded, () => {
+      recompensadoDisponible.value = true
+      recompensadoCargando.value = false
+    }),
+    await AdMob.addListener(RewardAdPluginEvents.FailedToLoad, () => {
+      recompensadoDisponible.value = false
+      recompensadoCargando.value = false
+    }),
+    await AdMob.addListener(RewardAdPluginEvents.Showed, () => {
+      recompensadoMostrando.value = true
+    }),
+    await AdMob.addListener(RewardAdPluginEvents.Dismissed, () => {
+      recompensadoDisponible.value = false
+      recompensadoMostrando.value = false
+    }),
+    await AdMob.addListener(RewardAdPluginEvents.FailedToShow, () => {
+      recompensadoDisponible.value = false
+      recompensadoMostrando.value = false
+    }),
+  )
 }
 
 export function usePublicidad() {
@@ -184,6 +219,39 @@ export function usePublicidad() {
     }
   }
 
+  const prepararRecompensado = async () => {
+    if (!admobInicializado.value || recompensadoCargando.value || recompensadoDisponible.value) {
+      return recompensadoDisponible.value
+    }
+    recompensadoCargando.value = true
+    try {
+      await registrarEventosRecompensado()
+      await AdMob.prepareRewardVideoAd({ adId: idsPublicidad.recompensado })
+      recompensadoDisponible.value = true
+      return true
+    } catch (error) {
+      recompensadoCargando.value = false
+      recompensadoDisponible.value = false
+      console.error('Error al preparar el anuncio recompensado:', error)
+      return false
+    }
+  }
+
+  const mostrarRecompensado = async () => {
+    if (!recompensadoDisponible.value || recompensadoMostrando.value) return null
+    try {
+      recompensadoMostrando.value = true
+      const recompensa = await AdMob.showRewardVideoAd()
+      recompensadoDisponible.value = false
+      return recompensa
+    } catch (error) {
+      console.error('Error al mostrar el anuncio recompensado:', error)
+      return null
+    } finally {
+      recompensadoMostrando.value = false
+    }
+  }
+
   // ==========================================================================
   // RETORNO
   // ==========================================================================
@@ -196,5 +264,11 @@ export function usePublicidad() {
     eliminarBanner,
     prepararIntersticial,
     mostrarIntersticial,
+    recompensadoDisponible,
+    recompensadoCargando,
+    recompensadoMostrando,
+    prepararRecompensado,
+    mostrarRecompensado,
+    eliminarManejadoresRecompensado,
   }
 }

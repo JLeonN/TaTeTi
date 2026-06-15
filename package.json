@@ -17,7 +17,7 @@
     "validar-version-publicacion": "node Scripts/ValidarVersionPublicacion.js",
     "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{js,cjs,mjs,vue}\"",
     "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
-    "test": "node Scripts/ProbarIdiomas.js && node Scripts/ProbarActualizacion.js",
+    "test": "node Scripts/ProbarIdiomas.js && node Scripts/ProbarActualizacion.js && node Scripts/ProbarEconomia.js",
     "probar-estadisticas": "node Scripts/ProbarEstadisticas.js",
     "cel": "npm run androidReleaseConSimbolos && npm run abrir-android",
     "androidApkPrueba": "npm run build && node Scripts/CompilarAndroid.js assembleDebug",

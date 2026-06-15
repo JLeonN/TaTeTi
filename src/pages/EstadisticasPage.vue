@@ -11,10 +11,52 @@
         </div>
       </header>
 
+      <div v-if="regaloDisponible || anunciosRestantes > 0" class="accesos-recompensas">
+        <button v-if="regaloDisponible" type="button" @click="irARecompensa('regalo')">
+          <i class="ti ti-gift"></i>
+          {{ t('economia.regaloDisponible') }}
+        </button>
+        <button v-if="anunciosRestantes > 0" type="button" @click="irARecompensa('anuncios')">
+          <i class="ti ti-player-play"></i>
+          {{ t('economia.videosDisponibles', { cantidad: anunciosRestantes }) }}
+        </button>
+      </div>
+
       <BarraFiltrosEstadisticas
         v-model:dificultad="filtros.dificultad"
         v-model:ficha="filtros.ficha"
       />
+
+      <article v-if="economia" class="panel panel-economia">
+        <EncabezadoPanel
+          identificador="economia"
+          :titulo="t('economia.titulo')"
+          :descripcion="t('economia.descripcion')"
+          :abierto="panelesDesplegados.economia"
+          @alternar="alternarPanel('economia')"
+        />
+        <svg class="grafica-linea" viewBox="0 0 300 100" role="img" :aria-label="t('economia.titulo')">
+          <polyline v-if="puntosEvolucionEconomia" :points="puntosEvolucionEconomia" />
+        </svg>
+        <div class="cuadricula-datos">
+          <DatoSimple :etiqueta="t('economia.saldo')" :valor="numero(economia.saldo)" />
+          <DatoSimple :etiqueta="t('economia.ganados')" :valor="numero(economia.ganados)" />
+          <DatoSimple :etiqueta="t('economia.gastados')" :valor="numero(economia.gastados)" />
+          <DatoSimple :etiqueta="t('economia.jugando')" :valor="numero(economia.jugando)" />
+          <DatoSimple :etiqueta="t('economia.anuncios')" :valor="numero(economia.anuncios)" />
+          <DatoSimple :etiqueta="t('economia.regalos')" :valor="numero(economia.regalos)" />
+          <DatoSimple
+            :etiqueta="t('economia.cantidadAnuncios')"
+            :valor="numero(economia.cantidadAnuncios)"
+          />
+          <DatoSimple
+            :etiqueta="t('economia.cantidadRegalos')"
+            :valor="numero(economia.cantidadRegalos)"
+          />
+          <DatoSimple :etiqueta="t('economia.compras')" :valor="numero(economia.compras)" />
+          <DatoSimple :etiqueta="t('economia.maximo')" :valor="numero(economia.maximo)" />
+        </div>
+      </article>
 
       <div v-if="errorCarga" class="panel estado-mensaje estado-error">
         <i class="ti ti-alert-triangle icono-lg"></i>
@@ -423,16 +465,28 @@
 
 <script setup>
 import { computed, defineComponent, h, onMounted, reactive, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BarraFiltrosEstadisticas from 'src/components/Estadisticas/BarraFiltrosEstadisticas.vue'
 import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadistica.vue'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
+import {
+  inicializarEconomia,
+  obtenerEstadisticasEconomicas,
+} from 'src/Servicios/Economia/ServicioEconomia'
+import {
+  inicializarRecompensas,
+  usarRecompensas,
+} from 'src/Servicios/Economia/ServicioRecompensas'
 
 const { locale, t } = useI18n()
+const router = useRouter()
+const { regaloDisponible, anunciosRestantes } = usarRecompensas()
 const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
+const economia = ref(null)
 const fichasDesplegadas = reactive({
   X: false,
   O: false,
@@ -447,6 +501,7 @@ const panelesDesplegados = reactive({
   escudo: false,
   movimientos: false,
   tablero: false,
+  economia: false,
 })
 const filtros = reactive({
   dificultad: 'todas',
@@ -639,6 +694,21 @@ const puntosEvolucion = computed(() => {
     })
     .join(' ')
 })
+const puntosEvolucionEconomia = computed(() => {
+  const filas = economia.value?.evolucion ?? []
+  if (!filas.length) return ''
+  const valores = filas.map((fila) => numero(fila.saldoResultante))
+  const minimo = Math.min(...valores)
+  const maximo = Math.max(...valores)
+  const rango = Math.max(1, maximo - minimo)
+  return valores
+    .map((valor, indice) => {
+      const x = filas.length === 1 ? 150 : (indice / (filas.length - 1)) * 290 + 5
+      const y = 95 - ((valor - minimo) / rango) * 90
+      return `${x},${y}`
+    })
+    .join(' ')
+})
 const mapaPosiciones = computed(() => {
   const cantidades = Array(9).fill(0)
   for (const fila of datos.value.posiciones)
@@ -670,13 +740,22 @@ const cargarEstadisticas = async () => {
   errorCarga.value = false
   try {
     await inicializarBaseEstadisticas()
-    datos.value = await obtenerEstadisticas({ ...filtros })
+    await inicializarEconomia()
+    await inicializarRecompensas()
+    ;[datos.value, economia.value] = await Promise.all([
+      obtenerEstadisticas({ ...filtros }),
+      obtenerEstadisticasEconomicas(),
+    ])
   } catch (error) {
     console.error('Error al cargar estadísticas:', error)
     errorCarga.value = true
   } finally {
     cargando.value = false
   }
+}
+
+const irARecompensa = (seccion) => {
+  void router.push({ path: '/tienda', query: { resaltar: seccion } })
 }
 
 watch(
@@ -712,6 +791,26 @@ onMounted(cargarEstadisticas)
 }
 .cabecera-estadisticas h1 {
   margin-bottom: 2px;
+}
+.accesos-recompensas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.accesos-recompensas button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 13px;
+  color: var(--color-fondo);
+  background-color: var(--color-turno-activo);
+  border: 0;
+  border-radius: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.panel-economia {
+  width: 100%;
 }
 .texto-secundario {
   margin: 0;

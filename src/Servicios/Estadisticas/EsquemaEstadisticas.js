@@ -1,5 +1,5 @@
 export const NOMBRE_BASE_ESTADISTICAS = 'EstadisticasTaTeTi'
-export const VERSION_BASE_ESTADISTICAS = 1
+export const VERSION_BASE_ESTADISTICAS = 2
 
 export const MIGRACIONES_ESTADISTICAS = [
   {
@@ -71,6 +71,46 @@ export const MIGRACIONES_ESTADISTICAS = [
         VALUES ('fechaInicioRecopilacion', datetime('now'));`,
       `INSERT OR REPLACE INTO Metadatos(clave, valor)
         VALUES ('versionEsquema', '1');`,
+    ],
+  },
+  {
+    toVersion: 2,
+    statements: [
+      `CREATE TABLE IF NOT EXISTS MovimientosEconomicos (
+        id TEXT PRIMARY KEY NOT NULL,
+        tipo TEXT NOT NULL,
+        cantidad INTEGER NOT NULL,
+        saldoResultante INTEGER NOT NULL,
+        origen TEXT NOT NULL UNIQUE,
+        articuloId TEXT,
+        fechaUtc TEXT NOT NULL,
+        fechaLocal TEXT NOT NULL
+      );`,
+      `CREATE TABLE IF NOT EXISTS EstadoEconomia (
+        clave TEXT PRIMARY KEY NOT NULL,
+        valor TEXT NOT NULL
+      );`,
+      `CREATE TABLE IF NOT EXISTS EstadoPuntuacionDificultad (
+        dificultad TEXT PRIMARY KEY NOT NULL,
+        estado TEXT NOT NULL
+      );`,
+      `CREATE TABLE IF NOT EXISTS ArticulosAdquiridos (
+        articuloId TEXT PRIMARY KEY NOT NULL,
+        fechaAdquisicion TEXT NOT NULL
+      );`,
+      `CREATE TABLE IF NOT EXISTS EquipamientoFichas (
+        ficha TEXT PRIMARY KEY NOT NULL,
+        articuloId TEXT NOT NULL
+      );`,
+      `CREATE TABLE IF NOT EXISTS EstadoRecompensas (
+        clave TEXT PRIMARY KEY NOT NULL,
+        valor TEXT NOT NULL
+      );`,
+      'CREATE INDEX IF NOT EXISTS indiceMovimientosTipo ON MovimientosEconomicos(tipo);',
+      'CREATE INDEX IF NOT EXISTS indiceMovimientosFecha ON MovimientosEconomicos(fechaUtc);',
+      'CREATE UNIQUE INDEX IF NOT EXISTS indiceMovimientosOrigen ON MovimientosEconomicos(origen);',
+      `INSERT OR IGNORE INTO EquipamientoFichas(ficha, articuloId) VALUES ('X', 'rojo');`,
+      `INSERT OR IGNORE INTO EquipamientoFichas(ficha, articuloId) VALUES ('O', 'azul');`,
     ],
   },
 ]

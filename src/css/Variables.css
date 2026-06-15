@@ -9,6 +9,14 @@
   /* Fichas */
   --color-ficha-x: #ff4757; /* Rojo vibrante */
   --color-ficha-o: #1e90ff; /* Azul eléctrico */
+  --color-catalogo-rojo: #ff4757;
+  --color-catalogo-azul: #1e90ff;
+  --color-catalogo-amarillo: #ffdf3e;
+  --color-catalogo-verde: #00e676;
+  --color-catalogo-naranja: #ff8c00;
+  --color-catalogo-magenta: #ff4fd8;
+  --color-catalogo-turquesa: #27e6d6;
+  --color-catalogo-blanco: #ffffff;
 
   /* Estados y acciones */
   --color-turno-activo: #ffbe0b; /* Amarillo dorado */

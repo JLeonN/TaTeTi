@@ -351,20 +351,20 @@ Validar la economía, anuncios, persistencia, navegación y apariencia en escena
 
 ## Progreso del plan
 
-- [ ] Fase 1: Definir contratos de economía y catálogo
-- [ ] Fase 2: Ampliar la persistencia económica
-- [ ] Fase 3: Centralizar operaciones de puntos
-- [ ] Fase 4: Implementar recompensas diarias
-- [ ] Fase 5: Integrar anuncios recompensados
-- [ ] Fase 6: Crear la página Tienda
-- [ ] Fase 7: Crear catálogo inicial de colores
-- [ ] Fase 8: Crear la página Inventario
-- [ ] Fase 9: Aplicar el equipamiento al juego
-- [ ] Fase 10: Agregar accesos contextuales desde Estadísticas
-- [ ] Fase 11: Ampliar las estadísticas económicas
-- [ ] Fase 12: Traducciones, accesibilidad y documentación
+- [x] Fase 1: Definir contratos de economía y catálogo
+- [x] Fase 2: Ampliar la persistencia económica
+- [x] Fase 3: Centralizar operaciones de puntos
+- [x] Fase 4: Implementar recompensas diarias
+- [x] Fase 5: Integrar anuncios recompensados
+- [x] Fase 6: Crear la página Tienda
+- [x] Fase 7: Crear catálogo inicial de colores
+- [x] Fase 8: Crear la página Inventario
+- [x] Fase 9: Aplicar el equipamiento al juego
+- [x] Fase 10: Agregar accesos contextuales desde Estadísticas
+- [x] Fase 11: Ampliar las estadísticas económicas
+- [x] Fase 12: Traducciones, accesibilidad y documentación
 - [ ] Fase Testing
 
 Fecha de creación: 14 de Junio 2026
 Fecha de última actualización: 15 de Junio 2026
-Estado: BORRADOR
+Estado: EN PROCESO

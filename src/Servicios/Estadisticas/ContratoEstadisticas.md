@@ -7,10 +7,11 @@ El sistema registra únicamente partidas contra la IA. Los datos comienzan a ser
 ## Persistencia
 
 - Base: `EstadisticasTaTeTi`
-- Versión inicial: `1`
+- Versión actual: `2`
 - Plataforma nativa: SQLite mediante `@capacitor-community/sqlite`
 - Plataforma web: SQLite en IndexedDB mediante `jeep-sqlite`
-- Tablas: `Metadatos`, `Partidas` y `Turnos`
+- Tablas de partidas: `Metadatos`, `Partidas` y `Turnos`
+- Tablas económicas: `MovimientosEconomicos`, `EstadoEconomia`, `EstadoPuntuacionDificultad`, `ArticulosAdquiridos`, `EquipamientoFichas` y `EstadoRecompensas`
 - Las escrituras se ejecutan en una cola serial y las partidas se guardan con sus turnos dentro de una transacción
 - No existe limpieza automática ni opción para borrar el historial
 
@@ -39,6 +40,16 @@ La sesión activa se refleja en Capacitor Preferences después de cada turno. Si
 ## Migraciones
 
 Cada cambio de estructura debe agregar una entrada nueva a `MIGRACIONES_ESTADISTICAS` con un `toVersion` superior. No se deben modificar migraciones ya publicadas ni eliminar columnas con datos históricos sin una migración explícita.
+
+## Economía
+
+- `MovimientosEconomicos` conserva cada variación con cantidad firmada, saldo resultante, origen único, artículo opcional y fechas internas.
+- Los orígenes únicos impiden acreditar dos veces una partida, regalo, anuncio o compra.
+- `ajusteInicial` reconcilia el saldo anterior con las partidas disponibles y no cuenta como puntos ganados o gastados.
+- Rojo y azul forman parte del inventario inicial.
+- Cada color se compra una vez y puede equiparse en `X` u `O`, pero no simultáneamente.
+- El saldo se refleja en `puntuacion_sistema` para conservar compatibilidad con versiones anteriores.
+- Las fechas económicas se usan internamente y no se presentan en la interfaz.
 
 ## Respaldo futuro
 

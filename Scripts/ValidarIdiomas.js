@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import path from 'node:path'
+import mensajesEconomia from '../src/i18n/MensajesEconomia.js'
 
 const RAIZ = fileURLToPath(new URL('../', import.meta.url))
 const RUTA_CATALOGO = path.join(RAIZ, 'src', 'i18n', 'IdiomasApp.json')
@@ -83,7 +84,10 @@ const validarCatalogo = (catalogo) => {
 
 const cargarMensajes = async (codigo) => {
   const ruta = path.join(RAIZ, RUTAS_MENSAJES[codigo])
-  return (await import(pathToFileURL(ruta).href)).default
+  return {
+    ...(await import(pathToFileURL(ruta).href)).default,
+    ...mensajesEconomia[codigo],
+  }
 }
 
 const validarMensajes = async (catalogo, idiomas) => {

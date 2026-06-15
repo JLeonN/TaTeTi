@@ -1,10 +1,15 @@
 import { ref } from 'vue'
 import { Preferences } from '@capacitor/preferences'
+import {
+  inicializarEconomia,
+  registrarMovimiento,
+  usarEconomia,
+} from 'src/Servicios/Economia/ServicioEconomia'
 
 const CLAVE_PUNTUACION = 'puntuacion_sistema'
 
 // Estado global (singleton)
-const puntajeTotal = ref(0)
+const { puntajeTotal } = usarEconomia()
 const crearEstadoInicial = () => ({
   racha: 0,
   derrotasConsecutivas: 0,
@@ -71,11 +76,11 @@ export function usePuntuacion() {
   // ============================================================================
   const cargarPuntuacion = async () => {
     try {
+      await inicializarEconomia()
       const resultado = await Preferences.get({ key: CLAVE_PUNTUACION })
 
       if (resultado.value) {
         const datos = JSON.parse(resultado.value)
-        puntajeTotal.value = datos.puntajeTotal || 0
 
         estadoFacil.value = completarEstado(datos.facil)
         estadoNormal.value = completarEstado(datos.normal)
@@ -125,7 +130,7 @@ export function usePuntuacion() {
   // ============================================================================
   // PROCESAR RESULTADO DE PARTIDA
   // ============================================================================
-  const procesarResultado = async (resultado, dificultad) => {
+  const procesarResultado = async (resultado, dificultad, origen = `partida:${Date.now()}`) => {
     const config = configuracionPuntos[dificultad]
     const estado = obtenerEstado(dificultad)
     const rachaAntes = estado.value.racha
@@ -144,9 +149,6 @@ export function usePuntuacion() {
       estado.value.racha += 1
       const bonusRacha = calcularBonusRacha(estado.value.racha, config)
       puntosGanados = config.ganar + bonusRacha
-
-      // Sumar puntos
-      puntajeTotal.value += puntosGanados
 
       // Resetear derrotas y desactivar protección
       estado.value.derrotasConsecutivas = 0
@@ -187,12 +189,7 @@ export function usePuntuacion() {
       // Restar puntos solo si no hay protección y no está en el mínimo
       if (!estado.value.proteccionActiva && puntajeTotal.value > 10) {
         puntosGanados = -config.perder
-        puntajeTotal.value += puntosGanados // Es negativo
-
-        // No bajar de 10
-        if (puntajeTotal.value < 10) {
-          puntajeTotal.value = 10
-        }
+        puntosGanados = -Math.min(config.perder, puntajeTotal.value - 10)
       } else if (estado.value.proteccionActiva) {
         derrotaProtegida = true
       }
@@ -209,13 +206,17 @@ export function usePuntuacion() {
     // EMPATE
     else if (resultado === 'empate') {
       puntosGanados = config.empate
-      puntajeTotal.value += puntosGanados
-
       // No resetear racha ni derrotas en empate
       console.log(`🤝 Empate en ${dificultad}: +${puntosGanados} pts`)
     }
 
-    // Guardar cambios
+    if (puntosGanados !== 0) {
+      await registrarMovimiento({
+        tipo: 'partida',
+        cantidad: puntosGanados,
+        origen,
+      })
+    }
     await guardarPuntuacion()
 
     return {
