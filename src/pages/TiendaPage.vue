@@ -90,7 +90,11 @@
           <span v-if="esArticuloAdquirido(articulo)" class="estado-color">
             <i class="ti ti-check"></i>
           </span>
-          <span v-else class="precio-color">{{ articulo.precio }}</span>
+          <span v-else class="precio-color">
+            <i class="ti ti-trophy"></i>
+            <strong>{{ articulo.precio }}</strong>
+            <small>{{ t('puntuacion.puntos') }}</small>
+          </span>
           <span class="muestra-color" :style="{ color: `var(${articulo.variable})` }">
             <span>X</span>
             <span>O</span>
@@ -407,18 +411,34 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 24px;
-  min-height: 24px;
-  padding: 3px 6px;
+  gap: 4px;
+  min-height: 25px;
+  padding: 3px 7px;
   color: var(--color-fondo);
-  background-color: var(--color-turno-activo);
+  background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
+  border: 1px solid var(--color-turno-activo);
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 800;
+  box-shadow: 0 3px 8px rgba(255, 190, 11, 0.28);
+  line-height: 1;
 }
 .estado-color {
+  min-width: 25px;
   color: var(--color-fondo);
   background-color: var(--color-exito);
+}
+.precio-color i {
+  font-size: 0.82rem;
+}
+.precio-color strong {
+  color: var(--color-texto-principal);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.precio-color small {
+  color: var(--color-texto-principal);
+  font-size: 0.62rem;
+  font-weight: 700;
+  opacity: 0.9;
 }
 .dialogo-compra {
   color: var(--color-texto-principal);
@@ -441,6 +461,9 @@ onBeforeUnmount(() => {
   .cuadro-recompensa {
     min-height: 148px;
     padding: 14px 10px;
+  }
+  .precio-color i {
+    display: none;
   }
 }
 @media (max-width: 340px) {
