@@ -9,11 +9,6 @@
           </h1>
           <p>{{ t('tienda.subtitulo') }}</p>
         </div>
-        <div class="saldo-tienda">
-          <i class="ti ti-trophy"></i>
-          <strong>{{ puntajeTotal }}</strong>
-          <span>{{ t('puntuacion.puntos') }}</span>
-        </div>
       </header>
 
       <section class="cuadricula-recompensas">
@@ -272,7 +267,6 @@ onBeforeUnmount(() => {
   margin: 4px 0 0;
   color: var(--color-texto-secundario);
 }
-.saldo-tienda,
 .boton-inventario {
   display: flex;
   align-items: center;
@@ -373,4 +367,3 @@ onBeforeUnmount(() => {
   }
 }
 </style>
-

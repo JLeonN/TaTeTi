@@ -296,4 +296,3 @@ export const usarEconomia = () => ({
   comprarArticulo,
   equiparArticulo,
 })
-

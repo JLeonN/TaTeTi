@@ -12,7 +12,7 @@ import {
 } from '../src/Servicios/Estadisticas/EsquemaEstadisticas.js'
 
 assert.equal(VERSION_BASE_ESTADISTICAS, 2)
-assert.equal(RECOMPENSA_DIARIA, 10)
+assert.equal(RECOMPENSA_DIARIA, 100)
 assert.equal(RECOMPENSA_ANUNCIO, 15)
 assert.equal(MAXIMO_ANUNCIOS_DIARIOS, 3)
 assert.deepEqual(
@@ -45,19 +45,18 @@ for (const tabla of [
 base.run(
   `INSERT INTO MovimientosEconomicos
     (id, tipo, cantidad, saldoResultante, origen, articuloId, fechaUtc, fechaLocal)
-  VALUES ('1', 'regaloDiario', 10, 10, 'regalo:2026-06-15', NULL, ?, '2026-06-15')`,
-  [new Date().toISOString()],
+  VALUES ('1', 'regaloDiario', ?, ?, 'regalo:2026-06-15', NULL, ?, '2026-06-15')`,
+  [RECOMPENSA_DIARIA, RECOMPENSA_DIARIA, new Date().toISOString()],
 )
 assert.throws(
   () =>
     base.run(
       `INSERT INTO MovimientosEconomicos
         (id, tipo, cantidad, saldoResultante, origen, articuloId, fechaUtc, fechaLocal)
-      VALUES ('2', 'regaloDiario', 10, 20, 'regalo:2026-06-15', NULL, ?, '2026-06-15')`,
-      [new Date().toISOString()],
+      VALUES ('2', 'regaloDiario', ?, ?, 'regalo:2026-06-15', NULL, ?, '2026-06-15')`,
+      [RECOMPENSA_DIARIA, RECOMPENSA_DIARIA * 2, new Date().toISOString()],
     ),
   /UNIQUE constraint failed/,
 )
 
 console.log('Catálogo, configuración y migración económica validados.')
-

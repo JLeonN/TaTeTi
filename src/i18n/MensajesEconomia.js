@@ -17,7 +17,7 @@ const mensajesEconomia = {
       abrirTienda: 'Abrir tienda',
       menuDescripcion: 'Recompensas y colores',
       regaloDiario: 'Regalo diario',
-      regaloDescripcion: 'Recibí {puntos} puntos gratis cada día.',
+      regaloDescripcion: 'Recibí {puntos} puntos gratis cada minuto.',
       reclamar: 'Reclamar regalo',
       regaloReclamado: 'Regalo reclamado',
       regaloRecibido: 'Recibiste tu regalo diario.',
@@ -85,7 +85,7 @@ const mensajesEconomia = {
     tienda: {
       titulo: 'Store', subtitulo: 'Earn points and customize your symbols', abrirTienda: 'Open store',
       menuDescripcion: 'Rewards and colors', regaloDiario: 'Daily gift',
-      regaloDescripcion: 'Get {puntos} free points every day.', reclamar: 'Claim gift',
+      regaloDescripcion: 'Get {puntos} free points every minute.', reclamar: 'Claim gift',
       regaloReclamado: 'Gift claimed', regaloRecibido: 'You received your daily gift.',
       verAnuncio: 'Earn points', anuncioDescripcion: 'Watch a full video and get {puntos} points.',
       anunciosRestantes: 'Videos available: {cantidad}', verVideo: 'Watch video',
@@ -135,7 +135,7 @@ agregarIdioma(
   {
     titulo: 'Loja', subtitulo: 'Ganhe pontos e personalize suas peças', abrirTienda: 'Abrir loja',
     menuDescripcion: 'Recompensas e cores', regaloDiario: 'Presente diário',
-    regaloDescripcion: 'Receba {puntos} pontos grátis todos os dias.', reclamar: 'Resgatar presente',
+    regaloDescripcion: 'Receba {puntos} pontos grátis a cada minuto.', reclamar: 'Resgatar presente',
     regaloReclamado: 'Presente resgatado', regaloRecibido: 'Você recebeu seu presente diário.',
     verAnuncio: 'Ganhar pontos', anuncioDescripcion: 'Assista a um vídeo completo e receba {puntos} pontos.',
     anunciosRestantes: 'Vídeos disponíveis: {cantidad}', verVideo: 'Assistir vídeo',
@@ -170,7 +170,7 @@ agregarIdioma(
   {
     titulo: 'Boutique', subtitulo: 'Gagnez des points et personnalisez vos symboles', abrirTienda: 'Ouvrir la boutique',
     menuDescripcion: 'Récompenses et couleurs', regaloDiario: 'Cadeau quotidien',
-    regaloDescripcion: 'Recevez {puntos} points gratuits chaque jour.', reclamar: 'Récupérer',
+    regaloDescripcion: 'Recevez {puntos} points gratuits chaque minute.', reclamar: 'Récupérer',
     regaloReclamado: 'Cadeau récupéré', regaloRecibido: 'Vous avez reçu votre cadeau quotidien.',
     verAnuncio: 'Gagner des points', anuncioDescripcion: 'Regardez une vidéo entière et recevez {puntos} points.',
     anunciosRestantes: 'Vidéos disponibles : {cantidad}', verVideo: 'Regarder la vidéo',
@@ -205,7 +205,7 @@ agregarIdioma(
   {
     titulo: 'Negozio', subtitulo: 'Ottieni punti e personalizza i simboli', abrirTienda: 'Apri negozio',
     menuDescripcion: 'Ricompense e colori', regaloDiario: 'Regalo giornaliero',
-    regaloDescripcion: 'Ricevi {puntos} punti gratis ogni giorno.', reclamar: 'Riscatta regalo',
+    regaloDescripcion: 'Ricevi {puntos} punti gratis ogni minuto.', reclamar: 'Riscatta regalo',
     regaloReclamado: 'Regalo riscattato', regaloRecibido: 'Hai ricevuto il regalo giornaliero.',
     verAnuncio: 'Ottieni punti', anuncioDescripcion: 'Guarda un video completo e ricevi {puntos} punti.',
     anunciosRestantes: 'Video disponibili: {cantidad}', verVideo: 'Guarda video',
@@ -240,7 +240,7 @@ agregarIdioma(
   {
     titulo: 'Shop', subtitulo: 'Verdiene Punkte und passe deine Symbole an', abrirTienda: 'Shop öffnen',
     menuDescripcion: 'Belohnungen und Farben', regaloDiario: 'Tägliches Geschenk',
-    regaloDescripcion: 'Erhalte jeden Tag {puntos} kostenlose Punkte.', reclamar: 'Geschenk abholen',
+    regaloDescripcion: 'Erhalte jede Minute {puntos} kostenlose Punkte.', reclamar: 'Geschenk abholen',
     regaloReclamado: 'Geschenk abgeholt', regaloRecibido: 'Du hast dein tägliches Geschenk erhalten.',
     verAnuncio: 'Punkte verdienen', anuncioDescripcion: 'Sieh ein vollständiges Video und erhalte {puntos} Punkte.',
     anunciosRestantes: 'Verfügbare Videos: {cantidad}', verVideo: 'Video ansehen',
@@ -275,7 +275,7 @@ agregarIdioma(
   {
     titulo: 'ショップ', subtitulo: 'ポイントを集めてコマをカスタマイズ', abrirTienda: 'ショップを開く',
     menuDescripcion: '報酬とカラー', regaloDiario: 'デイリーギフト',
-    regaloDescripcion: '毎日無料で{puntos}ポイント獲得できます。', reclamar: 'ギフトを受け取る',
+    regaloDescripcion: '毎分無料で{puntos}ポイント獲得できます。', reclamar: 'ギフトを受け取る',
     regaloReclamado: '受け取り済み', regaloRecibido: 'デイリーギフトを受け取りました。',
     verAnuncio: 'ポイントを獲得', anuncioDescripcion: '動画を最後まで見ると{puntos}ポイント獲得できます。',
     anunciosRestantes: '視聴可能な動画: {cantidad}', verVideo: '動画を見る',
@@ -310,7 +310,7 @@ agregarIdioma(
   {
     titulo: '상점', subtitulo: '포인트를 모아 말을 꾸며 보세요', abrirTienda: '상점 열기',
     menuDescripcion: '보상과 색상', regaloDiario: '일일 선물',
-    regaloDescripcion: '매일 무료로 {puntos}포인트를 받으세요.', reclamar: '선물 받기',
+    regaloDescripcion: '매분 무료로 {puntos}포인트를 받으세요.', reclamar: '선물 받기',
     regaloReclamado: '받기 완료', regaloRecibido: '일일 선물을 받았습니다.',
     verAnuncio: '포인트 받기', anuncioDescripcion: '동영상을 끝까지 보고 {puntos}포인트를 받으세요.',
     anunciosRestantes: '남은 동영상: {cantidad}', verVideo: '동영상 보기',
@@ -345,7 +345,7 @@ agregarIdioma(
   {
     titulo: 'Butik', subtitulo: 'Tjäna poäng och anpassa dina symboler', abrirTienda: 'Öppna butik',
     menuDescripcion: 'Belöningar och färger', regaloDiario: 'Daglig gåva',
-    regaloDescripcion: 'Få {puntos} gratispoäng varje dag.', reclamar: 'Hämta gåva',
+    regaloDescripcion: 'Få {puntos} gratispoäng varje minut.', reclamar: 'Hämta gåva',
     regaloReclamado: 'Gåva hämtad', regaloRecibido: 'Du fick din dagliga gåva.',
     verAnuncio: 'Tjäna poäng', anuncioDescripcion: 'Se en hel video och få {puntos} poäng.',
     anunciosRestantes: 'Tillgängliga videor: {cantidad}', verVideo: 'Se video',
@@ -380,7 +380,7 @@ agregarIdioma(
   {
     titulo: 'Butikk', subtitulo: 'Tjen poeng og tilpass symbolene dine', abrirTienda: 'Åpne butikk',
     menuDescripcion: 'Belønninger og farger', regaloDiario: 'Daglig gave',
-    regaloDescripcion: 'Få {puntos} gratispoeng hver dag.', reclamar: 'Hent gave',
+    regaloDescripcion: 'Få {puntos} gratispoeng hvert minutt.', reclamar: 'Hent gave',
     regaloReclamado: 'Gave hentet', regaloRecibido: 'Du fikk den daglige gaven.',
     verAnuncio: 'Tjen poeng', anuncioDescripcion: 'Se en hel video og få {puntos} poeng.',
     anunciosRestantes: 'Tilgjengelige videoer: {cantidad}', verVideo: 'Se video',

@@ -9,8 +9,10 @@ import {
 import { inicializarEconomia, registrarMovimiento } from './ServicioEconomia'
 
 const CLAVE_ESTADO_RECOMPENSAS = 'estado_recompensas'
+const DURACION_PERIODO_REGALO_MS = 60 * 1000
 const estado = ref({
   fechaLocal: '',
+  periodoRegalo: '',
   regaloReclamado: false,
   anunciosConsumidos: 0,
   ultimaHoraValida: 0,
@@ -22,18 +24,25 @@ let promesaInicializacion = null
 const fechaLocal = (fecha = new Date()) =>
   `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`
 
+const periodoRegaloActual = (fecha = new Date()) =>
+  String(Math.floor(fecha.getTime() / DURACION_PERIODO_REGALO_MS))
+
 const guardar = () =>
   Preferences.set({ key: CLAVE_ESTADO_RECOMPENSAS, value: JSON.stringify(estado.value) })
 
 const actualizarDisponibilidad = async () => {
   const ahora = Date.now()
   const hoy = fechaLocal()
+  const periodoRegalo = periodoRegaloActual()
   if (estado.value.ultimaHoraValida && ahora < estado.value.ultimaHoraValida - 5 * 60 * 1000) {
     estado.value.bloqueadoHasta = estado.value.ultimaHoraValida
   }
+  if (ahora >= estado.value.bloqueadoHasta && periodoRegalo !== estado.value.periodoRegalo) {
+    estado.value.periodoRegalo = periodoRegalo
+    estado.value.regaloReclamado = false
+  }
   if (ahora >= estado.value.bloqueadoHasta && hoy !== estado.value.fechaLocal) {
     estado.value.fechaLocal = hoy
-    estado.value.regaloReclamado = false
     estado.value.anunciosConsumidos = 0
     estado.value.bloqueadoHasta = 0
   }
@@ -70,7 +79,7 @@ export const reclamarRegaloDiario = async () => {
   await registrarMovimiento({
     tipo: 'regaloDiario',
     cantidad: RECOMPENSA_DIARIA,
-    origen: `regalo:${estado.value.fechaLocal}`,
+    origen: `regalo:${estado.value.periodoRegalo}`,
   })
   estado.value.regaloReclamado = true
   await guardar()
@@ -106,4 +115,3 @@ export const usarRecompensas = () => ({
   reclamarRegaloDiario,
   registrarAnuncioRecompensado,
 })
-

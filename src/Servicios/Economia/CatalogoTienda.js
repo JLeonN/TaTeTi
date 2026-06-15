@@ -1,4 +1,4 @@
-export const RECOMPENSA_DIARIA = 10
+export const RECOMPENSA_DIARIA = 100
 export const RECOMPENSA_ANUNCIO = 15
 export const MAXIMO_ANUNCIOS_DIARIOS = 3
 
@@ -57,4 +57,3 @@ export const catalogoColores = Object.freeze([
 
 export const obtenerArticulo = (identificador) =>
   catalogoColores.find((articulo) => articulo.id === identificador) ?? null
-
