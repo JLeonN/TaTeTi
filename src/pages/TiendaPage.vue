@@ -11,17 +11,20 @@
         </div>
       </header>
 
-      <section class="cuadricula-recompensas">
+      <section class="grilla-recompensas">
         <article
           ref="tarjetaRegalo"
-          class="tarjeta-recompensa regalo"
+          class="cuadro-recompensa regalo"
           :class="{ resaltada: seccionResaltada === 'regalo' }"
         >
-          <i class="ti ti-gift icono-xxl"></i>
-          <h2>{{ t('tienda.regaloDiario') }}</h2>
-          <p>{{ t('tienda.regaloDescripcion', { puntos: RECOMPENSA_DIARIA }) }}</p>
+          <i class="ti ti-gift"></i>
+          <div class="contenido-recompensa">
+            <h2>{{ t('tienda.regaloDiario') }}</h2>
+            <strong>+{{ RECOMPENSA_DIARIA }} {{ t('puntuacion.puntos') }}</strong>
+            <span>{{ regaloDisponible ? t('tienda.reclamar') : t('tienda.regaloReclamado') }}</span>
+          </div>
           <button
-            class="boton-base boton-primario"
+            class="boton-cuadrado"
             type="button"
             :disabled="!regaloDisponible || procesando"
             @click="reclamarRegalo"
@@ -32,15 +35,20 @@
 
         <article
           ref="tarjetaAnuncios"
-          class="tarjeta-recompensa anuncio"
+          class="cuadro-recompensa anuncio"
           :class="{ resaltada: seccionResaltada === 'anuncios' }"
         >
-          <i class="ti ti-player-play icono-xxl"></i>
-          <h2>{{ t('tienda.verAnuncio') }}</h2>
-          <p>{{ t('tienda.anuncioDescripcion', { puntos: RECOMPENSA_ANUNCIO }) }}</p>
-          <strong>{{ t('tienda.anunciosRestantes', { cantidad: anunciosRestantes }) }}</strong>
+          <i class="ti ti-player-play"></i>
+          <div class="contenido-recompensa">
+            <h2>{{ t('tienda.verAnuncio') }}</h2>
+            <strong>
+              +{{ RECOMPENSA_ANUNCIO }} {{ t('puntuacion.puntos') }} ·
+              {{ anunciosRestantes }}/{{ MAXIMO_ANUNCIOS_DIARIOS }}
+            </strong>
+            <span>{{ recompensadoCargando ? t('tienda.cargandoAnuncio') : t('tienda.verVideo') }}</span>
+          </div>
           <button
-            class="boton-base boton-primario"
+            class="boton-cuadrado"
             type="button"
             :disabled="
               anunciosRestantes === 0 ||
@@ -61,41 +69,36 @@
         {{ t('tienda.relojBloqueado') }}
       </div>
 
-      <div class="cabecera-catalogo">
-        <div>
-          <h2>{{ t('tienda.coloresTitulo') }}</h2>
-          <p>{{ t('tienda.coloresDescripcion') }}</p>
-        </div>
-        <router-link class="boton-inventario" to="/inventario">
-          <i class="ti ti-backpack"></i>
-          {{ t('inventario.titulo') }}
-        </router-link>
-      </div>
-
-      <section class="cuadricula-articulos">
-        <article v-for="articulo in catalogoColores" :key="articulo.id" class="tarjeta-articulo">
-          <div class="vista-color" :style="{ color: `var(${articulo.variable})` }">
-            <span>X</span><span>O</span>
-          </div>
-          <h3>{{ t(articulo.claveNombre) }}</h3>
-          <strong v-if="articulo.precio">{{ articulo.precio }} {{ t('puntuacion.puntos') }}</strong>
-          <span v-else>{{ t('tienda.incluido') }}</span>
-          <button
-            class="boton-base boton-primario"
-            type="button"
-            :disabled="articulosAdquiridos.has(articulo.id) || puntajeTotal < articulo.precio"
-            @click="solicitarCompra(articulo)"
-          >
-            {{
-              articulosAdquiridos.has(articulo.id)
-                ? t('tienda.comprado')
-                : puntajeTotal < articulo.precio
-                  ? t('tienda.sinPuntos')
-                  : t('tienda.comprar')
-            }}
-          </button>
-        </article>
-      </section>
+      <CarruselTienda :titulo="t('tienda.coloresTitulo')" :aria-label="t('tienda.coloresTitulo')">
+        <template #acciones>
+          <router-link class="boton-inventario" to="/inventario">
+            <i class="ti ti-backpack"></i>
+            {{ t('inventario.titulo') }}
+          </router-link>
+        </template>
+        <button
+          v-for="articulo in catalogoColores"
+          :key="articulo.id"
+          class="cuadro-color"
+          type="button"
+          :class="{
+            adquirido: esArticuloAdquirido(articulo),
+            bloqueado: !esArticuloAdquirido(articulo) && !puedeComprarArticulo(articulo),
+          }"
+          :aria-label="textoAccesibleArticulo(articulo)"
+          :disabled="esArticuloAdquirido(articulo) || !puedeComprarArticulo(articulo)"
+          @click="solicitarCompra(articulo)"
+        >
+          <span v-if="esArticuloAdquirido(articulo)" class="estado-color">
+            <i class="ti ti-check"></i>
+          </span>
+          <span v-else class="precio-color">{{ articulo.precio }}</span>
+          <span class="muestra-color" :style="{ color: `var(${articulo.variable})` }">
+            <span>X</span>
+            <span>O</span>
+          </span>
+        </button>
+      </CarruselTienda>
     </div>
 
     <q-dialog v-model="mostrarConfirmacion">
@@ -124,8 +127,10 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
 import {
   catalogoColores,
+  MAXIMO_ANUNCIOS_DIARIOS,
   RECOMPENSA_ANUNCIO,
   RECOMPENSA_DIARIA,
 } from 'src/Servicios/Economia/CatalogoTienda'
@@ -207,6 +212,20 @@ const confirmarCompra = async () => {
   }
 }
 
+const esArticuloAdquirido = (articulo) => articulosAdquiridos.value.has(articulo.id)
+
+const puedeComprarArticulo = (articulo) =>
+  !esArticuloAdquirido(articulo) && puntajeTotal.value >= articulo.precio
+
+const textoAccesibleArticulo = (articulo) => {
+  const nombre = t(articulo.claveNombre)
+  if (esArticuloAdquirido(articulo)) return `${nombre}. ${t('tienda.comprado')}`
+  if (!puedeComprarArticulo(articulo)) {
+    return `${nombre}. ${articulo.precio} ${t('puntuacion.puntos')}. ${t('tienda.sinPuntos')}`
+  }
+  return `${nombre}. ${articulo.precio} ${t('puntuacion.puntos')}. ${t('tienda.comprar')}`
+}
+
 onMounted(async () => {
   await inicializarEconomia()
   await inicializarRecompensas()
@@ -242,64 +261,90 @@ onBeforeUnmount(() => {
   width: min(1000px, 100%);
   margin: 0 auto;
 }
-.cabecera-tienda,
-.cabecera-catalogo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-.cabecera-tienda p,
-.cabecera-catalogo p {
+.cabecera-tienda p {
   margin: 0;
   color: var(--color-texto-secundario);
+  font-size: 0.78rem;
+  line-height: 1.15;
 }
 .cabecera-tienda .titulo-h1-con-icono {
   margin: 2px 0 2px;
+  font-size: 1.7rem;
+  line-height: 1.1;
+}
+.cabecera-tienda .icono-xl {
+  font-size: 1.85rem;
 }
 .boton-inventario {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
+  min-height: 32px;
+  padding: 7px 11px;
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
-  border-radius: 20px;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
   text-decoration: none;
+  cursor: pointer;
 }
-.cuadricula-recompensas,
-.cuadricula-articulos {
+.grilla-recompensas {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 8px;
   margin: 8px 0;
 }
-.tarjeta-recompensa,
-.tarjeta-articulo {
+.cuadro-recompensa {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  padding: 20px;
+  justify-content: space-between;
+  min-height: 132px;
+  padding: 12px;
   text-align: center;
   background-color: var(--color-fondo-alterno);
-  border: 2px solid var(--color-borde-tablero);
+  border: 1px solid var(--color-borde-tablero);
   border-radius: 16px;
 }
-.tarjeta-recompensa.regalo i {
+.cuadro-recompensa > i {
+  font-size: 2.35rem;
+}
+.cuadro-recompensa.regalo > i {
   color: var(--color-turno-activo);
 }
-.tarjeta-recompensa.anuncio i {
+.cuadro-recompensa.anuncio > i {
   color: var(--color-exito);
 }
-.tarjeta-recompensa h2,
-.tarjeta-recompensa p,
-.tarjeta-articulo h3 {
+.contenido-recompensa h2 {
   margin: 0;
+  font-size: 1rem;
+  line-height: 1.1;
 }
-.tarjeta-recompensa p,
-.tarjeta-articulo span {
+.contenido-recompensa strong,
+.contenido-recompensa span {
+  display: block;
+  margin-top: 4px;
   color: var(--color-texto-secundario);
+  font-size: 0.82rem;
+  line-height: 1.15;
+}
+.boton-cuadrado {
+  min-height: 30px;
+  padding: 6px 10px;
+  color: var(--color-texto-principal);
+  background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
+  border: none;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.boton-cuadrado:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 .resaltada {
   animation: resaltar-tarjeta 0.65s ease-in-out 4;
@@ -310,23 +355,62 @@ onBeforeUnmount(() => {
   background-color: var(--color-turno-activo);
   border-radius: 10px;
 }
-.cuadricula-articulos {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.vista-color {
+.cuadro-color {
+  position: relative;
   display: flex;
-  gap: 18px;
-  font-size: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  color: var(--color-texto-principal);
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-borde-tablero);
+  border-radius: 18px;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+.cuadro-color:not(:disabled):hover {
+  border-color: var(--color-turno-activo);
+  transform: translateY(-2px);
+}
+.cuadro-color.adquirido {
+  border-color: var(--color-exito);
+}
+.cuadro-color.bloqueado {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.muestra-color {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-size: 2rem;
   font-weight: bold;
   text-shadow: 0 0 12px currentColor;
 }
-.tarjeta-articulo .boton-base,
-.tarjeta-recompensa .boton-base {
-  margin-top: auto;
+.estado-color,
+.precio-color {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 3px 6px;
+  color: var(--color-fondo);
+  background-color: var(--color-turno-activo);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
 }
-.boton-base:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
+.estado-color {
+  color: var(--color-fondo);
+  background-color: var(--color-exito);
 }
 .dialogo-compra {
   color: var(--color-texto-principal);
@@ -346,13 +430,13 @@ onBeforeUnmount(() => {
   }
 }
 @media (max-width: 700px) {
-  .cabecera-tienda,
-  .cabecera-catalogo {
-    align-items: flex-start;
-    flex-direction: column;
+  .cuadro-recompensa {
+    min-height: 126px;
+    padding: 10px;
   }
-  .cuadricula-recompensas,
-  .cuadricula-articulos {
+}
+@media (max-width: 340px) {
+  .grilla-recompensas {
     grid-template-columns: 1fr;
   }
 }
