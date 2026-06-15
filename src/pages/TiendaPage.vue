@@ -135,6 +135,7 @@ import {
   usarEconomia,
 } from 'src/Servicios/Economia/ServicioEconomia'
 import {
+  actualizarDisponibilidad,
   inicializarRecompensas,
   reclamarRegaloDiario,
   registrarAnuncioRecompensado,
@@ -161,6 +162,7 @@ const seccionResaltada = ref('')
 const tarjetaRegalo = ref(null)
 const tarjetaAnuncios = ref(null)
 let temporizadorResaltado = 0
+let temporizadorRecompensas = 0
 
 const reclamarRegalo = async () => {
   procesando.value = true
@@ -208,6 +210,9 @@ const confirmarCompra = async () => {
 onMounted(async () => {
   await inicializarEconomia()
   await inicializarRecompensas()
+  temporizadorRecompensas = window.setInterval(() => {
+    void actualizarDisponibilidad()
+  }, 1000)
   if (economiaDisponible.value && anunciosRestantes.value > 0) void prepararRecompensado()
   if (route.query.resaltar === 'regalo' || route.query.resaltar === 'anuncios') {
     seccionResaltada.value = route.query.resaltar
@@ -222,13 +227,14 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.clearTimeout(temporizadorResaltado)
+  window.clearInterval(temporizadorRecompensas)
   void eliminarManejadoresRecompensado()
 })
 </script>
 
 <style scoped>
 .pagina-tienda {
-  padding: 16px;
+  padding: 4px 12px 16px;
   color: var(--color-texto-principal);
   background-color: var(--color-fondo);
 }
@@ -245,8 +251,11 @@ onBeforeUnmount(() => {
 }
 .cabecera-tienda p,
 .cabecera-catalogo p {
-  margin: 4px 0 0;
+  margin: 0;
   color: var(--color-texto-secundario);
+}
+.cabecera-tienda .titulo-h1-con-icono {
+  margin: 2px 0 2px;
 }
 .boton-inventario {
   display: flex;
@@ -263,7 +272,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
-  margin: 20px 0;
+  margin: 8px 0;
 }
 .tarjeta-recompensa,
 .tarjeta-articulo {

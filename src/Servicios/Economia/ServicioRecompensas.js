@@ -30,7 +30,7 @@ const periodoRegaloActual = (fecha = new Date()) =>
 const guardar = () =>
   Preferences.set({ key: CLAVE_ESTADO_RECOMPENSAS, value: JSON.stringify(estado.value) })
 
-const actualizarDisponibilidad = async () => {
+export const actualizarDisponibilidad = async () => {
   const ahora = Date.now()
   const hoy = fechaLocal()
   const periodoRegalo = periodoRegaloActual()
