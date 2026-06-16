@@ -2,7 +2,10 @@
   <q-dialog v-model="mostrarModal">
     <q-card
       class="modal-confirmacion"
-      :class="{ 'modal-confirmacion--contenido-desplazable': contenidoDesplazable }"
+      :class="{
+        'modal-confirmacion--contenido-desplazable': contenidoDesplazable,
+        'modal-confirmacion--compacto': compacto,
+      }"
     >
       <!-- Ícono opcional -->
       <div v-if="icono" class="contenedor-icono">
@@ -80,6 +83,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  compacto: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const emit = defineEmits(['update:modelValue', 'aceptar', 'cancelar'])
@@ -131,24 +138,53 @@ const manejarCancelar = () => {
   flex-direction: column;
   overflow: hidden;
 }
+.modal-confirmacion--compacto {
+  min-width: 0;
+  width: min(86vw, 340px);
+  max-width: 340px;
+  padding: 6px;
+}
 .contenedor-icono {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
   padding: 24px 0 0 0;
 }
+.modal-confirmacion--compacto .contenedor-icono {
+  padding-top: 12px;
+}
+.modal-confirmacion--compacto .icono-modal {
+  font-size: 2.2rem;
+}
 .seccion-titulo {
   flex: 0 0 auto;
   padding: 16px 24px 8px 24px;
   text-align: center;
+}
+.modal-confirmacion--compacto .seccion-titulo {
+  padding: 10px 18px 4px 18px;
+}
+.modal-confirmacion--compacto .seccion-titulo .titulo-h2 {
+  font-size: 1.45rem;
+  line-height: 1.12;
 }
 .seccion-mensaje {
   flex: 0 0 auto;
   padding: 8px 24px;
   text-align: center;
 }
+.modal-confirmacion--compacto .seccion-mensaje {
+  padding: 6px 18px;
+}
+.modal-confirmacion--compacto .seccion-mensaje .subtitulo {
+  font-size: 0.86rem;
+  line-height: 1.25;
+}
 .seccion-contenido {
   padding: 16px 24px;
+}
+.modal-confirmacion--compacto .seccion-contenido {
+  padding: 8px 18px 4px 18px;
 }
 .seccion-contenido--desplazable {
   flex: 1 1 auto;
@@ -167,6 +203,16 @@ const manejarCancelar = () => {
   gap: 12px;
   padding: 16px 24px 24px 24px;
   justify-content: flex-end;
+}
+.modal-confirmacion--compacto .seccion-botones {
+  gap: 8px;
+  padding: 10px 18px 14px 18px;
+}
+.modal-confirmacion--compacto .seccion-botones :deep(.boton-base) {
+  width: auto;
+  min-height: 34px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
 }
 .modal-confirmacion--contenido-desplazable .seccion-botones {
   flex-wrap: nowrap;

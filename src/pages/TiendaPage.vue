@@ -109,25 +109,40 @@
       </CarruselTienda>
     </div>
 
-    <q-dialog v-model="mostrarConfirmacion">
-      <q-card class="dialogo-compra">
-        <q-card-section>
-          <h2>{{ t('tienda.confirmarCompra') }}</h2>
-          <p>
-            {{
-              t('tienda.confirmarCompraDescripcion', {
-                articulo: articuloPendiente ? t(articuloPendiente.claveNombre) : '',
-                precio: articuloPendiente?.precio ?? 0,
-              })
-            }}
-          </p>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat :label="t('general.cancelar')" v-close-popup />
-          <q-btn color="primary" :label="t('tienda.comprar')" @click="confirmarCompra" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+    <ModalConfirmacion
+      v-model="mostrarConfirmacion"
+      compacto
+      :titulo="t('tienda.confirmarCompra')"
+      :mensaje="textoConfirmacionCompra"
+      :texto-boton-cancelar="t('general.cancelar')"
+      :texto-boton-aceptar="t('tienda.comprar')"
+      @aceptar="confirmarCompra"
+    >
+      <div v-if="articuloPendiente" class="vista-previa-compra">
+        <div
+          class="vista-previa-color"
+          :class="{ fluor: esArticuloFluor(articuloPendiente) }"
+          :style="{ '--color-articulo': articuloPendiente.colorVista }"
+          role="img"
+          :aria-label="t(articuloPendiente.claveNombre)"
+        >
+          <span
+            v-if="esArticuloFluor(articuloPendiente)"
+            class="etiqueta-fluor etiqueta-fluor--preview"
+          >
+            <i class="ti ti-sparkles"></i>
+            FLÚOR
+          </span>
+          <span
+            class="muestra-color muestra-color--preview"
+            :style="obtenerEstiloMuestraColor(articuloPendiente)"
+          >
+            <span :style="obtenerEstiloMuestraColor(articuloPendiente)">X</span>
+            <span :style="obtenerEstiloMuestraColor(articuloPendiente)">O</span>
+          </span>
+        </div>
+      </div>
+    </ModalConfirmacion>
   </q-page>
 </template>
 
@@ -136,6 +151,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
+import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import {
   catalogoColores,
   MAXIMO_ANUNCIOS_DIARIOS,
@@ -223,6 +239,13 @@ const confirmarCompra = async () => {
 const esArticuloAdquirido = (articulo) => articulosAdquiridos.value.has(articulo.id)
 
 const esArticuloFluor = (articulo) => articulo.id.endsWith('Fluor')
+
+const textoConfirmacionCompra = computed(() =>
+  t('tienda.confirmarCompraDescripcion', {
+    articulo: articuloPendiente.value ? t(articuloPendiente.value.claveNombre) : '',
+    precio: articuloPendiente.value?.precio ?? 0,
+  }),
+)
 
 const obtenerEstiloMuestraColor = (articulo) => {
   const color = articulo.colorVista
@@ -405,11 +428,15 @@ onBeforeUnmount(() => {
   aspect-ratio: 1;
   color: var(--color-texto-principal);
   background-color: var(--color-fondo-alterno);
-  border: 1px solid var(--color-borde-tablero);
+  border: 1px solid var(--color-articulo);
   border-radius: 18px;
+  box-shadow:
+    0 0 5px color-mix(in srgb, var(--color-articulo) 45%, transparent),
+    inset 0 0 9px color-mix(in srgb, var(--color-articulo) 18%, transparent);
   cursor: pointer;
   transition:
     border-color 0.2s ease,
+    box-shadow 0.2s ease,
     opacity 0.2s ease,
     transform 0.2s ease;
 }
@@ -423,12 +450,12 @@ onBeforeUnmount(() => {
 .cuadro-color.fluor {
   border-color: var(--color-articulo);
   background:
-    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--color-articulo) 42%, transparent) 0 26%, transparent 55%),
+    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--color-articulo) 26%, transparent) 0 24%, transparent 55%),
     var(--color-fondo-alterno);
   box-shadow:
-    0 0 8px var(--color-articulo),
-    0 0 18px var(--color-articulo),
-    inset 0 0 16px var(--color-articulo);
+    0 0 7px color-mix(in srgb, var(--color-articulo) 70%, transparent),
+    0 0 13px color-mix(in srgb, var(--color-articulo) 48%, transparent),
+    inset 0 0 12px color-mix(in srgb, var(--color-articulo) 36%, transparent);
 }
 .cuadro-color.fluor::before {
   position: absolute;
@@ -436,7 +463,7 @@ onBeforeUnmount(() => {
   content: '';
   border: 1px solid var(--color-articulo);
   border-radius: 13px;
-  box-shadow: 0 0 10px var(--color-articulo);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--color-articulo) 55%, transparent);
   pointer-events: none;
 }
 .cuadro-color.bloqueado {
@@ -474,6 +501,52 @@ onBeforeUnmount(() => {
 .etiqueta-fluor i {
   font-size: 0.68rem;
 }
+.vista-previa-compra {
+  display: flex;
+  justify-content: center;
+  padding-top: 2px;
+}
+.vista-previa-color {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  aspect-ratio: 1;
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-articulo);
+  border-radius: 16px;
+  box-shadow:
+    0 0 4px color-mix(in srgb, var(--color-articulo) 38%, transparent),
+    inset 0 0 8px color-mix(in srgb, var(--color-articulo) 16%, transparent);
+}
+.vista-previa-color.fluor {
+  background:
+    radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--color-articulo) 22%, transparent) 0 24%, transparent 55%),
+    var(--color-fondo-alterno);
+  box-shadow:
+    0 0 6px color-mix(in srgb, var(--color-articulo) 58%, transparent),
+    0 0 10px color-mix(in srgb, var(--color-articulo) 36%, transparent),
+    inset 0 0 10px color-mix(in srgb, var(--color-articulo) 30%, transparent);
+}
+.vista-previa-color.fluor::before {
+  position: absolute;
+  inset: 7px;
+  content: '';
+  border: 1px solid var(--color-articulo);
+  border-radius: 11px;
+  box-shadow: 0 0 5px color-mix(in srgb, var(--color-articulo) 45%, transparent);
+  pointer-events: none;
+}
+.muestra-color--preview {
+  font-size: 1.7rem;
+}
+.etiqueta-fluor--preview {
+  left: 7px;
+  bottom: 7px;
+  padding: 3px 5px;
+  font-size: 0.52rem;
+}
 .estado-color,
 .precio-color {
   position: absolute;
@@ -510,11 +583,6 @@ onBeforeUnmount(() => {
   font-size: 0.62rem;
   font-weight: 700;
   opacity: 0.9;
-}
-.dialogo-compra {
-  color: var(--color-texto-principal);
-  background-color: var(--color-modal-fondo);
-  border: 1px solid var(--color-borde-modal);
 }
 @keyframes resaltar-tarjeta {
   50% {
