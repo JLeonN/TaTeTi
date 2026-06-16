@@ -82,11 +82,17 @@
           :class="{
             adquirido: esArticuloAdquirido(articulo),
             bloqueado: !esArticuloAdquirido(articulo) && !puedeComprarArticulo(articulo),
+            fluor: esArticuloFluor(articulo),
           }"
+          :style="{ '--color-articulo': articulo.colorVista }"
           :aria-label="textoAccesibleArticulo(articulo)"
           :disabled="esArticuloAdquirido(articulo) || !puedeComprarArticulo(articulo)"
           @click="solicitarCompra(articulo)"
         >
+          <span v-if="esArticuloFluor(articulo)" class="etiqueta-fluor">
+            <i class="ti ti-sparkles"></i>
+            FLÚOR
+          </span>
           <span v-if="esArticuloAdquirido(articulo)" class="estado-color">
             <i class="ti ti-check"></i>
           </span>
@@ -95,9 +101,9 @@
             <strong>{{ articulo.precio }}</strong>
             <small>{{ t('puntuacion.puntos') }}</small>
           </span>
-          <span class="muestra-color" :style="{ color: `var(${articulo.variable})` }">
-            <span>X</span>
-            <span>O</span>
+          <span class="muestra-color" :style="obtenerEstiloMuestraColor(articulo)">
+            <span :style="obtenerEstiloMuestraColor(articulo)">X</span>
+            <span :style="obtenerEstiloMuestraColor(articulo)">O</span>
           </span>
         </button>
       </CarruselTienda>
@@ -215,6 +221,29 @@ const confirmarCompra = async () => {
 }
 
 const esArticuloAdquirido = (articulo) => articulosAdquiridos.value.has(articulo.id)
+
+const esArticuloFluor = (articulo) => articulo.id.endsWith('Fluor')
+
+const obtenerEstiloMuestraColor = (articulo) => {
+  const color = articulo.colorVista
+  const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
+  if (!esArticuloFluor(articulo)) {
+    return {
+      color,
+      WebkitTextFillColor: color,
+      textShadow: sombraBase,
+    }
+  }
+  const sombraFluor =
+    articulo.id === 'blancoFluor'
+      ? '0 0 6px #8beeff, 0 0 14px #8beeff, 0 0 24px #8beeff'
+      : `0 0 5px ${color}, 0 0 12px ${color}, 0 0 22px ${color}`
+  return {
+    color,
+    WebkitTextFillColor: color,
+    textShadow: `${sombraFluor}, ${sombraBase}`,
+  }
+}
 
 const puedeComprarArticulo = (articulo) =>
   !esArticuloAdquirido(articulo) && puntajeTotal.value >= articulo.precio
@@ -391,6 +420,25 @@ onBeforeUnmount(() => {
 .cuadro-color.adquirido {
   border-color: var(--color-exito);
 }
+.cuadro-color.fluor {
+  border-color: var(--color-articulo);
+  background:
+    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--color-articulo) 42%, transparent) 0 26%, transparent 55%),
+    var(--color-fondo-alterno);
+  box-shadow:
+    0 0 8px var(--color-articulo),
+    0 0 18px var(--color-articulo),
+    inset 0 0 16px var(--color-articulo);
+}
+.cuadro-color.fluor::before {
+  position: absolute;
+  inset: 7px;
+  content: '';
+  border: 1px solid var(--color-articulo);
+  border-radius: 13px;
+  box-shadow: 0 0 10px var(--color-articulo);
+  pointer-events: none;
+}
 .cuadro-color.bloqueado {
   opacity: 0.55;
   cursor: not-allowed;
@@ -401,7 +449,30 @@ onBeforeUnmount(() => {
   gap: 8px;
   font-size: 2rem;
   font-weight: bold;
-  text-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+.muestra-color span {
+  color: inherit !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+.etiqueta-fluor {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 6px;
+  color: var(--color-fondo);
+  background-color: var(--color-turno-activo);
+  border-radius: 999px;
+  box-shadow: 0 0 10px var(--color-turno-activo);
+  font-size: 0.58rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.etiqueta-fluor i {
+  font-size: 0.68rem;
 }
 .estado-color,
 .precio-color {
