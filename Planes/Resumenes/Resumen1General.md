@@ -1,11 +1,11 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 14 de junio de 2026. Versión documentada: `4.0.9`.
+> Vigencia: 17 de junio de 2026. Versión documentada: `4.0.10`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
 
-TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, publicidad AdMob, interfaz en diez idiomas y un sistema remoto de notas de actualización.
+TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece partidas contra la IA NEXUS y multijugador local, estadísticas persistentes en SQLite, configuración, puntuación, tienda, inventario, publicidad AdMob, interfaz en diez idiomas y un sistema remoto de notas de actualización.
 
 ## Rutas
 
@@ -44,8 +44,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `useConfiguracion.js`: nombre global del usuario.
 - `useIdioma.js`: idioma global y persistente.
 - `usePuntuacion.js`: puntos, rachas y protección por derrotas.
-- `usePublicidad.js`: banner adaptativo, intersticial y reserva dinámica de espacio.
-- `src/Servicios/Economia/`: catálogo, saldo, compras, equipamiento y recompensas.
+- `usePublicidad.js`: banner adaptativo, intersticial, anuncios recompensados y reserva dinámica de espacio.
+- `src/Servicios/Economia/`: catálogo, saldo, compras, equipamiento, recompensas y movimientos económicos.
 - `useContadorPartidas.js`: contador persistente para intersticiales.
 
 ## Contratos funcionales
