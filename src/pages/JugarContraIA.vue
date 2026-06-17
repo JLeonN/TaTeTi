@@ -400,8 +400,10 @@ onBeforeUnmount(() => {
 }
 .opcion-ficha-x .simbolo-ficha {
   color: var(--color-ficha-x);
+  text-shadow: var(--sombra-ficha-x);
 }
 .opcion-ficha-o .simbolo-ficha {
   color: var(--color-ficha-o);
+  text-shadow: var(--sombra-ficha-o);
 }
 </style>

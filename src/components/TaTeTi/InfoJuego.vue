@@ -149,9 +149,11 @@ const nombreOponente = computed(() => {
 }
 .jugador-x {
   color: var(--color-ficha-x);
+  text-shadow: var(--sombra-ficha-x);
 }
 .jugador-o {
   color: var(--color-ficha-o);
+  text-shadow: var(--sombra-ficha-o);
 }
 .resultado {
   display: flex;

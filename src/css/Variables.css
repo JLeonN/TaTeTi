@@ -57,6 +57,8 @@
   /* Efectos neón para líneas ganadoras */
   --neon-x: #ff4757;
   --neon-o: #1e90ff;
-  --brillo-neon-x: 0 0 10px #ff4757, 0 0 20px #ff4757, 0 0 30px #ff4757, 0 0 40px #ff4757;
-  --brillo-neon-o: 0 0 10px #1e90ff, 0 0 20px #1e90ff, 0 0 30px #1e90ff, 0 0 40px #1e90ff;
+  --sombra-ficha-x: 0 2px 3px rgba(0, 0, 0, 0.35);
+  --sombra-ficha-o: 0 2px 3px rgba(0, 0, 0, 0.35);
+  --brillo-neon-x: 0 0 16px #ff4757;
+  --brillo-neon-o: 0 0 16px #1e90ff;
 }

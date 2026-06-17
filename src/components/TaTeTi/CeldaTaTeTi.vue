@@ -69,9 +69,11 @@ const manejarClick = () => {
 }
 .ficha-x {
   color: var(--color-ficha-x);
+  text-shadow: var(--sombra-ficha-x);
 }
 .ficha-o {
   color: var(--color-ficha-o);
+  text-shadow: var(--sombra-ficha-o);
 }
 @keyframes aparecerFicha {
   from {

@@ -149,11 +149,11 @@ const manejarReiniciar = () => {
 }
 .jugador-x {
   color: var(--color-ficha-x);
-  text-shadow: 0 0 20px var(--color-ficha-x);
+  text-shadow: var(--sombra-ficha-x);
 }
 .jugador-o {
   color: var(--color-ficha-o);
-  text-shadow: 0 0 20px var(--color-ficha-o);
+  text-shadow: var(--sombra-ficha-o);
 }
 /* Puntos resultado */
 .puntos-resultado {

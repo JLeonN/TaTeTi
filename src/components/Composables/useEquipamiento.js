@@ -11,11 +11,23 @@ const aplicarVariables = (equipamiento) => {
     const articulo = obtenerArticulo(equipamiento[ficha])
     if (!articulo) continue
     const sufijo = ficha.toLowerCase()
+    const variableColor = `var(${articulo.variable})`
+    const esFluor = articulo.id.endsWith('Fluor')
+    const sombraFluor =
+      articulo.id === 'blancoFluor'
+        ? '0 0 6px #8beeff, 0 0 14px #8beeff, 0 0 24px #8beeff'
+        : `0 0 5px ${variableColor}, 0 0 12px ${variableColor}, 0 0 22px ${variableColor}`
+    const brilloLinea = articulo.id === 'blancoFluor' ? '0 0 22px #8beeff' : `0 0 22px ${variableColor}`
+    const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
     raiz.style.setProperty(`--color-ficha-${sufijo}`, `var(${articulo.variable})`)
     raiz.style.setProperty(`--neon-${sufijo}`, `var(${articulo.variable})`)
     raiz.style.setProperty(
+      `--sombra-ficha-${sufijo}`,
+      esFluor ? `${sombraFluor}, ${sombraBase}` : sombraBase,
+    )
+    raiz.style.setProperty(
       `--brillo-neon-${sufijo}`,
-      `0 0 10px var(${articulo.variable}), 0 0 20px var(${articulo.variable}), 0 0 30px var(${articulo.variable})`,
+      esFluor ? brilloLinea : `0 0 14px ${variableColor}`,
     )
   }
 }
@@ -39,4 +51,3 @@ export function useEquipamiento() {
     equiparArticulo,
   }
 }
-
