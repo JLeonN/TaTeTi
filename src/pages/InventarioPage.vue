@@ -12,12 +12,18 @@
       <section class="tarjeta-equipado" aria-label="Equipado">
         <h2>Equipado</h2>
         <div class="grilla-equipado">
-          <article
+          <button
             v-for="ficha in fichas"
             :key="`equipado-${ficha}`"
+            type="button"
             class="ficha-equipada"
-            :class="{ fluor: esArticuloFluor(obtenerArticuloEquipado(ficha)) }"
+            :class="{
+              fluor: esArticuloFluor(obtenerArticuloEquipado(ficha)),
+              preferida: fichaUsuario === ficha,
+            }"
             :style="obtenerEstiloArticulo(obtenerArticuloEquipado(ficha))"
+            :aria-label="textoAccesibleFicha(ficha)"
+            @click="seleccionarFicha(ficha)"
           >
             <span
               class="simbolo-equipado"
@@ -25,12 +31,22 @@
             >
               {{ ficha }}
             </span>
-            <small v-if="esArticuloFluor(obtenerArticuloEquipado(ficha))" class="etiqueta-fluor">
+            <span
+              v-if="esArticuloFluor(obtenerArticuloEquipado(ficha))"
+              class="icono-fluor-equipado"
+              aria-label="Flúor"
+            >
               <i class="ti ti-sparkles"></i>
-              FLÚOR
-            </small>
+            </span>
             <strong>{{ nombreColor(equipamiento[ficha]) }}</strong>
-          </article>
+            <span
+              class="chip-participante"
+              :class="{ nexus: fichaUsuario !== ficha }"
+              :title="nombreParticipanteFicha(ficha)"
+            >
+              {{ nombreParticipanteFicha(ficha) }}
+            </span>
+          </button>
         </div>
       </section>
 
@@ -84,23 +100,6 @@
         </div>
       </section>
 
-      <section class="seccion-inventario">
-        <h2 class="titulo-seccion-inventario">{{ t('inventario.fichaPreferida') }}</h2>
-        <div class="panel-inventario">
-          <p>{{ t('inventario.fichaPreferidaDescripcion') }}</p>
-          <div class="selector-ficha">
-            <button
-              v-for="ficha in fichas"
-              :key="ficha"
-              type="button"
-              :class="{ activo: fichaUsuario === ficha }"
-              @click="seleccionarFicha(ficha)"
-            >
-              {{ ficha }}
-            </button>
-          </div>
-        </div>
-      </section>
     </div>
   </q-page>
 </template>
@@ -111,11 +110,13 @@ import { useI18n } from 'vue-i18n'
 import { catalogoColores, obtenerArticulo } from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
 import { useFichaJugador } from 'src/components/Composables/UseFichaJugador'
+import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 
 const { t } = useI18n()
 const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo } =
   useEquipamiento()
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
+const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
 const articulosDisponibles = computed(() =>
   catalogoColores.filter((articulo) => articulosAdquiridos.value.has(articulo.id)),
@@ -165,8 +166,14 @@ const seleccionarFicha = async (ficha) => {
 const textoAccesibleColor = (ficha, articulo) =>
   `${t('inventario.coloresFicha', { ficha })}: ${t(articulo.claveNombre)}`
 
+const textoAccesibleFicha = (ficha) =>
+  `${t('inventario.fichaPreferida')}: ${ficha}. ${nombreParticipanteFicha(ficha)}`
+
+const nombreParticipanteFicha = (ficha) =>
+  fichaUsuario.value === ficha ? nombreUsuario.value : t('juego.nexus')
+
 onMounted(async () => {
-  await Promise.all([cargarEquipamiento(), cargarFichaUsuario()])
+  await Promise.all([cargarEquipamiento(), cargarFichaUsuario(), cargarNombre()])
 })
 </script>
 
@@ -180,8 +187,7 @@ onMounted(async () => {
   width: min(800px, 100%);
   margin: 0 auto;
 }
-.cabecera-inventario p,
-.panel-inventario p {
+.cabecera-inventario p {
   color: var(--color-texto-secundario);
 }
 .cabecera-inventario p {
@@ -221,6 +227,7 @@ onMounted(async () => {
   position: relative;
   display: flex;
   min-height: 126px;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -233,11 +240,18 @@ onMounted(async () => {
   box-shadow:
     0 0 5px color-mix(in srgb, var(--color-articulo) 28%, transparent),
     inset 0 0 10px color-mix(in srgb, var(--color-articulo) 16%, transparent);
+  cursor: pointer;
 }
 .ficha-equipada.fluor {
   box-shadow:
     0 0 8px color-mix(in srgb, var(--color-articulo) 42%, transparent),
     inset 0 0 12px color-mix(in srgb, var(--color-articulo) 26%, transparent);
+}
+.ficha-equipada.preferida {
+  border-color: var(--color-turno-activo);
+  box-shadow:
+    0 0 8px color-mix(in srgb, var(--color-turno-activo) 70%, transparent),
+    inset 0 0 8px color-mix(in srgb, var(--color-turno-activo) 26%, transparent);
 }
 .ficha-equipada strong {
   max-width: 100%;
@@ -306,8 +320,7 @@ onMounted(async () => {
     0 0 7px color-mix(in srgb, var(--color-articulo) 46%, transparent),
     inset 0 0 10px color-mix(in srgb, var(--color-articulo) 24%, transparent);
 }
-.item-color.activo,
-.selector-ficha button.activo {
+.item-color.activo {
   border-color: var(--color-turno-activo);
   box-shadow:
     0 0 8px color-mix(in srgb, var(--color-turno-activo) 70%, transparent),
@@ -343,30 +356,44 @@ onMounted(async () => {
 .etiqueta-fluor i {
   font-size: 0.68rem;
 }
-.panel-inventario p {
-  margin: 0 0 10px;
-  color: var(--color-texto-secundario);
-  font-size: 0.78rem;
-  line-height: 1.25;
-}
-.selector-ficha {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-.selector-ficha button {
-  position: relative;
-  display: flex;
+.icono-fluor-equipado {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 58px;
-  color: var(--color-texto-principal);
-  background-color: var(--color-tablero);
-  border: 2px solid var(--color-borde-tablero);
-  border-radius: 10px;
-  font-size: 2rem;
-  font-weight: bold;
-  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  color: var(--color-fondo);
+  background-color: var(--color-turno-activo);
+  border-radius: 999px;
+  box-shadow: 0 0 8px var(--color-turno-activo);
+}
+.icono-fluor-equipado i {
+  font-size: 0.8rem;
+}
+.chip-participante {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: min(112px, 100%);
+  min-height: 21px;
+  padding: 3px 9px;
+  overflow: hidden;
+  color: var(--color-fondo);
+  background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
+  border-radius: 999px;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--color-turno-activo) 58%, transparent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chip-participante.nexus {
+  background: linear-gradient(135deg, var(--color-desactivado), var(--color-boton));
+  box-shadow: 0 0 7px color-mix(in srgb, var(--color-boton) 46%, transparent);
 }
 @media (max-width: 600px) {
   .carrusel-colores {
