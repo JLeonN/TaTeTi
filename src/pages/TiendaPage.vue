@@ -1,14 +1,23 @@
 <template>
   <q-page class="pagina-tienda">
     <div class="contenedor-tienda">
-      <header class="cabecera-tienda">
-        <div>
+      <header class="cabecera-tienda cabecera-con-accion">
+        <div class="bloque-titulo-pagina">
           <h1 class="titulo-h1-con-icono">
             <i class="ti ti-shopping-bag icono-xl icono-primario"></i>
-            {{ t('tienda.titulo') }}
+            <span class="texto-titulo-pagina">{{ t('tienda.titulo') }}</span>
           </h1>
           <p>{{ t('tienda.subtitulo') }}</p>
         </div>
+        <router-link
+          class="boton-cabecera-pagina"
+          to="/inventario"
+          :aria-label="t('inventario.titulo')"
+          :title="t('inventario.titulo')"
+        >
+          <i class="ti ti-backpack"></i>
+          <span class="texto-boton-cabecera">{{ t('inventario.titulo') }}</span>
+        </router-link>
       </header>
 
       <section class="grilla-recompensas">
@@ -68,12 +77,6 @@
       </div>
 
       <CarruselTienda :titulo="t('tienda.coloresTitulo')" :aria-label="t('tienda.coloresTitulo')">
-        <template #acciones>
-          <router-link class="boton-inventario" to="/inventario">
-            <i class="ti ti-backpack"></i>
-            {{ t('inventario.titulo') }}
-          </router-link>
-        </template>
         <button
           v-for="articulo in catalogoColoresOrdenados"
           :key="articulo.id"
@@ -324,6 +327,15 @@ onBeforeUnmount(() => {
   width: min(1000px, 100%);
   margin: 0 auto;
 }
+.cabecera-con-accion {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.bloque-titulo-pagina {
+  min-width: 0;
+}
 .cabecera-tienda p {
   margin: 0;
   color: var(--color-texto-secundario);
@@ -338,12 +350,14 @@ onBeforeUnmount(() => {
 .cabecera-tienda .icono-xl {
   font-size: 1.85rem;
 }
-.boton-inventario {
+.boton-cabecera-pagina {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   gap: 8px;
   min-height: 32px;
+  margin-top: 7px;
   padding: 7px 11px;
   color: var(--color-texto-principal);
   background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
@@ -353,6 +367,7 @@ onBeforeUnmount(() => {
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
+  white-space: nowrap;
 }
 .grilla-recompensas {
   display: grid;
@@ -601,8 +616,29 @@ onBeforeUnmount(() => {
     min-height: 148px;
     padding: 14px 10px;
   }
+  .texto-boton-cabecera {
+    display: none;
+  }
+  .boton-cabecera-pagina {
+    width: 34px;
+    padding-right: 0;
+    padding-left: 0;
+  }
   .precio-color i {
     display: none;
+  }
+}
+@media (max-width: 360px) {
+  .cabecera-tienda .icono-xl {
+    display: none;
+  }
+}
+@media (max-width: 300px) {
+  .texto-titulo-pagina {
+    display: none;
+  }
+  .cabecera-tienda .icono-xl {
+    display: inline-block;
   }
 }
 @media (max-width: 340px) {

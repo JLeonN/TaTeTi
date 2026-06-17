@@ -1,12 +1,23 @@
 <template>
   <q-page class="pagina-inventario">
     <div class="contenedor-inventario">
-      <header class="cabecera-inventario">
-        <h1 class="titulo-h1-con-icono">
-          <i class="ti ti-backpack icono-xl icono-primario"></i>
-          {{ t('inventario.titulo') }}
-        </h1>
-        <p>{{ t('inventario.subtitulo') }}</p>
+      <header class="cabecera-inventario cabecera-con-accion">
+        <div class="bloque-titulo-pagina">
+          <h1 class="titulo-h1-con-icono">
+            <i class="ti ti-backpack icono-xl icono-primario"></i>
+            <span class="texto-titulo-pagina">{{ t('inventario.titulo') }}</span>
+          </h1>
+          <p>{{ t('inventario.subtitulo') }}</p>
+        </div>
+        <router-link
+          class="boton-cabecera-pagina"
+          to="/tienda"
+          :aria-label="t('tienda.titulo')"
+          :title="t('tienda.titulo')"
+        >
+          <i class="ti ti-shopping-bag"></i>
+          <span class="texto-boton-cabecera">{{ t('tienda.titulo') }}</span>
+        </router-link>
       </header>
 
       <section class="tarjeta-equipado" aria-label="Equipado">
@@ -187,6 +198,15 @@ onMounted(async () => {
   width: min(800px, 100%);
   margin: 0 auto;
 }
+.cabecera-con-accion {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.bloque-titulo-pagina {
+  min-width: 0;
+}
 .cabecera-inventario p {
   color: var(--color-texto-secundario);
 }
@@ -202,6 +222,25 @@ onMounted(async () => {
 }
 .cabecera-inventario .icono-xl {
   font-size: 1.85rem;
+}
+.boton-cabecera-pagina {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  gap: 8px;
+  min-height: 32px;
+  margin-top: 7px;
+  padding: 7px 11px;
+  color: var(--color-texto-principal);
+  background: linear-gradient(135deg, var(--color-boton), var(--color-turno-activo));
+  border: none;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
 }
 .tarjeta-equipado {
   margin: 14px 0 16px;
@@ -398,6 +437,27 @@ onMounted(async () => {
 @media (max-width: 600px) {
   .carrusel-colores {
     grid-auto-columns: 88px;
+  }
+  .texto-boton-cabecera {
+    display: none;
+  }
+  .boton-cabecera-pagina {
+    width: 34px;
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+@media (max-width: 360px) {
+  .cabecera-inventario .icono-xl {
+    display: none;
+  }
+}
+@media (max-width: 300px) {
+  .texto-titulo-pagina {
+    display: none;
+  }
+  .cabecera-inventario .icono-xl {
+    display: inline-block;
   }
 }
 </style>
