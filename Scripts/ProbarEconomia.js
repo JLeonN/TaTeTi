@@ -12,7 +12,7 @@ import {
 } from '../src/Servicios/Estadisticas/EsquemaEstadisticas.js'
 
 assert.equal(VERSION_BASE_ESTADISTICAS, 2)
-assert.equal(RECOMPENSA_DIARIA, 100)
+assert.equal(RECOMPENSA_DIARIA, 10)
 assert.equal(RECOMPENSA_ANUNCIO, 15)
 assert.equal(MAXIMO_ANUNCIOS_DIARIOS, 3)
 assert.deepEqual(

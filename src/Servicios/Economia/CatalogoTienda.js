@@ -1,4 +1,4 @@
-export const RECOMPENSA_DIARIA = 100
+export const RECOMPENSA_DIARIA = 10
 export const RECOMPENSA_ANUNCIO = 15
 export const MAXIMO_ANUNCIOS_DIARIOS = 3
 

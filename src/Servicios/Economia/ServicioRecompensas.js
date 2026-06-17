@@ -9,7 +9,6 @@ import {
 import { inicializarEconomia, registrarMovimiento } from './ServicioEconomia'
 
 const CLAVE_ESTADO_RECOMPENSAS = 'estado_recompensas'
-const DURACION_PERIODO_REGALO_MS = 60 * 1000
 const estado = ref({
   fechaLocal: '',
   periodoRegalo: '',
@@ -24,8 +23,7 @@ let promesaInicializacion = null
 const fechaLocal = (fecha = new Date()) =>
   `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`
 
-const periodoRegaloActual = (fecha = new Date()) =>
-  String(Math.floor(fecha.getTime() / DURACION_PERIODO_REGALO_MS))
+const periodoRegaloActual = (fecha = new Date()) => fechaLocal(fecha)
 
 const guardar = () =>
   Preferences.set({ key: CLAVE_ESTADO_RECOMPENSAS, value: JSON.stringify(estado.value) })
@@ -39,7 +37,7 @@ export const actualizarDisponibilidad = async () => {
   }
   if (ahora >= estado.value.bloqueadoHasta && periodoRegalo !== estado.value.periodoRegalo) {
     estado.value.periodoRegalo = periodoRegalo
-    estado.value.regaloReclamado = false
+    if (hoy !== estado.value.fechaLocal) estado.value.regaloReclamado = false
   }
   if (ahora >= estado.value.bloqueadoHasta && hoy !== estado.value.fechaLocal) {
     estado.value.fechaLocal = hoy
