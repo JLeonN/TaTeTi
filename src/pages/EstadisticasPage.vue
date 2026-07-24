@@ -474,6 +474,7 @@ import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadis
 import {
   inicializarEconomia,
   obtenerEstadisticasEconomicas,
+  usarEconomia,
 } from 'src/Servicios/Economia/ServicioEconomia'
 import {
   inicializarRecompensas,
@@ -483,6 +484,7 @@ import {
 const { locale, t } = useI18n()
 const router = useRouter()
 const { regaloDisponible, anunciosRestantes } = usarRecompensas()
+const { equipamiento } = usarEconomia()
 const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
@@ -614,7 +616,10 @@ const dificultadesCompletas = computed(() =>
       },
   ),
 )
-const opcionesFicha = computed(() => datos.value?.fichasDisponibles ?? [])
+const opcionesFicha = computed(() => [
+  equipamiento.value.X?.simbolo,
+  equipamiento.value.O?.simbolo,
+].filter(Boolean))
 const fichasCompletas = computed(() => datos.value?.porFicha?.filter((fila) => numero(fila.partidas) > 0) ?? [])
 const fondoGraficaResultados = computed(() => {
   const total = Math.max(1, numero(datos.value.resumen.finalizadas))
@@ -752,6 +757,12 @@ watch(
   },
   { deep: true },
 )
+
+watch(opcionesFicha, (simbolos) => {
+  if (filtros.ficha !== 'todas' && !simbolos.includes(filtros.ficha)) {
+    filtros.ficha = 'todas'
+  }
+})
 
 onMounted(cargarEstadisticas)
 </script>
