@@ -25,6 +25,7 @@
       <BarraFiltrosEstadisticas
         v-model:dificultad="filtros.dificultad"
         v-model:ficha="filtros.ficha"
+        :opciones-ficha="opcionesFicha"
       />
 
       <article v-if="economia" class="panel panel-economia">
@@ -216,9 +217,7 @@
                   :aria-controls="`detalle-ficha-${fila.ficha}`"
                   @click="alternarFicha(fila.ficha)"
                 >
-                  <span :class="`simbolo-ficha ficha-${fila.ficha.toLowerCase()}`">
-                    {{ fila.ficha }}
-                  </span>
+                  <FichaVisual class="simbolo-ficha" :simbolo-id="fila.ficha" tamano="1.8rem" />
                   <i
                     :class="`ti ${
                       fichasDesplegadas[fila.ficha] ? 'ti-chevron-up' : 'ti-chevron-down'
@@ -469,6 +468,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BarraFiltrosEstadisticas from 'src/components/Estadisticas/BarraFiltrosEstadisticas.vue'
 import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadistica.vue'
+import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
 import {
@@ -487,10 +487,7 @@ const cargando = ref(false)
 const errorCarga = ref(false)
 const datos = ref(null)
 const economia = ref(null)
-const fichasDesplegadas = reactive({
-  X: false,
-  O: false,
-})
+const fichasDesplegadas = reactive({})
 const panelesDesplegados = reactive({
   resultados: false,
   dificultad: false,
@@ -617,19 +614,8 @@ const dificultadesCompletas = computed(() =>
       },
   ),
 )
-const fichasCompletas = computed(() =>
-  ['X', 'O'].map(
-    (ficha) =>
-      datos.value.porFicha.find((fila) => fila.ficha === ficha) ?? {
-        ficha,
-        partidas: 0,
-        victorias: 0,
-        empates: 0,
-        derrotas: 0,
-        porcentajeVictorias: 0,
-      },
-  ),
-)
+const opcionesFicha = computed(() => datos.value?.fichasDisponibles ?? [])
+const fichasCompletas = computed(() => datos.value?.porFicha?.filter((fila) => numero(fila.partidas) > 0) ?? [])
 const fondoGraficaResultados = computed(() => {
   const total = Math.max(1, numero(datos.value.resumen.finalizadas))
   const victorias = (numero(datos.value.resumen.victorias) / total) * 100

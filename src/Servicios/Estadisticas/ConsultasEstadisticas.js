@@ -9,7 +9,8 @@ const crearFiltro = (filtros) => {
     valores.push(filtros.dificultad)
   }
   if (filtros.ficha && filtros.ficha !== 'todas') {
-    condiciones.push('fichaUsuario = ?')
+    condiciones.push(`COALESCE(simboloUsuarioId, CASE fichaUsuario
+      WHEN 'X' THEN 'simboloX' ELSE 'simboloO' END) = ?`)
     valores.push(filtros.ficha)
   }
   if (filtros.resultado && filtros.resultado !== 'todos') {
@@ -51,6 +52,14 @@ export const obtenerEstadisticas = async (filtros = {}) => {
   const filtro = crearFiltro(filtros)
   const tablaFiltrada = `SELECT * FROM Partidas ${filtro.clausula}`
   const parametros = filtro.valores
+  const filtroSinFicha = crearFiltro({ ...filtros, ficha: 'todas' })
+  const fichasDisponibles = await ejecutarConsultaEstadisticas(
+    `SELECT DISTINCT COALESCE(simboloUsuarioId, CASE fichaUsuario
+      WHEN 'X' THEN 'simboloX' ELSE 'simboloO' END) AS ficha
+    FROM Partidas ${filtroSinFicha.clausula}
+    ORDER BY ficha`,
+    filtroSinFicha.valores,
+  )
 
   const resumen = primeraFila(
     await ejecutarConsultaEstadisticas(
@@ -101,7 +110,8 @@ export const obtenerEstadisticas = async (filtros = {}) => {
   const porFicha = await ejecutarConsultaEstadisticas(
     `WITH Filtradas AS (${tablaFiltrada})
     SELECT
-      fichaUsuario AS ficha,
+      COALESCE(simboloUsuarioId, CASE fichaUsuario
+        WHEN 'X' THEN 'simboloX' ELSE 'simboloO' END) AS ficha,
       COUNT(*) AS partidas,
       SUM(CASE WHEN resultado = 'victoria' THEN 1 ELSE 0 END) AS victorias,
       SUM(CASE WHEN resultado = 'empate' THEN 1 ELSE 0 END) AS empates,
@@ -112,8 +122,8 @@ export const obtenerEstadisticas = async (filtros = {}) => {
         1
       ) AS porcentajeVictorias
     FROM Filtradas
-    GROUP BY fichaUsuario
-    ORDER BY fichaUsuario`,
+    GROUP BY ficha
+    ORDER BY ficha`,
     parametros,
   )
 
@@ -305,6 +315,7 @@ export const obtenerEstadisticas = async (filtros = {}) => {
       mejorDificultad: mejorDificultad?.dificultad ?? null,
     },
     porFicha,
+    fichasDisponibles: fichasDisponibles.map((fila) => fila.ficha),
     puntuacion,
     rachas,
     proteccion,

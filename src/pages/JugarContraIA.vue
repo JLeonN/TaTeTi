@@ -94,11 +94,13 @@ import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { registroPartida } from 'src/Servicios/Estadisticas/RegistroPartida'
+import { usarEconomia } from 'src/Servicios/Economia/ServicioEconomia'
 
 const { t } = useI18n()
 const nombreIA = ref('')
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const { fichaUsuario, fichaIA, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
+const { equipamiento } = usarEconomia()
 
 const {
   tablero,
@@ -202,6 +204,8 @@ const manejarJugada = async (indice) => {
     dificultad: dificultadActual.value,
     fichaUsuario: fichaUsuario.value,
     fichaIA: fichaIA.value,
+    simboloUsuarioId: equipamiento.value[fichaUsuario.value]?.simbolo ?? 'simboloX',
+    simboloIAId: equipamiento.value[fichaIA.value]?.simbolo ?? 'simboloO',
     puntosIniciales: puntajeTotal.value,
     estadoInicial: obtenerEstadoPuntuacion(dificultadActual.value),
   })

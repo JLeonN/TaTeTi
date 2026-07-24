@@ -1,5 +1,5 @@
 export const NOMBRE_BASE_ESTADISTICAS = 'EstadisticasTaTeTi'
-export const VERSION_BASE_ESTADISTICAS = 3
+export const VERSION_BASE_ESTADISTICAS = 4
 
 export const MIGRACIONES_ESTADISTICAS = [
   {
@@ -135,6 +135,13 @@ export const MIGRACIONES_ESTADISTICAS = [
         VALUES ('X', 'simbolo', 'simboloX');`,
       `INSERT OR IGNORE INTO EquipamientoFichas (ficha, categoria, articuloId)
         VALUES ('O', 'simbolo', 'simboloO');`,
+    ],
+  },
+  {
+    toVersion: 4,
+    statements: [
+      'ALTER TABLE Partidas ADD COLUMN simboloUsuarioId TEXT;',
+      'ALTER TABLE Partidas ADD COLUMN simboloIAId TEXT;',
     ],
   },
 ]

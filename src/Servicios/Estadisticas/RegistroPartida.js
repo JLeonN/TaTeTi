@@ -38,7 +38,15 @@ class RegistroPartida {
     this.inicioTurnoUsuario = crearMarcaTiempo()
   }
 
-  async iniciarPartida({ dificultad, fichaUsuario, fichaIA, puntosIniciales, estadoInicial }) {
+  async iniciarPartida({
+    dificultad,
+    fichaUsuario,
+    fichaIA,
+    simboloUsuarioId,
+    simboloIAId,
+    puntosIniciales,
+    estadoInicial,
+  }) {
     if (this.partida) return
     const inicio = crearMarcaTiempo()
     this.partida = {
@@ -48,6 +56,8 @@ class RegistroPartida {
       dificultad,
       fichaUsuario,
       fichaIA,
+      simboloUsuarioId,
+      simboloIAId,
       puntosIniciales,
       estadoInicial,
       tiempoPausadoMs: 0,
@@ -231,6 +241,8 @@ const guardarPartidaFinalizada = async (partida) => {
     partida.dificultad,
     partida.fichaUsuario,
     partida.fichaIA,
+    partida.simboloUsuarioId,
+    partida.simboloIAId,
     partida.duracionMs,
     Math.round(partida.tiempoPausadoMs),
     partida.movimientosUsuario,
@@ -265,7 +277,7 @@ const guardarPartidaFinalizada = async (partida) => {
     await base.run(
       `INSERT INTO Partidas (
         id, fechaInicio, fechaFin, fechaLocal, horaLocal, resultado, motivoAbandono,
-        dificultad, fichaUsuario, fichaIA, duracionMs, tiempoPausadoMs,
+        dificultad, fichaUsuario, fichaIA, simboloUsuarioId, simboloIAId, duracionMs, tiempoPausadoMs,
         movimientosUsuario, movimientosIA, puntosIniciales, variacionPuntos,
         puntosFinales, rachaAntes, rachaDespues, derrotasAntes, derrotasDespues,
         proteccionAntes, proteccionDespues, activoProteccion, derrotaProtegida,
@@ -273,7 +285,7 @@ const guardarPartidaFinalizada = async (partida) => {
         inicioRachaNegativa, recuperacionRachaNegativa, resultadoMinimosMovimientos,
         usuarioEstuvoAUnaJugada, iaEstuvoAUnaJugada, recuperacionAnteAmenaza,
         tipoLineaGanadora, combinacionGanadora, versionApp, versionEsquema
-      ) VALUES (${Array(38).fill('?').join(', ')})`,
+      ) VALUES (${Array(40).fill('?').join(', ')})`,
       valoresPartida,
       false,
     )

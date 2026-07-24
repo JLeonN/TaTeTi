@@ -25,15 +25,12 @@
           :key="opcion.valor"
           type="button"
           class="chip-filtro"
-          :class="[
-            { activo: ficha === opcion.valor },
-            opcion.valor === 'X' ? 'chip-ficha-x' : '',
-            opcion.valor === 'O' ? 'chip-ficha-o' : '',
-          ]"
+          :class="{ activo: ficha === opcion.valor }"
           :aria-pressed="ficha === opcion.valor"
           @click="$emit('update:ficha', opcion.valor)"
         >
-          {{ opcion.etiqueta }}
+          <FichaVisual v-if="opcion.valor !== 'todas'" :simbolo-id="opcion.valor" tamano="1.35rem" />
+          <span v-else>{{ opcion.etiqueta }}</span>
         </button>
       </div>
     </fieldset>
@@ -43,12 +40,14 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
 
 defineEmits(['update:dificultad', 'update:ficha'])
 
-defineProps({
+const props = defineProps({
   dificultad: { type: String, required: true },
   ficha: { type: String, required: true },
+  opcionesFicha: { type: Array, default: () => [] },
 })
 
 const { t } = useI18n()
@@ -64,9 +63,8 @@ const opcionesDificultad = computed(() => [
 ])
 const opcionesFicha = computed(() => [
   { etiqueta: t('estadisticas.todas'), valor: 'todas' },
-  { etiqueta: 'X', valor: 'X' },
-  { etiqueta: 'O', valor: 'O' },
-])
+  ...new Set(props.opcionesFicha).values(),
+].map((opcion) => (typeof opcion === 'string' ? { valor: opcion, etiqueta: opcion } : opcion)))
 
 onMounted(() => {
   const alturaHeader =

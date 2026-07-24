@@ -13,7 +13,7 @@ import {
   VERSION_BASE_ESTADISTICAS,
 } from '../src/Servicios/Estadisticas/EsquemaEstadisticas.js'
 
-assert.equal(VERSION_BASE_ESTADISTICAS, 3)
+assert.equal(VERSION_BASE_ESTADISTICAS, 4)
 assert.equal(RECOMPENSA_DIARIA, 10)
 assert.equal(RECOMPENSA_ANUNCIO, 15)
 assert.equal(MAXIMO_ANUNCIOS_DIARIOS, 3)
@@ -43,6 +43,9 @@ base.run(`UPDATE EquipamientoFichas SET articuloId = 'verde' WHERE ficha = 'X'`)
 for (const sentencia of MIGRACIONES_ESTADISTICAS.find((migracion) => migracion.toVersion === 3).statements) {
   base.run(sentencia)
 }
+for (const sentencia of MIGRACIONES_ESTADISTICAS.find((migracion) => migracion.toVersion === 4).statements) {
+  base.run(sentencia)
+}
 
 const tablas = base
   .exec(`SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name`)[0]
@@ -68,6 +71,9 @@ assert.deepEqual(
     ['X', 'simbolo', 'simboloX'],
   ],
 )
+const columnasPartidas = base.exec(`PRAGMA table_info(Partidas)`)[0].values.map((columna) => columna[1])
+assert.ok(columnasPartidas.includes('simboloUsuarioId'))
+assert.ok(columnasPartidas.includes('simboloIAId'))
 
 base.run(
   `INSERT INTO MovimientosEconomicos
