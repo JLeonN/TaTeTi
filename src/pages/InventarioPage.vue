@@ -29,27 +29,22 @@
             type="button"
             class="ficha-equipada"
             :class="{
-              fluor: esArticuloFluor(obtenerArticuloEquipado(ficha)),
+              fluor: esArticuloFluor(obtenerArticuloEquipado(ficha, 'color')),
               preferida: fichaUsuario === ficha,
             }"
-            :style="obtenerEstiloArticulo(obtenerArticuloEquipado(ficha))"
+            :style="obtenerEstiloArticulo(obtenerArticuloEquipado(ficha, 'color'))"
             :aria-label="textoAccesibleFicha(ficha)"
             @click="seleccionarFicha(ficha)"
           >
+            <FichaVisual class="simbolo-equipado" :ficha="ficha" tamano="3.75rem" />
             <span
-              class="simbolo-equipado"
-              :style="obtenerEstiloMuestraColor(obtenerArticuloEquipado(ficha))"
-            >
-              {{ ficha }}
-            </span>
-            <span
-              v-if="esArticuloFluor(obtenerArticuloEquipado(ficha))"
+              v-if="esArticuloFluor(obtenerArticuloEquipado(ficha, 'color'))"
               class="icono-fluor-equipado"
               aria-label="Flúor"
             >
               <i class="ti ti-sparkles"></i>
             </span>
-            <strong>{{ nombreColor(equipamiento[ficha]) }}</strong>
+            <strong>{{ nombreArticulo(equipamiento[ficha].color) }}</strong>
             <span
               class="chip-participante"
               :class="{ nexus: fichaUsuario !== ficha }"
@@ -66,18 +61,18 @@
         <div class="panel-inventario">
           <div class="carrusel-colores" role="list" :aria-label="t('inventario.coloresFicha', { ficha: 'X' })">
             <button
-              v-for="articulo in articulosDisponibles"
+              v-for="articulo in articulosDisponiblesPorCategoria('color')"
               :key="`X-${articulo.id}`"
               class="item-color"
               type="button"
               role="listitem"
               :class="{
-                activo: equipamiento.X === articulo.id,
+                activo: equipamiento.X.color === articulo.id,
                 fluor: esArticuloFluor(articulo),
               }"
               :style="obtenerEstiloArticulo(articulo)"
               :aria-label="textoAccesibleColor('X', articulo)"
-              @click="equipar('X', articulo.id)"
+              @click="equipar('X', 'color', articulo.id)"
             >
               <span class="simbolo-color" :style="obtenerEstiloMuestraColor(articulo)">X</span>
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
@@ -91,20 +86,41 @@
         <div class="panel-inventario">
           <div class="carrusel-colores" role="list" :aria-label="t('inventario.coloresFicha', { ficha: 'O' })">
             <button
-              v-for="articulo in articulosDisponibles"
+              v-for="articulo in articulosDisponiblesPorCategoria('color')"
               :key="`O-${articulo.id}`"
               class="item-color"
               type="button"
               role="listitem"
               :class="{
-                activo: equipamiento.O === articulo.id,
+                activo: equipamiento.O.color === articulo.id,
                 fluor: esArticuloFluor(articulo),
               }"
               :style="obtenerEstiloArticulo(articulo)"
               :aria-label="textoAccesibleColor('O', articulo)"
-              @click="equipar('O', articulo.id)"
+              @click="equipar('O', 'color', articulo.id)"
             >
               <span class="simbolo-color" :style="obtenerEstiloMuestraColor(articulo)">O</span>
+              <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section v-for="ficha in fichas" :key="`simbolos-${ficha}`" class="seccion-inventario">
+        <h2 class="titulo-seccion-inventario">{{ t('inventario.simbolosFicha', { ficha }) }}</h2>
+        <div class="panel-inventario">
+          <div class="carrusel-colores" role="list">
+            <button
+              v-for="articulo in articulosDisponiblesPorCategoria('simbolo')"
+              :key="`${ficha}-${articulo.id}`"
+              class="item-color"
+              type="button"
+              role="listitem"
+              :class="{ activo: equipamiento[ficha].simbolo === articulo.id }"
+              :disabled="simboloEnUso(ficha, articulo.id)"
+              @click="equipar(ficha, 'simbolo', articulo.id)"
+            >
+              <FichaVisual class="simbolo-color" :ficha="ficha" :simbolo-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
             </button>
           </div>
@@ -116,10 +132,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { catalogoColores, obtenerArticulo } from 'src/Servicios/Economia/CatalogoTienda'
+import { obtenerArticulo, obtenerArticulosPorCategoria } from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
+import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
 import { useFichaJugador } from 'src/components/Composables/UseFichaJugador'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 
@@ -129,15 +146,15 @@ const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo }
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
-const articulosDisponibles = computed(() =>
-  catalogoColores.filter((articulo) => articulosAdquiridos.value.has(articulo.id)),
-)
-const nombreColor = (id) => {
+const articulosDisponiblesPorCategoria = (categoria) =>
+  obtenerArticulosPorCategoria(categoria).filter((articulo) => articulosAdquiridos.value.has(articulo.id))
+const nombreArticulo = (id) => {
   const articulo = obtenerArticulo(id)
   return articulo ? t(articulo.claveNombre) : ''
 }
 
-const obtenerArticuloEquipado = (ficha) => obtenerArticulo(equipamiento.value[ficha])
+const obtenerArticuloEquipado = (ficha, categoria) =>
+  obtenerArticulo(equipamiento.value[ficha]?.[categoria])
 
 const esArticuloFluor = (articulo) => articulo?.id.endsWith('Fluor') ?? false
 
@@ -166,8 +183,13 @@ const obtenerEstiloMuestraColor = (articulo) => {
   }
 }
 
-const equipar = async (ficha, articuloId) => {
-  await equiparArticulo(ficha, articuloId)
+const equipar = async (ficha, categoria, articuloId) => {
+  await equiparArticulo(ficha, categoria, articuloId)
+}
+
+const simboloEnUso = (ficha, articuloId) => {
+  const otraFicha = ficha === 'X' ? 'O' : 'X'
+  return equipamiento.value[otraFicha].simbolo === articuloId && equipamiento.value[ficha].simbolo !== articuloId
 }
 
 const seleccionarFicha = async (ficha) => {

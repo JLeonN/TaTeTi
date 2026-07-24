@@ -7,13 +7,13 @@
     }"
     @click="manejarClick"
   >
-    <div v-if="valor" class="ficha" :class="`ficha-${valor.toLowerCase()}`">
-      {{ valor }}
-    </div>
+    <FichaVisual v-if="valor" class="ficha" :ficha="valor" tamano="3rem" />
   </div>
 </template>
 
 <script setup>
+import FichaVisual from './Compartido/FichaVisual.vue'
+
 const props = defineProps({
   valor: {
     type: String,
@@ -62,18 +62,7 @@ const manejarClick = () => {
   cursor: not-allowed;
 }
 .ficha {
-  font-size: 3rem;
-  font-weight: bold;
-  user-select: none;
   animation: aparecerFicha 0.3s ease;
-}
-.ficha-x {
-  color: var(--color-ficha-x);
-  text-shadow: var(--sombra-ficha-x);
-}
-.ficha-o {
-  color: var(--color-ficha-o);
-  text-shadow: var(--sombra-ficha-o);
 }
 @keyframes aparecerFicha {
   from {

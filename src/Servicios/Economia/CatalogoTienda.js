@@ -2,7 +2,7 @@ export const RECOMPENSA_DIARIA = 10
 export const RECOMPENSA_ANUNCIO = 15
 export const MAXIMO_ANUNCIOS_DIARIOS = 3
 
-export const catalogoColores = Object.freeze([
+const coloresBase = [
   {
     id: 'rojo',
     claveNombre: 'tienda.colores.rojo',
@@ -117,7 +117,55 @@ export const catalogoColores = Object.freeze([
     variable: '--color-catalogo-blanco-fluor',
     colorVista: '#e6fbff',
   },
+]
+
+export const catalogoColores = Object.freeze(
+  coloresBase.map((articulo) => ({
+    ...articulo,
+    categoria: 'color',
+    representacion: null,
+  })),
+)
+
+export const catalogoSimbolos = Object.freeze([
+  {
+    id: 'simboloX',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.x',
+    precio: 0,
+    inicial: true,
+    representacion: { tipo: 'texto', valor: 'X' },
+  },
+  {
+    id: 'simboloO',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.o',
+    precio: 0,
+    inicial: true,
+    representacion: { tipo: 'texto', valor: 'O' },
+  },
+  {
+    id: 'simboloTriangulo',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.triangulo',
+    precio: 120,
+    inicial: false,
+    representacion: { tipo: 'texto', valor: '▲' },
+  },
+  {
+    id: 'simboloCuadrado',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.cuadrado',
+    precio: 120,
+    inicial: false,
+    representacion: { tipo: 'texto', valor: '■' },
+  },
 ])
 
+export const catalogoArticulos = Object.freeze([...catalogoColores, ...catalogoSimbolos])
+
+export const obtenerArticulosPorCategoria = (categoria) =>
+  catalogoArticulos.filter((articulo) => articulo.categoria === categoria)
+
 export const obtenerArticulo = (identificador) =>
-  catalogoColores.find((articulo) => articulo.id === identificador) ?? null
+  catalogoArticulos.find((articulo) => articulo.id === identificador) ?? null

@@ -4,8 +4,22 @@ const crearMensajes = ({
   colores,
   economia,
 }) => ({
-  tienda: { ...tienda, colores },
-  inventario,
+  tienda: {
+    ...tienda,
+    colores,
+    simbolosTitulo: tienda.simbolosTitulo ?? 'Símbolos para tus fichas',
+    simbolos: {
+      x: 'X',
+      o: 'O',
+      triangulo: 'Triángulo',
+      cuadrado: 'Cuadrado',
+      ...tienda.simbolos,
+    },
+  },
+  inventario: {
+    ...inventario,
+    simbolosFicha: inventario.simbolosFicha ?? 'Símbolo de {ficha}',
+  },
   economia,
 })
 

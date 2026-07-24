@@ -5,15 +5,21 @@ import {
   ejecutarTransaccionEstadisticas,
   inicializarBaseEstadisticas,
 } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
-import { catalogoColores, obtenerArticulo } from './CatalogoTienda'
+import { catalogoArticulos, obtenerArticulo } from './CatalogoTienda'
 
 const CLAVE_PUNTUACION = 'puntuacion_sistema'
 const CLAVE_EQUIPAMIENTO_RESPALDO = 'equipamiento_fichas'
 const CLAVE_MIGRACION = 'economia_migrada_v2'
+const FICHAS = ['X', 'O']
+const CATEGORIAS_EQUIPAMIENTO = ['color', 'simbolo']
+const EQUIPAMIENTO_INICIAL = Object.freeze({
+  X: { color: 'rojo', simbolo: 'simboloX' },
+  O: { color: 'azul', simbolo: 'simboloO' },
+})
 const puntajeTotal = ref(0)
 const economiaDisponible = ref(false)
-const articulosAdquiridos = ref(new Set(catalogoColores.filter((item) => item.inicial).map((item) => item.id)))
-const equipamiento = ref({ X: 'rojo', O: 'azul' })
+const articulosAdquiridos = ref(new Set(catalogoArticulos.filter((item) => item.inicial).map((item) => item.id)))
+const equipamiento = ref(structuredClone(EQUIPAMIENTO_INICIAL))
 let promesaInicializacion = null
 
 const generarId = () =>
@@ -21,6 +27,39 @@ const generarId = () =>
 
 const crearFechaLocal = (fecha = new Date()) =>
   `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}-${String(fecha.getDate()).padStart(2, '0')}`
+
+const esArticuloDeCategoria = (articuloId, categoria) =>
+  obtenerArticulo(articuloId)?.categoria === categoria
+
+const normalizarEquipamiento = (valor) => {
+  const normalizado = structuredClone(EQUIPAMIENTO_INICIAL)
+  for (const ficha of FICHAS) {
+    for (const categoria of CATEGORIAS_EQUIPAMIENTO) {
+      const articuloId = valor?.[ficha]?.[categoria]
+      if (esArticuloDeCategoria(articuloId, categoria)) {
+        normalizado[ficha][categoria] = articuloId
+      }
+    }
+  }
+  if (normalizado.X.simbolo === normalizado.O.simbolo) {
+    normalizado.O.simbolo = EQUIPAMIENTO_INICIAL.O.simbolo
+  }
+  return normalizado
+}
+
+const convertirEquipamientoRespaldo = (valor) => {
+  if (!valor?.X || !valor?.O) return null
+  if (typeof valor.X === 'string' && typeof valor.O === 'string') {
+    return normalizarEquipamiento({
+      X: { color: valor.X, simbolo: 'simboloX' },
+      O: { color: valor.O, simbolo: 'simboloO' },
+    })
+  }
+  if (typeof valor.X === 'object' && typeof valor.O === 'object') {
+    return normalizarEquipamiento(valor)
+  }
+  return null
+}
 
 const leerPuntuacionRespaldo = async () => {
   const resultado = await Preferences.get({ key: CLAVE_PUNTUACION })
@@ -38,16 +77,21 @@ const guardarSaldoRespaldo = async () => {
   await Preferences.set({ key: CLAVE_PUNTUACION, value: JSON.stringify(datos) })
 }
 
+const guardarEquipamientoRespaldo = async (siguiente) => {
+  await Preferences.set({
+    key: CLAVE_EQUIPAMIENTO_RESPALDO,
+    value: JSON.stringify(siguiente),
+  })
+}
+
 const cargarEquipamientoRespaldo = async () => {
   const resultado = await Preferences.get({ key: CLAVE_EQUIPAMIENTO_RESPALDO })
   if (!resultado.value) return
   try {
-    const guardado = JSON.parse(resultado.value)
-    if (obtenerArticulo(guardado.X) && obtenerArticulo(guardado.O) && guardado.X !== guardado.O) {
-      equipamiento.value = guardado
-    }
+    const convertido = convertirEquipamientoRespaldo(JSON.parse(resultado.value))
+    if (convertido) equipamiento.value = convertido
   } catch {
-    equipamiento.value = { X: 'rojo', O: 'azul' }
+    equipamiento.value = structuredClone(EQUIPAMIENTO_INICIAL)
   }
 }
 
@@ -98,7 +142,7 @@ const migrarEconomia = async (saldoRespaldo) => {
       [String(saldoRespaldo)],
       false,
     )
-    for (const articulo of catalogoColores.filter((item) => item.inicial)) {
+    for (const articulo of catalogoArticulos.filter((item) => item.inicial)) {
       await base.run(
         `INSERT OR IGNORE INTO ArticulosAdquiridos (articuloId, fechaAdquisicion)
         VALUES (?, ?)`,
@@ -122,13 +166,15 @@ const cargarEstado = async () => {
   articulosAdquiridos.value = new Set(filasArticulos.map((fila) => fila.articuloId))
 
   const filasEquipamiento = await ejecutarConsultaEstadisticas(
-    `SELECT ficha, articuloId FROM EquipamientoFichas`,
+    `SELECT ficha, categoria, articuloId FROM EquipamientoFichas`,
   )
-  if (filasEquipamiento.length === 2) {
-    equipamiento.value = Object.fromEntries(
-      filasEquipamiento.map((fila) => [fila.ficha, fila.articuloId]),
-    )
+  const desdeBase = structuredClone(EQUIPAMIENTO_INICIAL)
+  for (const fila of filasEquipamiento) {
+    if (FICHAS.includes(fila.ficha) && CATEGORIAS_EQUIPAMIENTO.includes(fila.categoria)) {
+      desdeBase[fila.ficha][fila.categoria] = fila.articuloId
+    }
   }
+  equipamiento.value = normalizarEquipamiento(desdeBase)
 }
 
 export const inicializarEconomia = async () => {
@@ -237,30 +283,42 @@ export const comprarArticulo = async (articuloId) => {
   await guardarSaldoRespaldo()
 }
 
-export const equiparArticulo = async (ficha, articuloId) => {
-  if (!['X', 'O'].includes(ficha) || !articulosAdquiridos.value.has(articuloId)) return false
-  const otraFicha = ficha === 'X' ? 'O' : 'X'
-  const siguiente = { ...equipamiento.value }
-  if (siguiente[otraFicha] === articuloId) {
-    siguiente[otraFicha] = siguiente[ficha]
+export const equiparArticulo = async (ficha, categoria, articuloId) => {
+  const articulo = obtenerArticulo(articuloId)
+  if (
+    !FICHAS.includes(ficha) ||
+    !CATEGORIAS_EQUIPAMIENTO.includes(categoria) ||
+    !articulo ||
+    articulo.categoria !== categoria
+  ) {
+    return 'articuloInvalido'
   }
-  siguiente[ficha] = articuloId
+  if (!articulosAdquiridos.value.has(articuloId)) return 'articuloNoAdquirido'
+
+  const otraFicha = ficha === 'X' ? 'O' : 'X'
+  const siguiente = structuredClone(equipamiento.value)
+  if (categoria === 'simbolo' && siguiente[otraFicha].simbolo === articuloId) {
+    return 'simboloEnUso'
+  }
+  if (categoria === 'color' && siguiente[otraFicha].color === articuloId) {
+    siguiente[otraFicha].color = siguiente[ficha].color
+  }
+  siguiente[ficha][categoria] = articuloId
 
   await ejecutarTransaccionEstadisticas(async (base) => {
-    for (const [simbolo, color] of Object.entries(siguiente)) {
-      await base.run(
-        `INSERT OR REPLACE INTO EquipamientoFichas (ficha, articuloId) VALUES (?, ?)`,
-        [simbolo, color],
-        false,
-      )
+    for (const simbolo of FICHAS) {
+      for (const categoriaActual of CATEGORIAS_EQUIPAMIENTO) {
+        await base.run(
+          `INSERT OR REPLACE INTO EquipamientoFichas (ficha, categoria, articuloId) VALUES (?, ?, ?)`,
+          [simbolo, categoriaActual, siguiente[simbolo][categoriaActual]],
+          false,
+        )
+      }
     }
   })
   equipamiento.value = siguiente
-  await Preferences.set({
-    key: CLAVE_EQUIPAMIENTO_RESPALDO,
-    value: JSON.stringify(siguiente),
-  })
-  return true
+  await guardarEquipamientoRespaldo(siguiente)
+  return 'equipado'
 }
 
 export const obtenerEstadisticasEconomicas = async () => {

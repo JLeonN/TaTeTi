@@ -1,5 +1,5 @@
 export const NOMBRE_BASE_ESTADISTICAS = 'EstadisticasTaTeTi'
-export const VERSION_BASE_ESTADISTICAS = 2
+export const VERSION_BASE_ESTADISTICAS = 3
 
 export const MIGRACIONES_ESTADISTICAS = [
   {
@@ -111,6 +111,30 @@ export const MIGRACIONES_ESTADISTICAS = [
       'CREATE UNIQUE INDEX IF NOT EXISTS indiceMovimientosOrigen ON MovimientosEconomicos(origen);',
       `INSERT OR IGNORE INTO EquipamientoFichas(ficha, articuloId) VALUES ('X', 'rojo');`,
       `INSERT OR IGNORE INTO EquipamientoFichas(ficha, articuloId) VALUES ('O', 'azul');`,
+    ],
+  },
+  {
+    toVersion: 3,
+    statements: [
+      'ALTER TABLE EquipamientoFichas RENAME TO EquipamientoFichasAnterior;',
+      `CREATE TABLE EquipamientoFichas (
+        ficha TEXT NOT NULL,
+        categoria TEXT NOT NULL,
+        articuloId TEXT NOT NULL,
+        PRIMARY KEY (ficha, categoria)
+      );`,
+      `INSERT INTO EquipamientoFichas (ficha, categoria, articuloId)
+        SELECT ficha, 'color', articuloId FROM EquipamientoFichasAnterior;`,
+      'DROP TABLE EquipamientoFichasAnterior;',
+      'CREATE INDEX IF NOT EXISTS indiceEquipamientoArticulo ON EquipamientoFichas(articuloId);',
+      `INSERT OR IGNORE INTO ArticulosAdquiridos (articuloId, fechaAdquisicion)
+        VALUES ('simboloX', datetime('now'));`,
+      `INSERT OR IGNORE INTO ArticulosAdquiridos (articuloId, fechaAdquisicion)
+        VALUES ('simboloO', datetime('now'));`,
+      `INSERT OR IGNORE INTO EquipamientoFichas (ficha, categoria, articuloId)
+        VALUES ('X', 'simbolo', 'simboloX');`,
+      `INSERT OR IGNORE INTO EquipamientoFichas (ficha, categoria, articuloId)
+        VALUES ('O', 'simbolo', 'simboloO');`,
     ],
   },
 ]

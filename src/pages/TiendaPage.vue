@@ -110,6 +110,27 @@
           </span>
         </button>
       </CarruselTienda>
+
+      <CarruselTienda :titulo="t('tienda.simbolosTitulo')" :aria-label="t('tienda.simbolosTitulo')">
+        <button
+          v-for="articulo in catalogoSimbolosOrdenados"
+          :key="articulo.id"
+          class="cuadro-color"
+          type="button"
+          :class="{
+            adquirido: esArticuloAdquirido(articulo),
+            bloqueado: !esArticuloAdquirido(articulo) && !puedeComprarArticulo(articulo),
+          }"
+          :style="{ '--color-articulo': 'var(--color-turno-activo)' }"
+          :aria-label="textoAccesibleArticulo(articulo)"
+          :disabled="esArticuloAdquirido(articulo) || !puedeComprarArticulo(articulo)"
+          @click="solicitarCompra(articulo)"
+        >
+          <span v-if="esArticuloAdquirido(articulo)" class="estado-color"><i class="ti ti-check"></i></span>
+          <span v-else class="precio-color"><i class="ti ti-trophy"></i><strong>{{ articulo.precio }}</strong></span>
+          <FichaVisual class="muestra-simbolo" ficha="X" :simbolo-id="articulo.id" tamano="2.4rem" />
+        </button>
+      </CarruselTienda>
     </div>
 
     <ModalConfirmacion
@@ -125,7 +146,7 @@
         <div
           class="vista-previa-color"
           :class="{ fluor: esArticuloFluor(articuloPendiente) }"
-          :style="{ '--color-articulo': articuloPendiente.colorVista }"
+          :style="{ '--color-articulo': articuloPendiente.colorVista ?? 'var(--color-turno-activo)' }"
           role="img"
           :aria-label="t(articuloPendiente.claveNombre)"
         >
@@ -136,7 +157,15 @@
             <i class="ti ti-sparkles"></i>
             FLÚOR
           </span>
+          <FichaVisual
+            v-if="articuloPendiente.categoria === 'simbolo'"
+            class="muestra-simbolo"
+            ficha="X"
+            :simbolo-id="articuloPendiente.id"
+            tamano="2.4rem"
+          />
           <span
+            v-else
             class="muestra-color muestra-color--preview"
             :style="obtenerEstiloMuestraColor(articuloPendiente)"
           >
@@ -154,9 +183,11 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
+import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import {
   catalogoColores,
+  catalogoSimbolos,
   MAXIMO_ANUNCIOS_DIARIOS,
   RECOMPENSA_ANUNCIO,
   RECOMPENSA_DIARIA,
@@ -276,6 +307,15 @@ const puedeComprarArticulo = (articulo) =>
 
 const catalogoColoresOrdenados = computed(() =>
   [...catalogoColores].sort((articuloA, articuloB) => {
+    const adquiridoA = esArticuloAdquirido(articuloA)
+    const adquiridoB = esArticuloAdquirido(articuloB)
+    if (adquiridoA !== adquiridoB) return adquiridoA ? 1 : -1
+    return articuloA.precio - articuloB.precio
+  }),
+)
+
+const catalogoSimbolosOrdenados = computed(() =>
+  [...catalogoSimbolos].sort((articuloA, articuloB) => {
     const adquiridoA = esArticuloAdquirido(articuloA)
     const adquiridoB = esArticuloAdquirido(articuloB)
     if (adquiridoA !== adquiridoB) return adquiridoA ? 1 : -1
@@ -495,6 +535,9 @@ onBeforeUnmount(() => {
 .muestra-color span {
   color: inherit !important;
   -webkit-text-fill-color: currentColor !important;
+}
+.muestra-simbolo {
+  font-size: 2.4rem;
 }
 .etiqueta-fluor {
   position: absolute;

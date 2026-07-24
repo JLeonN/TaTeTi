@@ -171,8 +171,8 @@ Validar el catálogo, migración, persistencia, compra, equipamiento, accesibili
 
 ## Progreso del plan
 
-- [ ] Fase 1: Generalizar catálogo y migrar persistencia
-- [ ] Fase 2: Adaptar servicio de economía y respaldo
+- [x] Fase 1: Generalizar catálogo y migrar persistencia
+- [x] Fase 2: Adaptar servicio de economía y respaldo
 - [ ] Fase 3: Centralizar las fichas visuales
 - [ ] Fase 4: Integrar símbolos en tienda e inventario
 - [ ] Fase 5: Completar traducciones y cobertura de regresión
@@ -180,4 +180,4 @@ Validar el catálogo, migración, persistencia, compra, equipamiento, accesibili
 
 Fecha de creación: 24 de Julio 2026
 Fecha de última actualización: 24 de Julio 2026
-Estado: BORRADOR
+Estado: EN PROCESO

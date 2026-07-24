@@ -8,7 +8,7 @@ const aplicarVariables = (equipamiento) => {
   if (typeof document === 'undefined') return
   const raiz = document.documentElement
   for (const ficha of ['X', 'O']) {
-    const articulo = obtenerArticulo(equipamiento[ficha])
+    const articulo = obtenerArticulo(equipamiento[ficha]?.color)
     if (!articulo) continue
     const sufijo = ficha.toLowerCase()
     const variableColor = `var(${articulo.variable})`
