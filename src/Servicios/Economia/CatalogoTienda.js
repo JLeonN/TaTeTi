@@ -150,7 +150,7 @@ export const catalogoSimbolos = Object.freeze([
     claveNombre: 'tienda.simbolos.triangulo',
     precio: 120,
     inicial: false,
-    representacion: { tipo: 'texto', valor: '▲' },
+    representacion: { tipo: 'texto', valor: '△' },
   },
   {
     id: 'simboloCuadrado',
@@ -158,7 +158,7 @@ export const catalogoSimbolos = Object.freeze([
     claveNombre: 'tienda.simbolos.cuadrado',
     precio: 120,
     inicial: false,
-    representacion: { tipo: 'texto', valor: '■' },
+    representacion: { tipo: 'texto', valor: '□' },
   },
 ])
 

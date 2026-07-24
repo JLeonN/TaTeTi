@@ -16,10 +16,14 @@ const EQUIPAMIENTO_INICIAL = Object.freeze({
   X: { color: 'rojo', simbolo: 'simboloX' },
   O: { color: 'azul', simbolo: 'simboloO' },
 })
+const clonarEquipamiento = (valor) => ({
+  X: { ...valor.X },
+  O: { ...valor.O },
+})
 const puntajeTotal = ref(0)
 const economiaDisponible = ref(false)
 const articulosAdquiridos = ref(new Set(catalogoArticulos.filter((item) => item.inicial).map((item) => item.id)))
-const equipamiento = ref(structuredClone(EQUIPAMIENTO_INICIAL))
+const equipamiento = ref(clonarEquipamiento(EQUIPAMIENTO_INICIAL))
 let promesaInicializacion = null
 
 const generarId = () =>
@@ -32,7 +36,7 @@ const esArticuloDeCategoria = (articuloId, categoria) =>
   obtenerArticulo(articuloId)?.categoria === categoria
 
 const normalizarEquipamiento = (valor) => {
-  const normalizado = structuredClone(EQUIPAMIENTO_INICIAL)
+  const normalizado = clonarEquipamiento(EQUIPAMIENTO_INICIAL)
   for (const ficha of FICHAS) {
     for (const categoria of CATEGORIAS_EQUIPAMIENTO) {
       const articuloId = valor?.[ficha]?.[categoria]
@@ -91,7 +95,7 @@ const cargarEquipamientoRespaldo = async () => {
     const convertido = convertirEquipamientoRespaldo(JSON.parse(resultado.value))
     if (convertido) equipamiento.value = convertido
   } catch {
-    equipamiento.value = structuredClone(EQUIPAMIENTO_INICIAL)
+    equipamiento.value = clonarEquipamiento(EQUIPAMIENTO_INICIAL)
   }
 }
 
@@ -168,7 +172,7 @@ const cargarEstado = async () => {
   const filasEquipamiento = await ejecutarConsultaEstadisticas(
     `SELECT ficha, categoria, articuloId FROM EquipamientoFichas`,
   )
-  const desdeBase = structuredClone(EQUIPAMIENTO_INICIAL)
+  const desdeBase = clonarEquipamiento(EQUIPAMIENTO_INICIAL)
   for (const fila of filasEquipamiento) {
     if (FICHAS.includes(fila.ficha) && CATEGORIAS_EQUIPAMIENTO.includes(fila.categoria)) {
       desdeBase[fila.ficha][fila.categoria] = fila.articuloId
@@ -296,7 +300,7 @@ export const equiparArticulo = async (ficha, categoria, articuloId) => {
   if (!articulosAdquiridos.value.has(articuloId)) return 'articuloNoAdquirido'
 
   const otraFicha = ficha === 'X' ? 'O' : 'X'
-  const siguiente = structuredClone(equipamiento.value)
+  const siguiente = clonarEquipamiento(equipamiento.value)
   if (categoria === 'simbolo' && siguiente[otraFicha].simbolo === articuloId) {
     return 'simboloEnUso'
   }
