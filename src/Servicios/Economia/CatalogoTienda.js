@@ -135,6 +135,7 @@ export const catalogoSimbolos = Object.freeze([
     precio: 0,
     inicial: true,
     representacion: { tipo: 'texto', valor: 'X' },
+    estiloVisual: {},
   },
   {
     id: 'simboloO',
@@ -143,6 +144,7 @@ export const catalogoSimbolos = Object.freeze([
     precio: 0,
     inicial: true,
     representacion: { tipo: 'texto', valor: 'O' },
+    estiloVisual: {},
   },
   {
     id: 'simboloTriangulo',
@@ -151,6 +153,7 @@ export const catalogoSimbolos = Object.freeze([
     precio: 120,
     inicial: false,
     representacion: { tipo: 'texto', valor: '△' },
+    estiloVisual: { grosorContorno: '0.125em' },
   },
   {
     id: 'simboloCuadrado',
@@ -159,6 +162,7 @@ export const catalogoSimbolos = Object.freeze([
     precio: 120,
     inicial: false,
     representacion: { tipo: 'texto', valor: '□' },
+    estiloVisual: { grosorContorno: '0.125em' },
   },
 ])
 

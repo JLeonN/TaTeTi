@@ -1,10 +1,7 @@
 <template>
   <span
     class="ficha-visual"
-    :class="[
-      `ficha-${fichaNormalizada.toLowerCase()}`,
-      { 'simbolo-geometrico': esSimboloGeometrico },
-    ]"
+    :class="`ficha-${fichaNormalizada.toLowerCase()}`"
     :style="estiloFicha"
     :aria-label="etiquetaAccesible"
   >
@@ -49,15 +46,16 @@ const articuloSimbolo = computed(() =>
   obtenerArticulo(props.simboloId || equipamiento.value[fichaNormalizada.value]?.simbolo),
 )
 const representacionVisible = computed(() => articuloSimbolo.value?.representacion?.valor ?? fichaNormalizada.value)
-const esSimboloGeometrico = computed(() =>
-  ['simboloTriangulo', 'simboloCuadrado'].includes(articuloSimbolo.value?.id),
-)
 const estiloFicha = computed(() => {
   const estilos = {}
   if (props.tamano) estilos.fontSize = props.tamano
   if (props.colorId && articuloColor.value?.colorVista) {
     estilos.color = articuloColor.value.colorVista
     estilos.WebkitTextFillColor = articuloColor.value.colorVista
+  }
+  if (articuloSimbolo.value?.estiloVisual?.grosorContorno) {
+    estilos.WebkitTextStroke = `${articuloSimbolo.value.estiloVisual.grosorContorno} currentColor`
+    estilos.paintOrder = 'stroke fill'
   }
   return estilos
 })
@@ -77,9 +75,5 @@ const estiloFicha = computed(() => {
 .ficha-o {
   color: var(--color-ficha-o);
   text-shadow: var(--sombra-ficha-o);
-}
-.simbolo-geometrico {
-  -webkit-text-stroke: 0.125em currentColor;
-  paint-order: stroke fill;
 }
 </style>
