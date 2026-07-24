@@ -1,5 +1,5 @@
 {
-  "versionDisponible": "4.0.11",
+  "versionDisponible": "4.0.12",
   "urlPlayStore": "https://play.google.com/store/apps/details?id=com.leotateti.tateti",
   "mostrarActualizacion": true,
   "cambios": {
@@ -7,7 +7,9 @@
       {
         "apartado": "Actualizaciones",
         "novedades": [
-          "Preparamos la app para que siga funcionando bien en los teléfonos Android más recientes."
+          "Comprá y equipá nuevas fichas: triángulo y cuadrado.",
+          "Personalizá el tablero con tus símbolos y colores favoritos.",
+          "Las estadísticas ahora muestran los símbolos usados en tus partidas."
         ]
       }
     ],
@@ -15,7 +17,9 @@
       {
         "apartado": "Updates",
         "novedades": [
-          "We prepared the app to keep working smoothly on the latest Android phones."
+          "Buy and equip new pieces: triangle and square.",
+          "Customize the board with your favorite symbols and colors.",
+          "Statistics now show the symbols used in your matches."
         ]
       }
     ],
@@ -23,7 +27,9 @@
       {
         "apartado": "Atualizações",
         "novedades": [
-          "Preparamos o app para que ele continue funcionando bem nos celulares Android mais recentes."
+          "Compre e equipe novas peças: triângulo e quadrado.",
+          "Personalize o tabuleiro com seus símbolos e cores favoritos.",
+          "As estatísticas agora mostram os símbolos usados nas partidas."
         ]
       }
     ],
@@ -31,7 +37,9 @@
       {
         "apartado": "Mises à jour",
         "novedades": [
-          "Nous avons préparé l’application pour qu’elle continue de bien fonctionner sur les téléphones Android les plus récents."
+          "Achetez et équipez de nouveaux symboles : triangle et carré.",
+          "Personnalisez le plateau avec vos symboles et couleurs préférés.",
+          "Les statistiques affichent désormais les symboles utilisés dans vos parties."
         ]
       }
     ],
@@ -39,7 +47,9 @@
       {
         "apartado": "Aggiornamenti",
         "novedades": [
-          "Abbiamo preparato l’app affinché continui a funzionare bene sui telefoni Android più recenti."
+          "Acquista ed equipaggia nuovi simboli: triangolo e quadrato.",
+          "Personalizza la tavola con i tuoi simboli e colori preferiti.",
+          "Le statistiche ora mostrano i simboli usati nelle partite."
         ]
       }
     ],
@@ -47,7 +57,9 @@
       {
         "apartado": "Aktualisierungen",
         "novedades": [
-          "Wir haben die App darauf vorbereitet, auch auf den neuesten Android-Smartphones weiterhin zuverlässig zu funktionieren."
+          "Kaufe und rüste neue Symbole aus: Dreieck und Quadrat.",
+          "Passe das Spielfeld mit deinen Lieblingssymbolen und -farben an.",
+          "Die Statistiken zeigen jetzt die in deinen Spielen verwendeten Symbole."
         ]
       }
     ],
@@ -55,7 +67,9 @@
       {
         "apartado": "アップデート",
         "novedades": [
-          "最新のAndroidスマートフォンでも快適に使い続けられるよう、アプリを準備しました。"
+          "三角形と四角形の新しいシンボルを購入して装備できます。",
+          "好きなシンボルと色でボードをカスタマイズできます。",
+          "統計で対戦中に使ったシンボルを確認できます。"
         ]
       }
     ],
@@ -63,7 +77,9 @@
       {
         "apartado": "업데이트",
         "novedades": [
-          "최신 Android 휴대폰에서도 앱을 원활하게 계속 사용할 수 있도록 준비했습니다."
+          "삼각형과 사각형의 새 말을 구매하고 장착하세요.",
+          "좋아하는 기호와 색상으로 보드를 꾸며 보세요.",
+          "이제 통계에서 게임에 사용한 기호를 확인할 수 있습니다."
         ]
       }
     ],
@@ -71,7 +87,9 @@
       {
         "apartado": "Uppdateringar",
         "novedades": [
-          "Vi har förberett appen så att den fortsätter fungera bra på de senaste Android-telefonerna."
+          "Köp och utrusta nya symboler: triangel och kvadrat.",
+          "Anpassa spelplanen med dina favoritfärger och symboler.",
+          "Statistiken visar nu vilka symboler du använde i dina matcher."
         ]
       }
     ],
@@ -79,7 +97,9 @@
       {
         "apartado": "Oppdateringer",
         "novedades": [
-          "Vi har klargjort appen slik at den fortsatt fungerer godt på de nyeste Android-telefonene."
+          "Kjøp og utstyr nye symboler: trekant og firkant.",
+          "Tilpass brettet med dine favorittsymboler og farger.",
+          "Statistikken viser nå symbolene du brukte i spillene dine."
         ]
       }
     ]

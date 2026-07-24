@@ -1,6 +1,6 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 24 de julio de 2026. Versión documentada: `4.0.11`.
+> Vigencia: 24 de julio de 2026. Versión documentada: `4.0.12`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
@@ -12,8 +12,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `/`: partida contra IA.
 - `/jugador-vs-jugador`: multijugador local.
 - `/estadisticas`: rendimiento e historial agregado de partidas contra NEXUS.
-- `/tienda`: recompensas diarias, anuncios recompensados y compra de colores.
-- `/inventario`: equipamiento de colores y ficha preferida contra NEXUS.
+- `/tienda`: recompensas diarias, anuncios recompensados y compra de colores y símbolos.
+- `/inventario`: equipamiento de colores, símbolos y ficha preferida contra NEXUS.
 - `/configuracion`: nombre e idioma.
 - Cualquier ruta desconocida: página 404.
 
