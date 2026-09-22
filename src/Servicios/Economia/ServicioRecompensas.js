@@ -25,6 +25,14 @@ const fechaLocal = (fecha = new Date()) =>
 
 const periodoRegaloActual = (fecha = new Date()) => fechaLocal(fecha)
 
+export const obtenerProximoCambioRecompensas = (fecha = new Date()) => {
+  const ahora = fecha.getTime()
+  if (estado.value.bloqueadoHasta > ahora) return estado.value.bloqueadoHasta
+  const proximaMedianoche = new Date(fecha)
+  proximaMedianoche.setHours(24, 0, 0, 0)
+  return proximaMedianoche.getTime()
+}
+
 const guardar = () =>
   Preferences.set({ key: CLAVE_ESTADO_RECOMPENSAS, value: JSON.stringify(estado.value) })
 
@@ -110,6 +118,7 @@ export const usarRecompensas = () => ({
   recompensasBloqueadas: computed(() => estado.value.bloqueadoHasta > Date.now()),
   inicializarRecompensas,
   actualizarDisponibilidad,
+  obtenerProximoCambioRecompensas,
   reclamarRegaloDiario,
   registrarAnuncioRecompensado,
 })

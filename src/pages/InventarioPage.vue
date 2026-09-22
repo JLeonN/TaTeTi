@@ -20,8 +20,8 @@
         </router-link>
       </header>
 
-      <section class="tarjeta-equipado" aria-label="Equipado">
-        <h2>Equipado</h2>
+      <section class="tarjeta-equipado" :aria-label="t('inventario.equipado')">
+        <h2>{{ t('inventario.equipado') }}</h2>
         <div class="grilla-equipado">
           <button
             v-for="ficha in fichas"
@@ -40,7 +40,7 @@
             <span
               v-if="esArticuloFluor(obtenerArticuloEquipado(ficha, 'color'))"
               class="icono-fluor-equipado"
-              aria-label="Flúor"
+              :aria-label="t('inventario.fluor')"
             >
               <i class="ti ti-sparkles"></i>
             </span>
@@ -55,6 +55,16 @@
           </button>
         </div>
       </section>
+
+      <p
+        v-if="mensajeEstado"
+        class="mensaje-estado"
+        :class="{ error: estadoConError }"
+        role="status"
+        aria-live="polite"
+      >
+        {{ mensajeEstado }}
+      </p>
 
       <section class="seccion-inventario">
         <h2 class="titulo-seccion-inventario">{{ t('inventario.coloresFicha', { ficha: 'X' }) }}</h2>
@@ -74,7 +84,7 @@
               :aria-label="textoAccesibleColor('X', articulo)"
               @click="equipar('X', 'color', articulo.id)"
             >
-              <span class="simbolo-color" :style="obtenerEstiloMuestraColor(articulo)">X</span>
+              <FichaVisual class="simbolo-color" ficha="X" :color-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
             </button>
           </div>
@@ -99,7 +109,7 @@
               :aria-label="textoAccesibleColor('O', articulo)"
               @click="equipar('O', 'color', articulo.id)"
             >
-              <span class="simbolo-color" :style="obtenerEstiloMuestraColor(articulo)">O</span>
+              <FichaVisual class="simbolo-color" ficha="O" :color-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
             </button>
           </div>
@@ -118,10 +128,14 @@
               role="listitem"
               :class="{ activo: equipamiento[ficha].simbolo === articulo.id }"
               :disabled="simboloEnUso(ficha, articulo.id)"
+              :aria-label="textoAccesibleSimbolo(ficha, articulo)"
               @click="equipar(ficha, 'simbolo', articulo.id)"
             >
               <FichaVisual class="simbolo-color" :ficha="ficha" :simbolo-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
+              <span v-if="simboloEnUso(ficha, articulo.id)" class="estado-no-disponible">
+                {{ t('inventario.simboloEnUso') }}
+              </span>
             </button>
           </div>
         </div>
@@ -132,7 +146,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { obtenerArticulo, obtenerArticulosPorCategoria } from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
@@ -146,6 +160,8 @@ const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo }
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
+const mensajeEstado = ref('')
+const estadoConError = ref(false)
 const articulosDisponiblesPorCategoria = (categoria) =>
   obtenerArticulosPorCategoria(categoria).filter((articulo) => articulosAdquiridos.value.has(articulo.id))
 const nombreArticulo = (id) => {
@@ -162,29 +178,34 @@ const obtenerEstiloArticulo = (articulo) => ({
   '--color-articulo': articulo?.colorVista ?? 'var(--color-texto-principal)',
 })
 
-const obtenerEstiloMuestraColor = (articulo) => {
-  const color = articulo?.colorVista ?? 'var(--color-texto-principal)'
-  const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
-  if (!esArticuloFluor(articulo)) {
-    return {
-      color,
-      WebkitTextFillColor: color,
-      textShadow: sombraBase,
-    }
-  }
-  const sombraFluor =
-    articulo.id === 'blancoFluor'
-      ? '0 0 6px #8beeff, 0 0 14px #8beeff'
-      : `0 0 5px ${color}, 0 0 12px ${color}`
-  return {
-    color,
-    WebkitTextFillColor: color,
-    textShadow: `${sombraFluor}, ${sombraBase}`,
-  }
-}
-
 const equipar = async (ficha, categoria, articuloId) => {
-  await equiparArticulo(ficha, categoria, articuloId)
+  const otraFicha = ficha === 'X' ? 'O' : 'X'
+  const intercambiaColores =
+    categoria === 'color' && equipamiento.value[otraFicha].color === articuloId
+  try {
+    const resultado = await equiparArticulo(ficha, categoria, articuloId)
+    estadoConError.value = resultado !== 'equipado'
+    if (resultado === 'equipado') {
+      mensajeEstado.value = t(
+        intercambiaColores
+          ? 'inventario.coloresIntercambiados'
+          : categoria === 'color'
+            ? 'inventario.colorEquipado'
+            : 'inventario.simboloEquipado',
+      )
+      return
+    }
+    mensajeEstado.value = t(
+      resultado === 'simboloEnUso'
+        ? 'inventario.simboloEnUso'
+        : resultado === 'articuloNoAdquirido'
+          ? 'inventario.articuloNoAdquirido'
+          : 'inventario.errorEquipamiento',
+    )
+  } catch {
+    estadoConError.value = true
+    mensajeEstado.value = t('inventario.errorEquipamiento')
+  }
 }
 
 const simboloEnUso = (ficha, articuloId) => {
@@ -193,11 +214,24 @@ const simboloEnUso = (ficha, articuloId) => {
 }
 
 const seleccionarFicha = async (ficha) => {
-  await guardarFichaUsuario(ficha)
+  const guardada = await guardarFichaUsuario(ficha)
+  estadoConError.value = !guardada
+  mensajeEstado.value = t(
+    guardada ? 'inventario.fichaActualizada' : 'inventario.errorEquipamiento',
+  )
 }
 
 const textoAccesibleColor = (ficha, articulo) =>
   `${t('inventario.coloresFicha', { ficha })}: ${t(articulo.claveNombre)}`
+
+const textoAccesibleSimbolo = (ficha, articulo) => {
+  const estado = simboloEnUso(ficha, articulo.id)
+    ? ` ${t('inventario.simboloEnUso')}`
+    : equipamiento.value[ficha].simbolo === articulo.id
+      ? ` ${t('inventario.simboloEquipado')}`
+      : ''
+  return `${t('inventario.simbolosFicha', { ficha })}: ${t(articulo.claveNombre)}.${estado}`
+}
 
 const textoAccesibleFicha = (ficha) =>
   `${t('inventario.fichaPreferida')}: ${ficha}. ${nombreParticipanteFicha(ficha)}`
@@ -278,6 +312,19 @@ onMounted(async () => {
   font-weight: 800;
   line-height: 1;
   text-transform: uppercase;
+}
+.mensaje-estado {
+  margin: -6px 0 14px;
+  padding: 8px 10px;
+  color: var(--color-texto-principal);
+  background-color: var(--color-fondo-alterno);
+  border: 1px solid var(--color-exito);
+  border-radius: 8px;
+  font-size: 0.78rem;
+  text-align: center;
+}
+.mensaje-estado.error {
+  border-color: var(--color-error);
 }
 .grilla-equipado {
   display: grid;
@@ -387,6 +434,10 @@ onMounted(async () => {
     0 0 8px color-mix(in srgb, var(--color-turno-activo) 70%, transparent),
     inset 0 0 8px color-mix(in srgb, var(--color-turno-activo) 26%, transparent);
 }
+.item-color:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
 .simbolo-color {
   font-size: 2.35rem;
   font-weight: 900;
@@ -398,6 +449,19 @@ onMounted(async () => {
   font-size: 0.68rem;
   font-weight: 800;
   line-height: 1.05;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.estado-no-disponible {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  left: 4px;
+  overflow: hidden;
+  color: var(--color-texto-secundario);
+  font-size: 0.54rem;
+  font-weight: 800;
+  line-height: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }

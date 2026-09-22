@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import initSqlJs from 'sql.js'
+import mensajesEconomia from '../src/i18n/MensajesEconomia.js'
 import {
   catalogoArticulos,
   catalogoColores,
@@ -23,6 +25,17 @@ assert.deepEqual(
 )
 assert.equal(new Set(catalogoColores.map((articulo) => articulo.id)).size, catalogoColores.length)
 assert.ok(catalogoColores.every((articulo) => articulo.variable.startsWith('--color-catalogo-')))
+assert.ok(catalogoColores.every((articulo) => articulo.categoria === 'color'))
+assert.ok(catalogoColores.every((articulo) => catalogoArticulos.includes(articulo)))
+assert.deepEqual(
+  catalogoColores.filter((articulo) => !articulo.inicial && !articulo.id.endsWith('Fluor')).map((articulo) => articulo.precio),
+  [60, 60, 60, 60, 60, 60],
+)
+assert.ok(
+  catalogoColores
+    .filter((articulo) => articulo.id.endsWith('Fluor'))
+    .every((articulo) => articulo.precio === 120),
+)
 assert.deepEqual(
   catalogoSimbolos.filter((articulo) => articulo.inicial).map((articulo) => articulo.id),
   ['simboloX', 'simboloO'],
@@ -31,7 +44,53 @@ assert.deepEqual(
   catalogoSimbolos.filter((articulo) => !articulo.inicial).map((articulo) => articulo.precio),
   [120, 120],
 )
+assert.ok(catalogoSimbolos.every((articulo) => articulo.categoria === 'simbolo'))
+assert.ok(catalogoSimbolos.every((articulo) => catalogoArticulos.includes(articulo)))
+assert.deepEqual(
+  catalogoSimbolos.slice(2).map((articulo) => articulo.representacion.valor),
+  ['△', '□'],
+)
 assert.equal(new Set(catalogoArticulos.map((articulo) => articulo.id)).size, catalogoArticulos.length)
+assert.deepEqual(
+  MIGRACIONES_ESTADISTICAS.map((migracion) => migracion.toVersion),
+  [1, 2, 3, 4],
+)
+
+for (const [codigo, mensajes] of Object.entries(mensajesEconomia)) {
+  for (const clave of ['simbolosTitulo']) {
+    assert.ok(mensajes.tienda[clave], `${codigo}: falta tienda.${clave}.`)
+  }
+  for (const clave of [
+    'equipado',
+    'fluor',
+    'simbolosFicha',
+    'simboloEquipado',
+    'simboloEnUso',
+    'articuloNoAdquirido',
+    'errorEquipamiento',
+  ]) {
+    assert.ok(mensajes.inventario[clave], `${codigo}: falta inventario.${clave}.`)
+  }
+  assert.ok(mensajes.tienda.simbolos.triangulo, `${codigo}: falta el nombre del triángulo.`)
+  assert.ok(mensajes.tienda.simbolos.cuadrado, `${codigo}: falta el nombre del cuadrado.`)
+}
+
+const contenidoTienda = await readFile(
+  new URL('../src/pages/TiendaPage.vue', import.meta.url),
+  'utf8',
+)
+assert.doesNotMatch(contenidoTienda, /setInterval\s*\(/)
+assert.doesNotMatch(contenidoTienda, /\.muestra-color\s+span\s*\{/)
+assert.match(contenidoTienda, /programarActualizacionRecompensas/)
+for (const ruta of [
+  '../src/components/TaTeTi/InfoJuego.vue',
+  '../src/components/TaTeTi/Compartido/ModalResultado.vue',
+  '../src/pages/JugarContraIA.vue',
+  '../src/pages/InventarioPage.vue',
+]) {
+  const contenido = await readFile(new URL(ruta, import.meta.url), 'utf8')
+  assert.match(contenido, /FichaVisual/, `${ruta}: falta integrar FichaVisual.`)
+}
 
 const SQL = await initSqlJs()
 const base = new SQL.Database()

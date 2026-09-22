@@ -3,7 +3,9 @@
     class="ficha-visual"
     :class="`ficha-${fichaNormalizada.toLowerCase()}`"
     :style="estiloFicha"
-    :aria-label="etiquetaAccesible"
+    :role="etiquetaAccesible ? 'img' : undefined"
+    :aria-label="etiquetaAccesible || undefined"
+    :aria-hidden="etiquetaAccesible ? undefined : 'true'"
   >
     {{ representacionVisible }}
   </span>
@@ -45,13 +47,24 @@ const articuloColor = computed(() =>
 const articuloSimbolo = computed(() =>
   obtenerArticulo(props.simboloId || equipamiento.value[fichaNormalizada.value]?.simbolo),
 )
-const representacionVisible = computed(() => articuloSimbolo.value?.representacion?.valor ?? fichaNormalizada.value)
+const representacionVisible = computed(
+  () => articuloSimbolo.value?.representacion?.valor ?? fichaNormalizada.value,
+)
 const estiloFicha = computed(() => {
   const estilos = {}
   if (props.tamano) estilos.fontSize = props.tamano
   if (props.colorId && articuloColor.value?.colorVista) {
-    estilos.color = articuloColor.value.colorVista
-    estilos.WebkitTextFillColor = articuloColor.value.colorVista
+    const color = articuloColor.value.colorVista
+    const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
+    const sombraFluor =
+      articuloColor.value.id === 'blancoFluor'
+        ? '0 0 6px #8beeff, 0 0 14px #8beeff, 0 0 24px #8beeff'
+        : `0 0 5px ${color}, 0 0 12px ${color}, 0 0 22px ${color}`
+    estilos.color = color
+    estilos.WebkitTextFillColor = color
+    estilos.textShadow = articuloColor.value.id.endsWith('Fluor')
+      ? `${sombraFluor}, ${sombraBase}`
+      : sombraBase
   }
   if (articuloSimbolo.value?.estiloVisual?.grosorContorno) {
     estilos.WebkitTextStroke = `${articuloSimbolo.value.estiloVisual.grosorContorno} currentColor`

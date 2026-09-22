@@ -11,7 +11,10 @@
         <!-- Mensaje -->
         <div class="modal-mensaje">
           <h2 v-if="ganador" class="titulo-h2">
-            ¡<span :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</span>
+            ¡<span class="ganador-modal" :class="`jugador-${ganador.toLowerCase()}`">
+              <FichaVisual :ficha="ganador" tamano="1.65rem" />
+              <span>{{ nombreGanador }}</span>
+            </span>
             {{ t('juego.ganador') }}!
           </h2>
           <h2 v-else-if="esEmpate" class="titulo-h2">{{ t('juego.empate') }}</h2>
@@ -56,6 +59,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import FichaVisual from './FichaVisual.vue'
 
 const { t } = useI18n()
 
@@ -154,6 +158,11 @@ const manejarReiniciar = () => {
 .jugador-o {
   color: var(--color-ficha-o);
   text-shadow: var(--sombra-ficha-o);
+}
+.ganador-modal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 /* Puntos resultado */
 .puntos-resultado {

@@ -138,7 +138,7 @@ Ofrecer recompensas comprensibles con renovación diaria local y protección bá
 - [x] Mostrar un mensaje simple cuando exista un bloqueo horario, sin presentar el sistema como infalible
 - [x] Recalcular disponibilidad al iniciar la app, volver desde segundo plano y regresar a Tienda o Estadísticas
 - [x] Registrar una única suscripción singleton de recompensas a `App.addListener('appStateChange')` y no duplicarla por página
-- [x] Evitar temporizadores permanentes innecesarios; calcular el estado desde los datos persistidos
+- [x] Evitar sondeos permanentes; programar una única actualización para la próxima medianoche o el fin del bloqueo horario y calcular el estado desde los datos persistidos
 
 ## FASE 5: Integrar anuncios recompensados
 
@@ -197,13 +197,12 @@ Construir una página atractiva que destaque recompensas, saldo y artículos dis
 Incorporar artículos visuales diferenciables sobre el fondo actual.
 
 - [x] Mantener rojo y azul como colores gratuitos y adquiridos inicialmente
-- [x] Agregar amarillo, verde, naranja, magenta, turquesa y blanco brillante
+- [x] Agregar amarillo, verde, naranja, magenta, turquesa y blanco brillante, con sus variantes flúor
 - [x] Definir todas las tonalidades y efectos de línea ganadora en `Variables.css`
 - [x] Reutilizar variables existentes cuando representen exactamente el mismo color
 - [x] Verificar contraste en fichas, nombres de turno, selectores, resultados y líneas ganadoras
-- [x] Usar precios iniciales de 60 puntos para amarillo, verde y naranja
-- [x] Usar precios iniciales de 90 puntos para magenta y turquesa
-- [x] Usar un precio inicial de 120 puntos para blanco brillante
+- [x] Usar un precio de 60 puntos para todos los colores comunes
+- [x] Usar un precio de 120 puntos para todas las variantes flúor
 - [x] Mantener precios desacoplados de los componentes para poder balancearlos después
 - [x] Tratar los colores del catálogo como identificadores estables y no persistir valores hexadecimales en el Inventario
 
@@ -366,5 +365,5 @@ Validar la economía, anuncios, persistencia, navegación y apariencia en escena
 - [x] Fase Testing
 
 Fecha de creación: 14 de Junio 2026
-Fecha de última actualización: 15 de Junio 2026
+Fecha de última actualización: 21 de Septiembre 2026
 Estado: COMPLETADO

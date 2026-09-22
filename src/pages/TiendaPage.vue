@@ -104,9 +104,9 @@
             <strong>{{ articulo.precio }}</strong>
             <small>{{ t('puntuacion.puntos') }}</small>
           </span>
-          <span class="muestra-color" :style="obtenerEstiloMuestraColor(articulo)">
-            <span :style="obtenerEstiloMuestraColor(articulo)">X</span>
-            <span :style="obtenerEstiloMuestraColor(articulo)">O</span>
+          <span class="muestra-color">
+            <FichaVisual ficha="X" :color-id="articulo.id" tamano="2.4rem" />
+            <FichaVisual ficha="O" :color-id="articulo.id" tamano="2.4rem" />
           </span>
         </button>
       </CarruselTienda>
@@ -167,10 +167,9 @@
           <span
             v-else
             class="muestra-color muestra-color--preview"
-            :style="obtenerEstiloMuestraColor(articuloPendiente)"
           >
-            <span :style="obtenerEstiloMuestraColor(articuloPendiente)">X</span>
-            <span :style="obtenerEstiloMuestraColor(articuloPendiente)">O</span>
+            <FichaVisual ficha="X" :color-id="articuloPendiente.id" tamano="2.4rem" />
+            <FichaVisual ficha="O" :color-id="articuloPendiente.id" tamano="2.4rem" />
           </span>
         </div>
       </div>
@@ -179,7 +178,7 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
@@ -200,6 +199,7 @@ import {
 import {
   actualizarDisponibilidad,
   inicializarRecompensas,
+  obtenerProximoCambioRecompensas,
   reclamarRegaloDiario,
   registrarAnuncioRecompensado,
   usarRecompensas,
@@ -209,7 +209,8 @@ import { usePublicidad } from 'src/components/Composables/usePublicidad'
 const { t } = useI18n()
 const route = useRoute()
 const { puntajeTotal, articulosAdquiridos, economiaDisponible } = usarEconomia()
-const { regaloDisponible, anunciosRestantes, recompensasBloqueadas } = usarRecompensas()
+const { estadoRecompensas, regaloDisponible, anunciosRestantes, recompensasBloqueadas } =
+  usarRecompensas()
 const {
   recompensadoDisponible,
   recompensadoCargando,
@@ -226,6 +227,25 @@ const tarjetaRegalo = ref(null)
 const tarjetaAnuncios = ref(null)
 let temporizadorResaltado = 0
 let temporizadorRecompensas = 0
+const MAXIMO_ESPERA_TEMPORIZADOR = 2_147_000_000
+
+const programarActualizacionRecompensas = () => {
+  window.clearTimeout(temporizadorRecompensas)
+  const demora = Math.max(50, obtenerProximoCambioRecompensas() - Date.now() + 50)
+  temporizadorRecompensas = window.setTimeout(async () => {
+    await actualizarDisponibilidad()
+    programarActualizacionRecompensas()
+  }, Math.min(demora, MAXIMO_ESPERA_TEMPORIZADOR))
+}
+
+watch(
+  () => [
+    estadoRecompensas.value.fechaLocal,
+    estadoRecompensas.value.periodoRegalo,
+    estadoRecompensas.value.bloqueadoHasta,
+  ],
+  programarActualizacionRecompensas,
+)
 
 const reclamarRegalo = async () => {
   procesando.value = true
@@ -235,6 +255,7 @@ const reclamarRegalo = async () => {
     // La pantalla ya refleja si la recompensa no está disponible.
   } finally {
     procesando.value = false
+    programarActualizacionRecompensas()
   }
 }
 
@@ -249,6 +270,7 @@ const verAnuncio = async () => {
     // La pantalla conserva el estado actual si el anuncio no completa recompensa.
   } finally {
     procesando.value = false
+    programarActualizacionRecompensas()
   }
 }
 
@@ -281,46 +303,23 @@ const textoConfirmacionCompra = computed(() =>
   }),
 )
 
-const obtenerEstiloMuestraColor = (articulo) => {
-  const color = articulo.colorVista
-  const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
-  if (!esArticuloFluor(articulo)) {
-    return {
-      color,
-      WebkitTextFillColor: color,
-      textShadow: sombraBase,
-    }
-  }
-  const sombraFluor =
-    articulo.id === 'blancoFluor'
-      ? '0 0 6px #8beeff, 0 0 14px #8beeff, 0 0 24px #8beeff'
-      : `0 0 5px ${color}, 0 0 12px ${color}, 0 0 22px ${color}`
-  return {
-    color,
-    WebkitTextFillColor: color,
-    textShadow: `${sombraFluor}, ${sombraBase}`,
-  }
-}
-
 const puedeComprarArticulo = (articulo) =>
   !esArticuloAdquirido(articulo) && puntajeTotal.value >= articulo.precio
 
-const catalogoColoresOrdenados = computed(() =>
-  [...catalogoColores].sort((articuloA, articuloB) => {
+const ordenarArticulos = (articulos) =>
+  [...articulos].sort((articuloA, articuloB) => {
     const adquiridoA = esArticuloAdquirido(articuloA)
     const adquiridoB = esArticuloAdquirido(articuloB)
     if (adquiridoA !== adquiridoB) return adquiridoA ? 1 : -1
     return articuloA.precio - articuloB.precio
-  }),
+  })
+
+const catalogoColoresOrdenados = computed(() =>
+  ordenarArticulos(catalogoColores),
 )
 
 const catalogoSimbolosOrdenados = computed(() =>
-  [...catalogoSimbolos].sort((articuloA, articuloB) => {
-    const adquiridoA = esArticuloAdquirido(articuloA)
-    const adquiridoB = esArticuloAdquirido(articuloB)
-    if (adquiridoA !== adquiridoB) return adquiridoA ? 1 : -1
-    return articuloA.precio - articuloB.precio
-  }),
+  ordenarArticulos(catalogoSimbolos),
 )
 
 const textoAccesibleArticulo = (articulo) => {
@@ -335,9 +334,7 @@ const textoAccesibleArticulo = (articulo) => {
 onMounted(async () => {
   await inicializarEconomia()
   await inicializarRecompensas()
-  temporizadorRecompensas = window.setInterval(() => {
-    void actualizarDisponibilidad()
-  }, 1000)
+  programarActualizacionRecompensas()
   if (economiaDisponible.value && anunciosRestantes.value > 0) void prepararRecompensado()
   if (route.query.resaltar === 'regalo' || route.query.resaltar === 'anuncios') {
     seccionResaltada.value = route.query.resaltar
@@ -352,7 +349,7 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.clearTimeout(temporizadorResaltado)
-  window.clearInterval(temporizadorRecompensas)
+  window.clearTimeout(temporizadorRecompensas)
   void eliminarManejadoresRecompensado()
 })
 </script>
@@ -531,10 +528,6 @@ onBeforeUnmount(() => {
   gap: 8px;
   font-size: 2rem;
   font-weight: bold;
-}
-.muestra-color span {
-  color: inherit !important;
-  -webkit-text-fill-color: currentColor !important;
 }
 .muestra-simbolo {
   font-size: 2.4rem;

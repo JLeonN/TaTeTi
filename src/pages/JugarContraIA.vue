@@ -59,7 +59,7 @@
           :class="{ activa: fichaSeleccionada === 'X' }"
           @click="fichaSeleccionada = 'X'"
         >
-          <span class="simbolo-ficha">X</span>
+          <FichaVisual class="simbolo-ficha" ficha="X" tamano="2.5rem" />
           <span>{{ t('juego.fichaX') }}</span>
         </button>
         <button
@@ -68,7 +68,7 @@
           :class="{ activa: fichaSeleccionada === 'O' }"
           @click="fichaSeleccionada = 'O'"
         >
-          <span class="simbolo-ficha">O</span>
+          <FichaVisual class="simbolo-ficha" ficha="O" tamano="2.5rem" />
           <span>{{ t('juego.fichaO') }}</span>
         </button>
       </div>
@@ -89,6 +89,7 @@ import { useFichaJugador } from 'src/components/Composables/UseFichaJugador'
 import { useI18n } from 'vue-i18n'
 import TableroTaTeTi from 'src/components/TaTeTi/TableroTaTeTi.vue'
 import InfoJuego from 'src/components/TaTeTi/InfoJuego.vue'
+import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
 import SelectorDificultad from 'src/components/TaTeTi/JugarVsIA/SelectorDificultad.vue'
 import ModalResultado from 'src/components/TaTeTi/Compartido/ModalResultado.vue'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'

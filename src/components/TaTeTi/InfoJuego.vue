@@ -10,17 +10,25 @@
           { 'jugador-clickeable': puedeSeleccionarFicha },
         ]"
         :disabled="!puedeSeleccionarFicha"
-        :aria-label="puedeSeleccionarFicha ? t('juego.cambiarFicha') : undefined"
+        :aria-label="
+          puedeSeleccionarFicha
+            ? `${nombreJugadorActual}. ${t('juego.cambiarFicha')}`
+            : nombreJugadorActual
+        "
         @click="emit('seleccionar-ficha')"
       >
-        {{ nombreJugadorActual }}
+        <FichaVisual :ficha="turnoActual" tamano="1.45rem" />
+        <span>{{ nombreJugadorActual }}</span>
       </button>
     </div>
 
     <div v-else-if="ganador" class="resultado ganador-anuncio">
       <q-icon name="emoji_events" size="2rem" color="warning" />
       <span class="texto-ganador">
-        ¡<strong :class="`jugador-${ganador.toLowerCase()}`">{{ nombreGanador }}</strong>
+        ¡<strong :class="`jugador-${ganador.toLowerCase()}`">
+          <FichaVisual :ficha="ganador" tamano="1.45rem" />
+          <span>{{ nombreGanador }}</span>
+        </strong>
         {{ t('juego.ganador') }}<span v-if="nombreOponente">{{ ' a ' + nombreOponente }}</span
         >!
       </span>
@@ -36,6 +44,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import FichaVisual from './Compartido/FichaVisual.vue'
 
 const { t } = useI18n()
 
@@ -72,10 +81,8 @@ const props = defineProps({
 
 const emit = defineEmits(['seleccionar-ficha'])
 
-// Nombre del jugador en turno actual
 const nombreJugadorActual = computed(() => {
-  const nombreBase = props.turnoActual === 'X' ? props.nombreJugadorX : props.nombreJugadorO
-  return `${nombreBase} (${props.turnoActual})`
+  return props.turnoActual === 'X' ? props.nombreJugadorX : props.nombreJugadorO
 })
 
 // Nombre del ganador con su ficha
@@ -137,6 +144,12 @@ const nombreOponente = computed(() => {
   border: 0;
   cursor: default;
   animation: pulsarTurno 1.5s ease-in-out infinite;
+}
+.jugador,
+.texto-ganador strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 .jugador-clickeable {
   cursor: pointer;
