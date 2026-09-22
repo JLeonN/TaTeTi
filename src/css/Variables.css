@@ -17,6 +17,7 @@
   --color-catalogo-magenta: #ff4fd8;
   --color-catalogo-turquesa: #27e6d6;
   --color-catalogo-blanco: #ffffff;
+  --color-catalogo-negro: #000000;
   --color-catalogo-rojo-fluor: #ff4757;
   --color-catalogo-azul-fluor: #1e90ff;
   --color-catalogo-amarillo-fluor: #ffdf3e;
@@ -25,6 +26,7 @@
   --color-catalogo-magenta-fluor: #ff4fd8;
   --color-catalogo-turquesa-fluor: #27e6d6;
   --color-catalogo-blanco-fluor: #e6fbff;
+  --color-catalogo-negro-fluor: #000000;
 
   /* Estados y acciones */
   --color-turno-activo: #ffbe0b; /* Amarillo dorado */

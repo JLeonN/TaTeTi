@@ -29,7 +29,7 @@ assert.ok(catalogoColores.every((articulo) => articulo.categoria === 'color'))
 assert.ok(catalogoColores.every((articulo) => catalogoArticulos.includes(articulo)))
 assert.deepEqual(
   catalogoColores.filter((articulo) => !articulo.inicial && !articulo.id.endsWith('Fluor')).map((articulo) => articulo.precio),
-  [60, 60, 60, 60, 60, 60],
+  [60, 60, 60, 60, 60, 60, 60],
 )
 assert.ok(
   catalogoColores
@@ -37,18 +37,34 @@ assert.ok(
     .every((articulo) => articulo.precio === 120),
 )
 assert.deepEqual(
+  catalogoColores
+    .filter((articulo) => ['negro', 'negroFluor'].includes(articulo.id))
+    .map(({ id, precio, colorVista }) => ({ id, precio, colorVista })),
+  [
+    { id: 'negro', precio: 60, colorVista: '#000000' },
+    { id: 'negroFluor', precio: 120, colorVista: '#000000' },
+  ],
+)
+assert.deepEqual(
   catalogoSimbolos.filter((articulo) => articulo.inicial).map((articulo) => articulo.id),
   ['simboloX', 'simboloO'],
 )
 assert.deepEqual(
   catalogoSimbolos.filter((articulo) => !articulo.inicial).map((articulo) => articulo.precio),
-  [120, 120],
+  [120, 120, 120, 120],
 )
 assert.ok(catalogoSimbolos.every((articulo) => articulo.categoria === 'simbolo'))
 assert.ok(catalogoSimbolos.every((articulo) => catalogoArticulos.includes(articulo)))
 assert.deepEqual(
   catalogoSimbolos.slice(2).map((articulo) => articulo.representacion.valor),
-  ['△', '□'],
+  ['△', '□', '☆', '⬡'],
+)
+assert.deepEqual(
+  catalogoSimbolos.slice(-2).map(({ id, estiloVisual }) => ({ id, estiloVisual })),
+  [
+    { id: 'simboloEstrella', estiloVisual: { grosorContorno: '0.125em' } },
+    { id: 'simboloHexagono', estiloVisual: { grosorContorno: '0.125em' } },
+  ],
 )
 assert.equal(new Set(catalogoArticulos.map((articulo) => articulo.id)).size, catalogoArticulos.length)
 assert.deepEqual(
@@ -76,6 +92,10 @@ for (const [codigo, mensajes] of Object.entries(mensajesEconomia)) {
   }
   assert.ok(mensajes.tienda.simbolos.triangulo, `${codigo}: falta el nombre del triángulo.`)
   assert.ok(mensajes.tienda.simbolos.cuadrado, `${codigo}: falta el nombre del cuadrado.`)
+  assert.ok(mensajes.tienda.simbolos.estrella, `${codigo}: falta el nombre de la estrella.`)
+  assert.ok(mensajes.tienda.simbolos.hexagono, `${codigo}: falta el nombre del hexágono.`)
+  assert.ok(mensajes.tienda.colores.negro, `${codigo}: falta el nombre del negro.`)
+  assert.ok(mensajes.tienda.colores.negroFluor, `${codigo}: falta el nombre del negro flúor.`)
 }
 
 const contenidoTienda = await readFile(

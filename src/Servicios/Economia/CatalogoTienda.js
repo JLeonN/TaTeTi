@@ -68,6 +68,13 @@ export const catalogoArticulos = Object.freeze([
     colorVista: '#ffffff',
   }),
   crearColor({
+    id: 'negro',
+    claveNombre: 'tienda.colores.negro',
+    precio: 60,
+    variable: '--color-catalogo-negro',
+    colorVista: '#000000',
+  }),
+  crearColor({
     id: 'rojoFluor',
     claveNombre: 'tienda.colores.rojoFluor',
     precio: 120,
@@ -123,6 +130,13 @@ export const catalogoArticulos = Object.freeze([
     variable: '--color-catalogo-blanco-fluor',
     colorVista: '#e6fbff',
   }),
+  crearColor({
+    id: 'negroFluor',
+    claveNombre: 'tienda.colores.negroFluor',
+    precio: 120,
+    variable: '--color-catalogo-negro-fluor',
+    colorVista: '#000000',
+  }),
   {
     id: 'simboloX',
     categoria: 'simbolo',
@@ -157,6 +171,24 @@ export const catalogoArticulos = Object.freeze([
     precio: 120,
     inicial: false,
     representacion: { tipo: 'texto', valor: '□' },
+    estiloVisual: { grosorContorno: '0.125em' },
+  },
+  {
+    id: 'simboloEstrella',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.estrella',
+    precio: 120,
+    inicial: false,
+    representacion: { tipo: 'texto', valor: '☆' },
+    estiloVisual: { grosorContorno: '0.125em' },
+  },
+  {
+    id: 'simboloHexagono',
+    categoria: 'simbolo',
+    claveNombre: 'tienda.simbolos.hexagono',
+    precio: 120,
+    inicial: false,
+    representacion: { tipo: 'texto', valor: '⬡' },
     estiloVisual: { grosorContorno: '0.125em' },
   },
 ])
