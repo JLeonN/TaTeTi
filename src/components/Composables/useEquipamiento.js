@@ -17,7 +17,8 @@ const aplicarVariables = (equipamiento) => {
       articulo.id === 'blancoFluor'
         ? '0 0 6px #8beeff, 0 0 14px #8beeff, 0 0 24px #8beeff'
         : `0 0 5px ${variableColor}, 0 0 12px ${variableColor}, 0 0 22px ${variableColor}`
-    const brilloLinea = articulo.id === 'blancoFluor' ? '0 0 22px #8beeff' : `0 0 22px ${variableColor}`
+    const brilloLinea =
+      articulo.id === 'blancoFluor' ? '0 0 22px #8beeff' : `0 0 22px ${variableColor}`
     const sombraBase = '0 2px 3px rgba(0, 0, 0, 0.35)'
     raiz.style.setProperty(`--color-ficha-${sufijo}`, `var(${articulo.variable})`)
     raiz.style.setProperty(`--neon-${sufijo}`, `var(${articulo.variable})`)
@@ -33,7 +34,8 @@ const aplicarVariables = (equipamiento) => {
 }
 
 export function useEquipamiento() {
-  const { equipamiento, articulosAdquiridos, equiparArticulo } = usarEconomia()
+  const { equipamiento, tableroEquipado, articulosAdquiridos, equiparArticulo, equiparTablero } =
+    usarEconomia()
 
   const cargarEquipamiento = async () => {
     await inicializarEconomia()
@@ -46,8 +48,10 @@ export function useEquipamiento() {
 
   return {
     equipamiento,
+    tableroEquipado,
     articulosAdquiridos,
     cargarEquipamiento,
     equiparArticulo,
+    equiparTablero,
   }
 }

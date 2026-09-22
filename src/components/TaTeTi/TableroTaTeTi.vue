@@ -1,6 +1,6 @@
 <template>
   <div class="contenedor-tablero">
-    <div class="tablero-tateti">
+    <div class="tablero-tateti" :style="estiloTablero">
       <CeldaTaTeTi
         v-for="(valor, indice) in tablero"
         :key="indice"
@@ -30,8 +30,10 @@
 </template>
 
 <script setup>
-// Se ha eliminado 'computed' ya que no se utiliza, arreglando el error (no-unused-vars)
+import { computed } from 'vue'
 import CeldaTaTeTi from './CeldaTaTeTi.vue'
+import { usarEconomia } from 'src/Servicios/Economia/ServicioEconomia'
+import { obtenerEstiloTablero } from 'src/Servicios/Economia/PresentacionTableros'
 
 const props = defineProps({
   tablero: {
@@ -53,6 +55,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['jugada'])
+const { tableroEquipado } = usarEconomia()
+const estiloTablero = computed(() => obtenerEstiloTablero(tableroEquipado.value))
 
 const manejarClickCelda = (indice) => {
   emit('jugada', indice)
@@ -103,8 +107,18 @@ const obtenerCoordenadasLinea = () => {
   aspect-ratio: 1;
   padding: 16px;
   background-color: var(--color-fondo);
+  background-image:
+    linear-gradient(
+      color-mix(in srgb, var(--color-fondo) var(--oscurecimiento-tablero), transparent),
+      color-mix(in srgb, var(--color-fondo) var(--oscurecimiento-tablero), transparent)
+    ),
+    var(--imagen-tablero);
+  background-position: center, var(--posicion-fondo-tablero);
+  background-repeat: no-repeat;
+  background-size: cover, var(--tamano-fondo-tablero);
+  border: 2px solid var(--color-borde-tablero);
   border-radius: 12px;
-  box-shadow: 0 8px 24px var(--sombra-tablero);
+  box-shadow: 0 8px 24px var(--color-sombra-tablero);
 }
 .linea-ganadora {
   position: absolute;

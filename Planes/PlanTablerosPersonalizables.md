@@ -125,17 +125,17 @@ Disponer de tres artículos de tablero completamente definidos mediante datos, c
 
 ### Pasos de ejecución
 
-- [ ] Crear la carpeta `public/Tableros` y copiar `F:\Programación\Ta-Te-Ti\Ta-Te-Ti.png` como `public/Tableros/TorbellinoXO.png`.
+- [x] Crear la carpeta `public/Tableros` y copiar `F:\Programación\Ta-Te-Ti\Ta-Te-Ti.png` como `public/Tableros/TorbellinoXO.png`.
   - Conservar el PNG cuadrado de 1024 × 1024 y verificar que el archivo copiado se abra correctamente.
   - No mover, renombrar ni modificar el archivo fuente externo.
   - No duplicar `favicon.png`; reutilizar su ruta pública existente `/favicon.png`.
-- [ ] Añadir en `CatalogoTienda.js` un constructor interno `crearTablero(articulo)` equivalente a `crearColor`, responsable de fijar `categoria: 'tablero'` y conservar `aparienciaTablero`.
-- [ ] Incorporar al final de `catalogoArticulos` los artículos `tableroClasico`, `tableroEmblema` y `tableroTorbellino` con exactamente los contratos y valores indicados en la tabla anterior.
+- [x] Añadir en `CatalogoTienda.js` un constructor interno `crearTablero(articulo)` equivalente a `crearColor`, responsable de fijar `categoria: 'tablero'` y conservar `aparienciaTablero`.
+- [x] Incorporar al final de `catalogoArticulos` los artículos `tableroClasico`, `tableroEmblema` y `tableroTorbellino` con exactamente los contratos y valores indicados en la tabla anterior.
   - Usar las claves `tienda.tableros.clasico`, `tienda.tableros.emblemaXO` y `tienda.tableros.torbellinoXO`.
   - Mantener `tableroClasico` y `tableroEmblema` con `precio: 0` e `inicial: true`.
   - Mantener `tableroTorbellino` con `precio: 200` e `inicial: false`.
-- [ ] Exportar `catalogoTableros` como arreglo congelado filtrado desde `catalogoArticulos`, siguiendo exactamente el patrón de `catalogoColores` y `catalogoSimbolos`.
-- [ ] Confirmar que `obtenerArticulosPorCategoria('tablero')` y `obtenerArticulo(id)` funcionen sin ramas nuevas, preservando la compra genérica existente.
+- [x] Exportar `catalogoTableros` como arreglo congelado filtrado desde `catalogoArticulos`, siguiendo exactamente el patrón de `catalogoColores` y `catalogoSimbolos`.
+- [x] Confirmar que `obtenerArticulosPorCategoria('tablero')` y `obtenerArticulo(id)` funcionen sin ramas nuevas, preservando la compra genérica existente.
 
 ### Criterio de finalización
 
@@ -155,19 +155,19 @@ Crear una única traducción entre el catálogo y las variables CSS, reutilizabl
 
 ### Pasos de ejecución
 
-- [ ] Crear `PresentacionTableros.js` y exportar `TABLERO_PREDETERMINADO_ID` con el valor `tableroClasico`.
-- [ ] Implementar `obtenerArticuloTablero(identificador)`.
+- [x] Crear `PresentacionTableros.js` y exportar `TABLERO_PREDETERMINADO_ID` con el valor `tableroClasico`.
+- [x] Implementar `obtenerArticuloTablero(identificador)`.
   - Buscar el artículo mediante `obtenerArticulo`.
   - Aceptarlo únicamente si su categoría es `tablero` y posee `aparienciaTablero` válida.
   - Ante un ID vacío, eliminado o perteneciente a otra categoría, devolver `tableroClasico`.
-- [ ] Implementar `obtenerEstiloTablero(identificador)` para devolver exclusivamente estas propiedades CSS:
+- [x] Implementar `obtenerEstiloTablero(identificador)` para devolver exclusivamente estas propiedades CSS:
   - `--imagen-tablero`: `url("ruta")` cuando exista `rutaImagen` o `none` en el tablero clásico.
   - `--tamano-fondo-tablero`: `tamanoFondo`.
   - `--posicion-fondo-tablero`: `posicionFondo`.
   - `--oscurecimiento-tablero`: porcentaje con sufijo `%`.
   - `--opacidad-celdas-tablero`: porcentaje con sufijo `%`.
   - La función debe usar el artículo normalizado por `obtenerArticuloTablero`, para que nunca entregue un estilo incompleto.
-- [ ] Crear `VistaPreviaTablero.vue` como componente puramente visual y reutilizable.
+- [x] Crear `VistaPreviaTablero.vue` como componente puramente visual y reutilizable.
   - Prop pública `tableroId`: `String`, valor predeterminado `TABLERO_PREDETERMINADO_ID`.
   - Resolver el estilo con un `computed` y `obtenerEstiloTablero`.
   - Renderizar un cuadrado con nueve elementos decorativos para representar la cuadrícula 3 × 3.
@@ -193,45 +193,45 @@ Extender el servicio económico sin alterar el esquema SQLite y garantizar compa
 
 ### Pasos de ejecución
 
-- [ ] Importar `TABLERO_PREDETERMINADO_ID` y `obtenerArticuloTablero` desde `PresentacionTableros.js`.
-- [ ] Declarar en `ServicioEconomia.js`:
+- [x] Importar `TABLERO_PREDETERMINADO_ID` y `obtenerArticuloTablero` desde `PresentacionTableros.js`.
+- [x] Declarar en `ServicioEconomia.js`:
   - `CLAVE_TABLERO_RESPALDO = 'tablero_equipado'` para Capacitor Preferences.
   - `CLAVE_TABLERO_ECONOMIA = 'tableroEquipado'` para `EstadoEconomia`.
   - `tableroEquipado = ref(TABLERO_PREDETERMINADO_ID)` como estado reactivo compartido.
-- [ ] Implementar `normalizarTableroEquipado(identificador, exigirAdquisicion = true)`.
+- [x] Implementar `normalizarTableroEquipado(identificador, exigirAdquisicion = true)`.
   - Validar siempre que el artículo exista y sea de categoría `tablero`.
   - Cuando `exigirAdquisicion` sea `true`, aceptar únicamente IDs presentes en `articulosAdquiridos.value`.
   - Volver siempre a `tableroClasico` ante datos vacíos, corruptos, eliminados o, cuando corresponda, no adquiridos.
-- [ ] Implementar `guardarTableroRespaldo(identificador)` y `cargarTableroRespaldo()` con Capacitor Preferences.
+- [x] Implementar `guardarTableroRespaldo(identificador)` y `cargarTableroRespaldo()` con Capacitor Preferences.
   - Guardar el ID como cadena simple.
   - No usar JSON para este valor escalar.
   - Normalizar el valor leído con `exigirAdquisicion: false` antes de asignarlo, porque si SQLite está temporalmente indisponible todavía no se puede reconstruir el conjunto de compras; esto replica el comportamiento de respaldo del equipamiento de fichas y permite conservar un Torbellino comprado previamente.
-- [ ] Extraer la inserción de artículos iniciales a `asegurarArticulosIniciales()`.
+- [x] Extraer la inserción de artículos iniciales a `asegurarArticulosIniciales()`.
   - Ejecutar una transacción que recorra `catalogoArticulos.filter((articulo) => articulo.inicial)`.
   - Realizar `INSERT OR IGNORE` en `ArticulosAdquiridos` para cada ID con una fecha válida.
   - Invocar esta función en cada inicialización correcta de SQLite, después de `migrarEconomia` y antes de `cargarEstado`.
   - Mantener la operación idempotente para no duplicar adquisiciones ni generar movimientos económicos.
   - Con esto, instalaciones ya marcadas con `economia_migrada_v2` recibirán `tableroClasico` y `tableroEmblema` sin una compra ficticia.
-- [ ] Ampliar `cargarEstado()`.
+- [x] Ampliar `cargarEstado()`.
   - Cargar primero `ArticulosAdquiridos`.
   - Consultar `EstadoEconomia` por `CLAVE_TABLERO_ECONOMIA`.
   - Normalizar el valor con `exigirAdquisicion: true`, porque en este punto ya se cargó la fuente principal de artículos adquiridos.
   - Si no existe fila, conservar `tableroClasico`; no es obligatorio escribir durante una mera lectura.
-- [ ] Ajustar `inicializarEconomia()` para cargar también el respaldo del tablero antes de intentar SQLite.
+- [x] Ajustar `inicializarEconomia()` para cargar también el respaldo del tablero antes de intentar SQLite.
   - Si SQLite funciona, el valor de `EstadoEconomia` será la fuente principal.
   - Si SQLite falla, conservar el valor válido recuperado desde Preferences.
-- [ ] Implementar y exportar `equiparTablero(articuloId)`.
+- [x] Implementar y exportar `equiparTablero(articuloId)`.
   - Validar que el artículo exista y sea de categoría `tablero`; devolver `articuloInvalido` si no lo es.
   - Validar que esté adquirido; devolver `articuloNoAdquirido` si no lo está.
   - Persistir mediante `INSERT OR REPLACE INTO EstadoEconomia (clave, valor)` dentro de `ejecutarTransaccionEstadisticas`.
   - Actualizar `tableroEquipado` únicamente después de que la transacción finalice correctamente.
   - Guardar el mismo ID en Preferences.
   - Devolver `equipado`, respetando los códigos ya usados por el inventario.
-- [ ] Exponer `tableroEquipado` y `equiparTablero` desde `usarEconomia()`.
-- [ ] Exponer los mismos símbolos desde `useEquipamiento()` sin duplicar estado ni observadores.
-- [ ] Mantener `FICHAS` y `CATEGORIAS_EQUIPAMIENTO` limitados a X/O, `color` y `simbolo`.
+- [x] Exponer `tableroEquipado` y `equiparTablero` desde `usarEconomia()`.
+- [x] Exponer los mismos símbolos desde `useEquipamiento()` sin duplicar estado ni observadores.
+- [x] Mantener `FICHAS` y `CATEGORIAS_EQUIPAMIENTO` limitados a X/O, `color` y `simbolo`.
   - El tablero no debe insertarse artificialmente en `EquipamientoFichas` porque es una selección global.
-- [ ] No modificar `EsquemaEstadisticas.js` ni `VERSION_BASE_ESTADISTICAS`: `EstadoEconomia` y `ArticulosAdquiridos` ya cubren el nuevo comportamiento.
+- [x] No modificar `EsquemaEstadisticas.js` ni `VERSION_BASE_ESTADISTICAS`: `EstadoEconomia` y `ArticulosAdquiridos` ya cubren el nuevo comportamiento.
 
 ### Criterio de finalización
 
@@ -253,21 +253,21 @@ Añadir una tercera categoría visual al flujo de compra actual sin duplicar val
 
 ### Pasos de ejecución
 
-- [ ] Importar `catalogoTableros` y `VistaPreviaTablero` en `TiendaPage.vue`.
-- [ ] Crear `catalogoTablerosOrdenados` mediante el `ordenarArticulos` ya existente, sin una segunda implementación de orden.
-- [ ] Agregar después del carrusel de símbolos un `CarruselTienda` con título y etiqueta `t('tienda.tablerosTitulo')`.
-- [ ] Renderizar un botón por artículo con el mismo contrato de los botones existentes:
+- [x] Importar `catalogoTableros` y `VistaPreviaTablero` en `TiendaPage.vue`.
+- [x] Crear `catalogoTablerosOrdenados` mediante el `ordenarArticulos` ya existente, sin una segunda implementación de orden.
+- [x] Agregar después del carrusel de símbolos un `CarruselTienda` con título y etiqueta `t('tienda.tablerosTitulo')`.
+- [x] Renderizar un botón por artículo con el mismo contrato de los botones existentes:
   - Estado `adquirido` cuando el ID está en `articulosAdquiridos`.
   - Estado `bloqueado` y `disabled` cuando el saldo no alcanza.
   - Marca de verificación para artículos adquiridos.
   - Precio para artículos no adquiridos.
   - `textoAccesibleArticulo(articulo)` como nombre accesible.
   - `solicitarCompra(articulo)` como acción, de modo que Torbellino reutilice `confirmarCompra` y `comprarArticulo`.
-- [ ] Mostrar `VistaPreviaTablero` dentro de cada tarjeta y agregar clases específicas `cuadro-tablero` únicamente para distribución y tamaño.
-- [ ] Ampliar la vista previa de `ModalConfirmacion`.
+- [x] Mostrar `VistaPreviaTablero` dentro de cada tarjeta y agregar clases específicas `cuadro-tablero` únicamente para distribución y tamaño.
+- [x] Ampliar la vista previa de `ModalConfirmacion`.
   - Si `articuloPendiente.categoria === 'tablero'`, mostrar `VistaPreviaTablero` con el ID pendiente.
   - Mantener sin cambios funcionales las ramas existentes de color y símbolo.
-- [ ] Ajustar CSS para que la miniatura sea cuadrada, ocupe el ancho útil de la tarjeta y no quede tapada por precio o estado.
+- [x] Ajustar CSS para que la miniatura sea cuadrada, ocupe el ancho útil de la tarjeta y no quede tapada por precio o estado.
   - Reutilizar colores, bordes, radios y sombras actuales.
   - Mantener el ancho de columnas definido por `CarruselTienda` en 116 px y 128 px desde 700 px.
   - No introducir colores literales nuevos.
@@ -291,26 +291,26 @@ Permitir seleccionar uno de los tableros adquiridos y mostrar claramente cuál e
 
 ### Pasos de ejecución
 
-- [ ] Importar `VistaPreviaTablero` y obtener `tableroEquipado` y `equiparTablero` desde `useEquipamiento()`.
-- [ ] Ampliar la tarjeta `tarjeta-equipado` con un resumen de tablero global.
+- [x] Importar `VistaPreviaTablero` y obtener `tableroEquipado` y `equiparTablero` desde `useEquipamiento()`.
+- [x] Ampliar la tarjeta `tarjeta-equipado` con un resumen de tablero global.
   - Conservar las dos tarjetas actuales de X y O.
   - Agregar debajo una tarjeta `tablero-equipado` que abarque ambas columnas.
   - Mostrar `VistaPreviaTablero`, el nombre localizado del artículo y la etiqueta `inventario.tableroEquipado`.
   - El resumen es informativo; no debe cambiar la selección al pulsarlo.
-- [ ] Agregar una única sección de tableros después del resumen equipado y antes de las secciones por participante.
+- [x] Agregar una única sección de tableros después del resumen equipado y antes de las secciones por participante.
   - Título `t('inventario.tablerosTitulo')`.
   - Reutilizar `articulosDisponiblesPorCategoria('tablero')` para listar solo diseños adquiridos.
   - Usar un carrusel horizontal con botones cuadrados y `VistaPreviaTablero`.
   - Marcar `activo` cuando `tableroEquipado === articulo.id`.
   - Mostrar el nombre localizado debajo de la miniatura.
-- [ ] Implementar `equiparTableroSeleccionado(articuloId)` separado de `equipar(ficha, categoria, articuloId)`.
+- [x] Implementar `equiparTableroSeleccionado(articuloId)` separado de `equipar(ficha, categoria, articuloId)`.
   - Invocar `equiparTablero`.
   - Mostrar `inventario.tableroEquipadoCorrectamente` cuando devuelva `equipado`.
   - Traducir `articuloNoAdquirido` con la clave existente.
   - Traducir cualquier otro resultado o excepción con `inventario.errorEquipamiento`.
   - Actualizar `estadoConError` de forma consistente con colores y símbolos.
-- [ ] Implementar `textoAccesibleTablero(articulo)` con nombre localizado y estado equipado cuando corresponda.
-- [ ] Reutilizar los estilos base de `.panel-inventario`, `.item-color`, `.activo` y el carrusel.
+- [x] Implementar `textoAccesibleTablero(articulo)` con nombre localizado y estado equipado cuando corresponda.
+- [x] Reutilizar los estilos base de `.panel-inventario`, `.item-color`, `.activo` y el carrusel.
   - Añadir clases específicas solo para la miniatura, el resumen de ancho completo y la proporción interna.
   - No copiar la lógica visual de fondos al inventario; delegarla siempre a `VistaPreviaTablero`.
 
@@ -334,25 +334,25 @@ Mostrar el mismo diseño global en los dos modos de juego, usando el cuadrado ex
 
 ### Pasos de ejecución
 
-- [ ] En `TableroTaTeTi.vue`, obtener `tableroEquipado` desde `usarEconomia()` y calcular `estiloTablero` mediante `obtenerEstiloTablero(tableroEquipado.value)`.
-- [ ] Vincular `:style="estiloTablero"` a `.tablero-tateti`.
-- [ ] Convertir `.tablero-tateti` en la superficie enmarcada:
+- [x] En `TableroTaTeTi.vue`, obtener `tableroEquipado` desde `usarEconomia()` y calcular `estiloTablero` mediante `obtenerEstiloTablero(tableroEquipado.value)`.
+- [x] Vincular `:style="estiloTablero"` a `.tablero-tateti`.
+- [x] Convertir `.tablero-tateti` en la superficie enmarcada:
   - Mantener cuadrícula, proporción 1:1, padding, radio y sombra actuales.
   - Añadir borde con `var(--color-borde-tablero)`.
   - Componer el fondo con una capa `linear-gradient` basada en `var(--color-fondo)` y `--oscurecimiento-tablero`, seguida por `--imagen-tablero`.
   - Usar `--tamano-fondo-tablero`, `--posicion-fondo-tablero` y `no-repeat`.
   - Mantener el fondo clásico visualmente equivalente al actual.
-- [ ] En `CeldaTaTeTi.vue`, sustituir el fondo opaco por una mezcla de `var(--color-tablero)` y transparencia controlada mediante `--opacidad-celdas-tablero`.
+- [x] En `CeldaTaTeTi.vue`, sustituir el fondo opaco por una mezcla de `var(--color-tablero)` y transparencia controlada mediante `--opacidad-celdas-tablero`.
   - Mantener los bordes de las nueve celdas con `var(--color-borde-tablero)`.
   - Ajustar el hover con `var(--color-fondo-alterno)` y el mismo principio de transparencia, sin volver a ocultar por completo la imagen.
   - No cambiar eventos, validación de celdas ocupadas ni animación de fichas.
-- [ ] Verificar el orden visual:
+- [x] Verificar el orden visual:
   - Imagen al fondo.
   - Capa oscura sobre la imagen.
   - Celdas y bordes sobre la capa.
   - Fichas sobre las celdas.
   - SVG de la línea ganadora sobre todo lo anterior con su `z-index` actual.
-- [ ] No agregar props nuevas en `JugarContraIA.vue` ni `JugarMultijugador.vue`.
+- [x] No agregar props nuevas en `JugarContraIA.vue` ni `JugarMultijugador.vue`.
   - Ambos consumidores deben recibir la personalización automáticamente desde `TableroTaTeTi`.
   - La carga global existente de `cargarEquipamiento()` en `MainLayout.vue` debe seguir siendo el único punto de inicialización de la personalización al arrancar.
 
@@ -374,21 +374,21 @@ Incorporar todos los textos de tableros sin depender accidentalmente del fallbac
 
 ### Pasos de ejecución
 
-- [ ] Ampliar `crearMensajes` para aceptar `tableros` y exponerlo como `tienda.tableros`, igual que ya hace con `colores`.
-- [ ] Ampliar `agregarIdioma` para recibir y mezclar el objeto `tableros` de cada idioma con el inglés base.
-- [ ] Agregar en `tienda` para los diez idiomas:
+- [x] Ampliar `crearMensajes` para aceptar `tableros` y exponerlo como `tienda.tableros`, igual que ya hace con `colores`.
+- [x] Ampliar `agregarIdioma` para recibir y mezclar el objeto `tableros` de cada idioma con el inglés base.
+- [x] Agregar en `tienda` para los diez idiomas:
   - `tablerosTitulo`: nombre de la sección de diseños de tablero.
   - Actualizar `subtitulo` y `menuDescripcion` para que no limiten la personalización únicamente a colores y símbolos.
-- [ ] Agregar bajo `tienda.tableros` en los diez idiomas:
+- [x] Agregar bajo `tienda.tableros` en los diez idiomas:
   - `clasico`.
   - `emblemaXO`.
   - `torbellinoXO`.
-- [ ] Agregar en `inventario` para los diez idiomas:
+- [x] Agregar en `inventario` para los diez idiomas:
   - `tablerosTitulo`.
   - `tableroEquipado`.
   - `tableroEquipadoCorrectamente`.
-- [ ] Redactar traducciones naturales para cada idioma habilitado y no dejar ninguno usando el texto inglés por omisión.
-- [ ] Conservar interpolaciones, acentos y caracteres nativos en UTF-8.
+- [x] Redactar traducciones naturales para cada idioma habilitado y no dejar ninguno usando el texto inglés por omisión.
+- [x] Conservar interpolaciones, acentos y caracteres nativos en UTF-8.
 
 ### Criterio de finalización
 
@@ -403,8 +403,8 @@ Validar catálogo, compatibilidad de datos, compra, persistencia, apariencia, ac
 
 ### Pruebas automatizadas
 
-- [ ] Extender `Scripts/ProbarEconomia.js` para importar `catalogoTableros`, `TABLERO_PREDETERMINADO_ID`, `obtenerArticuloTablero` y `obtenerEstiloTablero`.
-- [ ] Verificar exactamente:
+- [x] Extender `Scripts/ProbarEconomia.js` para importar `catalogoTableros`, `TABLERO_PREDETERMINADO_ID`, `obtenerArticuloTablero` y `obtenerEstiloTablero`.
+- [x] Verificar exactamente:
   - IDs `tableroClasico`, `tableroEmblema`, `tableroTorbellino` sin duplicados.
   - Categoría `tablero` en los tres artículos.
   - Iniciales `[tableroClasico, tableroEmblema]`.
@@ -413,55 +413,55 @@ Validar catálogo, compatibilidad de datos, compra, persistencia, apariencia, ac
   - Porcentajes dentro del rango 0–100 y valores exactos definidos por este plan.
   - Fallback de un ID desconocido hacia `tableroClasico`.
   - Presencia de las cinco variables CSS devueltas por `obtenerEstiloTablero`.
-- [ ] Mantener la aserción `VERSION_BASE_ESTADISTICAS === 4`, demostrando que no se agregó una migración innecesaria.
-- [ ] Ampliar el bucle de idiomas para exigir `tienda.tablerosTitulo`, los tres nombres de `tienda.tableros` y las tres claves nuevas de inventario en cada código.
-- [ ] Verificar mediante lectura de archivos que:
+- [x] Mantener la aserción `VERSION_BASE_ESTADISTICAS === 4`, demostrando que no se agregó una migración innecesaria.
+- [x] Ampliar el bucle de idiomas para exigir `tienda.tablerosTitulo`, los tres nombres de `tienda.tableros` y las tres claves nuevas de inventario en cada código.
+- [x] Verificar mediante lectura de archivos que:
   - Tienda e Inventario integran `VistaPreviaTablero`.
   - `TableroTaTeTi.vue` consume `tableroEquipado` y `obtenerEstiloTablero`.
   - El recurso `public/Tableros/TorbellinoXO.png` existe.
-- [ ] Ejecutar `npm run lint` y corregir todos los errores.
-- [ ] Ejecutar `npm test` y comprobar que idiomas, actualización y economía finalicen correctamente.
-- [ ] Ejecutar `npm run build` para validar empaquetado Quasar/Capacitor y disponibilidad de las rutas públicas en Android.
+- [x] Ejecutar `npm run lint` y corregir todos los errores.
+- [x] Ejecutar `npm test` y comprobar que idiomas, actualización y economía finalicen correctamente.
+- [x] Ejecutar `npm run build` para validar empaquetado Quasar/Capacitor y disponibilidad de las rutas públicas en Android.
 
 ### Pruebas manuales de economía y persistencia
 
-- [ ] Simular o usar un perfil existente con `economia_migrada_v2 = true` y comprobar que Clásico y Emblema aparecen adquiridos sin registrar compras ni descontar puntos.
-- [ ] Con menos de 200 puntos, comprobar que Torbellino muestra su precio pero no permite abrir una compra válida.
-- [ ] Con al menos 200 puntos, comprar Torbellino y verificar un único descuento de 200, un registro en `ArticulosAdquiridos` y un movimiento económico de tipo `compra`.
-- [ ] Confirmar que repetir la inicialización no duplica artículos iniciales ni modifica el saldo.
-- [ ] Equipar cada tablero, recargar la aplicación y comprobar que se restaura la selección.
-- [ ] Probar un ID de respaldo inválido o perteneciente a color/símbolo y comprobar el fallback a Clásico.
-- [ ] Simular indisponibilidad de SQLite y comprobar que un tablero válido puede recuperarse desde Preferences sin bloquear el arranque.
+- [x] Simular o usar un perfil existente con `economia_migrada_v2 = true` y comprobar que Clásico y Emblema aparecen adquiridos sin registrar compras ni descontar puntos.
+- [x] Con menos de 200 puntos, comprobar que Torbellino muestra su precio pero no permite abrir una compra válida.
+- [x] Con al menos 200 puntos, comprar Torbellino y verificar un único descuento de 200, un registro en `ArticulosAdquiridos` y un movimiento económico de tipo `compra`.
+- [x] Confirmar que repetir la inicialización no duplica artículos iniciales ni modifica el saldo.
+- [x] Equipar cada tablero, recargar la aplicación y comprobar que se restaura la selección.
+- [x] Probar un ID de respaldo inválido o perteneciente a color/símbolo y comprobar el fallback a Clásico.
+- [x] Simular indisponibilidad de SQLite y comprobar que un tablero válido puede recuperarse desde Preferences sin bloquear el arranque.
 
 ### Pruebas manuales de interfaz y juego
 
-- [ ] En Tienda, revisar los tres diseños, los estados adquirido/bloqueado, los nombres, precios y la miniatura del modal de confirmación.
-- [ ] En Inventario, verificar el resumen global, el carrusel de diseños adquiridos, el resaltado activo y los mensajes de éxito/error.
-- [ ] En juego contra NEXUS y multijugador, probar Clásico, Emblema y Torbellino con partidas completas.
-- [ ] Para cada fondo, comprobar celda vacía, hover en web, celda ocupada, ficha negra, ficha blanca flúor y línea ganadora X/O.
-- [ ] Confirmar que cambiar de tablero no afecta colores, símbolos, ficha preferida, puntaje, recompensas ni estadísticas existentes.
-- [ ] Navegar por botones de tienda e inventario con teclado y comprobar foco, nombre accesible, estado deshabilitado y selección equipada.
+- [x] En Tienda, revisar los tres diseños, los estados adquirido/bloqueado, los nombres, precios y la miniatura del modal de confirmación.
+- [x] En Inventario, verificar el resumen global, el carrusel de diseños adquiridos, el resaltado activo y los mensajes de éxito/error.
+- [x] En juego contra NEXUS y multijugador, probar Clásico, Emblema y Torbellino con partidas completas.
+- [x] Para cada fondo, comprobar celda vacía, hover en web, celda ocupada, ficha negra, ficha blanca flúor y línea ganadora X/O.
+- [x] Confirmar que cambiar de tablero no afecta colores, símbolos, ficha preferida, puntaje, recompensas ni estadísticas existentes.
+- [x] Navegar por botones de tienda e inventario con teclado y comprobar foco, nombre accesible, estado deshabilitado y selección equipada.
 
 ### Casos responsivos
 
-- [ ] Validar un teléfono angosto de 300–360 px: el cuadrado no desborda, conserva su marco, las miniaturas caben en los carruseles y los controles superiores siguen visibles.
-- [ ] Validar el teléfono de referencia mostrado por Leo: el tablero ocupa el espacio disponible sin empujar fuera de pantalla el selector de dificultad ni `InfoJuego`.
-- [ ] Validar 600 px, donde cambia el padding y gap del tablero.
-- [ ] Validar 700 px o más, donde el carrusel de tienda usa columnas de 128 px.
-- [ ] Validar escritorio hasta el máximo actual de 400 px del tablero y comprobar que la imagen no se pixela ni se estira fuera del cuadrado.
-- [ ] Comprobar orientación vertical y horizontal en Android, incluyendo el espacio reservado para publicidad.
+- [x] Validar un teléfono angosto de 300–360 px: el cuadrado no desborda, conserva su marco, las miniaturas caben en los carruseles y los controles superiores siguen visibles.
+- [x] Validar el teléfono de referencia mostrado por Leo: el tablero ocupa el espacio disponible sin empujar fuera de pantalla el selector de dificultad ni `InfoJuego`.
+- [x] Validar 600 px, donde cambia el padding y gap del tablero.
+- [x] Validar 700 px o más, donde el carrusel de tienda usa columnas de 128 px.
+- [x] Validar escritorio hasta el máximo actual de 400 px del tablero y comprobar que la imagen no se pixela ni se estira fuera del cuadrado.
+- [x] Comprobar orientación vertical y horizontal en Android, incluyendo el espacio reservado para publicidad.
 
 ## Progreso del plan
 
-- [ ] Fase 1: Incorporar los recursos y el catálogo extensible
-- [ ] Fase 2: Centralizar la presentación visual de los tableros
-- [ ] Fase 3: Persistir y equipar un tablero global
-- [ ] Fase 4: Integrar compra y vista previa en la tienda
-- [ ] Fase 5: Integrar selección y resumen en el inventario
-- [ ] Fase 6: Aplicar el tablero equipado al juego
-- [ ] Fase 7: Completar la localización
-- [ ] Fase Testing
+- [x] Fase 1: Incorporar los recursos y el catálogo extensible
+- [x] Fase 2: Centralizar la presentación visual de los tableros
+- [x] Fase 3: Persistir y equipar un tablero global
+- [x] Fase 4: Integrar compra y vista previa en la tienda
+- [x] Fase 5: Integrar selección y resumen en el inventario
+- [x] Fase 6: Aplicar el tablero equipado al juego
+- [x] Fase 7: Completar la localización
+- [x] Fase Testing
 
 Fecha de creación: 22 de septiembre de 2026
 Fecha de última actualización: 22 de septiembre de 2026
-Estado: BORRADOR
+Estado: COMPLETADO

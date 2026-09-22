@@ -8,6 +8,11 @@ const crearColor = (articulo) => ({
   representacion: null,
 })
 
+const crearTablero = (articulo) => ({
+  ...articulo,
+  categoria: 'tablero',
+})
+
 export const catalogoArticulos = Object.freeze([
   crearColor({
     id: 'rojo',
@@ -191,6 +196,45 @@ export const catalogoArticulos = Object.freeze([
     representacion: { tipo: 'texto', valor: '⬡' },
     estiloVisual: { grosorContorno: '0.125em' },
   },
+  crearTablero({
+    id: 'tableroClasico',
+    claveNombre: 'tienda.tableros.clasico',
+    precio: 0,
+    inicial: true,
+    aparienciaTablero: {
+      rutaImagen: null,
+      tamanoFondo: 'cover',
+      posicionFondo: 'center',
+      oscurecimiento: 100,
+      opacidadCeldas: 100,
+    },
+  }),
+  crearTablero({
+    id: 'tableroEmblema',
+    claveNombre: 'tienda.tableros.emblemaXO',
+    precio: 0,
+    inicial: true,
+    aparienciaTablero: {
+      rutaImagen: '/favicon.png',
+      tamanoFondo: 'cover',
+      posicionFondo: 'center',
+      oscurecimiento: 62,
+      opacidadCeldas: 46,
+    },
+  }),
+  crearTablero({
+    id: 'tableroTorbellino',
+    claveNombre: 'tienda.tableros.torbellinoXO',
+    precio: 200,
+    inicial: false,
+    aparienciaTablero: {
+      rutaImagen: '/Tableros/TorbellinoXO.png',
+      tamanoFondo: 'cover',
+      posicionFondo: 'center',
+      oscurecimiento: 68,
+      opacidadCeldas: 52,
+    },
+  }),
 ])
 
 export const catalogoColores = Object.freeze(
@@ -198,6 +242,9 @@ export const catalogoColores = Object.freeze(
 )
 export const catalogoSimbolos = Object.freeze(
   catalogoArticulos.filter((articulo) => articulo.categoria === 'simbolo'),
+)
+export const catalogoTableros = Object.freeze(
+  catalogoArticulos.filter((articulo) => articulo.categoria === 'tablero'),
 )
 
 export const obtenerArticulosPorCategoria = (categoria) =>

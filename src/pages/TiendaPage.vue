@@ -50,8 +50,9 @@
           <div class="contenido-recompensa">
             <h2>{{ t('tienda.verAnuncio') }}</h2>
             <strong>
-              +{{ RECOMPENSA_ANUNCIO }} {{ t('puntuacion.puntos') }} ·
-              {{ anunciosRestantes }}/{{ MAXIMO_ANUNCIOS_DIARIOS }}
+              +{{ RECOMPENSA_ANUNCIO }} {{ t('puntuacion.puntos') }} · {{ anunciosRestantes }}/{{
+                MAXIMO_ANUNCIOS_DIARIOS
+              }}
             </strong>
           </div>
           <button
@@ -126,9 +127,45 @@
           :disabled="esArticuloAdquirido(articulo) || !puedeComprarArticulo(articulo)"
           @click="solicitarCompra(articulo)"
         >
-          <span v-if="esArticuloAdquirido(articulo)" class="estado-color"><i class="ti ti-check"></i></span>
-          <span v-else class="precio-color"><i class="ti ti-trophy"></i><strong>{{ articulo.precio }}</strong></span>
-          <FichaVisual class="muestra-simbolo" ficha="X" :simbolo-id="articulo.id" tamano="2.4rem" />
+          <span v-if="esArticuloAdquirido(articulo)" class="estado-color"
+            ><i class="ti ti-check"></i
+          ></span>
+          <span v-else class="precio-color"
+            ><i class="ti ti-trophy"></i><strong>{{ articulo.precio }}</strong></span
+          >
+          <FichaVisual
+            class="muestra-simbolo"
+            ficha="X"
+            :simbolo-id="articulo.id"
+            tamano="2.4rem"
+          />
+        </button>
+      </CarruselTienda>
+
+      <CarruselTienda :titulo="t('tienda.tablerosTitulo')" :aria-label="t('tienda.tablerosTitulo')">
+        <button
+          v-for="articulo in catalogoTablerosOrdenados"
+          :key="articulo.id"
+          class="cuadro-color cuadro-tablero"
+          type="button"
+          :class="{
+            adquirido: esArticuloAdquirido(articulo),
+            bloqueado: !esArticuloAdquirido(articulo) && !puedeComprarArticulo(articulo),
+          }"
+          :style="{ '--color-articulo': 'var(--color-borde-tablero)' }"
+          :aria-label="textoAccesibleArticulo(articulo)"
+          :disabled="esArticuloAdquirido(articulo) || !puedeComprarArticulo(articulo)"
+          @click="solicitarCompra(articulo)"
+        >
+          <span v-if="esArticuloAdquirido(articulo)" class="estado-color">
+            <i class="ti ti-check"></i>
+          </span>
+          <span v-else class="precio-color">
+            <i class="ti ti-trophy"></i>
+            <strong>{{ articulo.precio }}</strong>
+          </span>
+          <VistaPreviaTablero class="muestra-tablero-tienda" :tablero-id="articulo.id" />
+          <span class="nombre-tablero-tienda">{{ t(articulo.claveNombre) }}</span>
         </button>
       </CarruselTienda>
     </div>
@@ -146,7 +183,9 @@
         <div
           class="vista-previa-color"
           :class="{ fluor: esArticuloFluor(articuloPendiente) }"
-          :style="{ '--color-articulo': articuloPendiente.colorVista ?? 'var(--color-turno-activo)' }"
+          :style="{
+            '--color-articulo': articuloPendiente.colorVista ?? 'var(--color-turno-activo)',
+          }"
           role="img"
           :aria-label="t(articuloPendiente.claveNombre)"
         >
@@ -157,17 +196,19 @@
             <i class="ti ti-sparkles"></i>
             FLÚOR
           </span>
+          <VistaPreviaTablero
+            v-if="articuloPendiente.categoria === 'tablero'"
+            class="muestra-tablero-modal"
+            :tablero-id="articuloPendiente.id"
+          />
           <FichaVisual
-            v-if="articuloPendiente.categoria === 'simbolo'"
+            v-else-if="articuloPendiente.categoria === 'simbolo'"
             class="muestra-simbolo"
             ficha="X"
             :simbolo-id="articuloPendiente.id"
             tamano="2.4rem"
           />
-          <span
-            v-else
-            class="muestra-color muestra-color--preview"
-          >
+          <span v-else class="muestra-color muestra-color--preview">
             <FichaVisual ficha="X" :color-id="articuloPendiente.id" tamano="2.4rem" />
             <FichaVisual ficha="O" :color-id="articuloPendiente.id" tamano="2.4rem" />
           </span>
@@ -183,10 +224,12 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import CarruselTienda from 'src/components/Tienda/CarruselTienda.vue'
 import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
+import VistaPreviaTablero from 'src/components/TaTeTi/Compartido/VistaPreviaTablero.vue'
 import ModalConfirmacion from 'src/components/Modales/ModalConfirmacion.vue'
 import {
   catalogoColores,
   catalogoSimbolos,
+  catalogoTableros,
   MAXIMO_ANUNCIOS_DIARIOS,
   RECOMPENSA_ANUNCIO,
   RECOMPENSA_DIARIA,
@@ -232,10 +275,13 @@ const MAXIMO_ESPERA_TEMPORIZADOR = 2_147_000_000
 const programarActualizacionRecompensas = () => {
   window.clearTimeout(temporizadorRecompensas)
   const demora = Math.max(50, obtenerProximoCambioRecompensas() - Date.now() + 50)
-  temporizadorRecompensas = window.setTimeout(async () => {
-    await actualizarDisponibilidad()
-    programarActualizacionRecompensas()
-  }, Math.min(demora, MAXIMO_ESPERA_TEMPORIZADOR))
+  temporizadorRecompensas = window.setTimeout(
+    async () => {
+      await actualizarDisponibilidad()
+      programarActualizacionRecompensas()
+    },
+    Math.min(demora, MAXIMO_ESPERA_TEMPORIZADOR),
+  )
 }
 
 watch(
@@ -314,13 +360,11 @@ const ordenarArticulos = (articulos) =>
     return articuloA.precio - articuloB.precio
   })
 
-const catalogoColoresOrdenados = computed(() =>
-  ordenarArticulos(catalogoColores),
-)
+const catalogoColoresOrdenados = computed(() => ordenarArticulos(catalogoColores))
 
-const catalogoSimbolosOrdenados = computed(() =>
-  ordenarArticulos(catalogoSimbolos),
-)
+const catalogoSimbolosOrdenados = computed(() => ordenarArticulos(catalogoSimbolos))
+
+const catalogoTablerosOrdenados = computed(() => ordenarArticulos(catalogoTableros))
 
 const textoAccesibleArticulo = (articulo) => {
   const nombre = t(articulo.claveNombre)
@@ -502,7 +546,11 @@ onBeforeUnmount(() => {
 .cuadro-color.fluor {
   border-color: var(--color-articulo);
   background:
-    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--color-articulo) 26%, transparent) 0 24%, transparent 55%),
+    radial-gradient(
+      circle at 50% 58%,
+      color-mix(in srgb, var(--color-articulo) 26%, transparent) 0 24%,
+      transparent 55%
+    ),
     var(--color-fondo-alterno);
   box-shadow:
     0 0 7px color-mix(in srgb, var(--color-articulo) 70%, transparent),
@@ -531,6 +579,23 @@ onBeforeUnmount(() => {
 }
 .muestra-simbolo {
   font-size: 2.4rem;
+}
+.cuadro-tablero {
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+}
+.muestra-tablero-tienda {
+  width: 72px;
+}
+.nombre-tablero-tienda {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 0.64rem;
+  font-weight: 800;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .etiqueta-fluor {
   position: absolute;
@@ -571,9 +636,16 @@ onBeforeUnmount(() => {
     0 0 4px color-mix(in srgb, var(--color-articulo) 38%, transparent),
     inset 0 0 8px color-mix(in srgb, var(--color-articulo) 16%, transparent);
 }
+.muestra-tablero-modal {
+  width: 82px;
+}
 .vista-previa-color.fluor {
   background:
-    radial-gradient(circle at 50% 55%, color-mix(in srgb, var(--color-articulo) 22%, transparent) 0 24%, transparent 55%),
+    radial-gradient(
+      circle at 50% 55%,
+      color-mix(in srgb, var(--color-articulo) 22%, transparent) 0 24%,
+      transparent 55%
+    ),
     var(--color-fondo-alterno);
   box-shadow:
     0 0 6px color-mix(in srgb, var(--color-articulo) 58%, transparent),

@@ -46,7 +46,11 @@ const manejarClick = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-tablero);
+  background-color: color-mix(
+    in srgb,
+    var(--color-tablero) var(--opacidad-celdas-tablero, 100%),
+    transparent
+  );
   border: 2px solid var(--color-borde-tablero);
   transition: all 0.2s ease;
   cursor: not-allowed;
@@ -55,7 +59,11 @@ const manejarClick = () => {
   cursor: pointer;
 }
 .celda-clickeable:hover {
-  background-color: var(--color-fondo-alterno);
+  background-color: color-mix(
+    in srgb,
+    var(--color-fondo-alterno) var(--opacidad-celdas-tablero, 100%),
+    transparent
+  );
   border-color: var(--color-turno-activo);
 }
 .celda-ocupada {

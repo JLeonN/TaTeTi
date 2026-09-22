@@ -53,6 +53,17 @@
               {{ nombreParticipanteFicha(ficha) }}
             </span>
           </button>
+          <div
+            class="tablero-equipado"
+            role="img"
+            :aria-label="`${t('inventario.tableroEquipado')}: ${nombreArticulo(tableroEquipado)}`"
+          >
+            <VistaPreviaTablero class="vista-tablero-equipado" :tablero-id="tableroEquipado" />
+            <span>
+              <small>{{ t('inventario.tableroEquipado') }}</small>
+              <strong>{{ nombreArticulo(tableroEquipado) }}</strong>
+            </span>
+          </div>
         </div>
       </section>
 
@@ -66,7 +77,32 @@
         {{ mensajeEstado }}
       </p>
 
-      <section v-for="ficha in fichasParticipantes" :key="`colores-${ficha}`" class="seccion-inventario">
+      <section class="seccion-inventario">
+        <h2 class="titulo-seccion-inventario">{{ t('inventario.tablerosTitulo') }}</h2>
+        <div class="panel-inventario">
+          <div class="carrusel-colores" role="list" :aria-label="t('inventario.tablerosTitulo')">
+            <button
+              v-for="articulo in articulosDisponiblesPorCategoria('tablero')"
+              :key="articulo.id"
+              class="item-color item-tablero"
+              type="button"
+              role="listitem"
+              :class="{ activo: tableroEquipado === articulo.id }"
+              :aria-label="textoAccesibleTablero(articulo)"
+              @click="equiparTableroSeleccionado(articulo.id)"
+            >
+              <VistaPreviaTablero class="vista-item-tablero" :tablero-id="articulo.id" />
+              <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section
+        v-for="ficha in fichasParticipantes"
+        :key="`colores-${ficha}`"
+        class="seccion-inventario"
+      >
         <h2 class="titulo-seccion-inventario">{{ tituloSeleccion(ficha, 'color') }}</h2>
         <div class="panel-inventario">
           <div class="carrusel-colores" role="list" :aria-label="tituloSeleccion(ficha, 'color')">
@@ -91,7 +127,11 @@
         </div>
       </section>
 
-      <section v-for="ficha in fichasParticipantes" :key="`simbolos-${ficha}`" class="seccion-inventario">
+      <section
+        v-for="ficha in fichasParticipantes"
+        :key="`simbolos-${ficha}`"
+        class="seccion-inventario"
+      >
         <h2 class="titulo-seccion-inventario">{{ tituloSeleccion(ficha, 'simbolo') }}</h2>
         <div class="panel-inventario">
           <div class="carrusel-colores" role="list" :aria-label="tituloSeleccion(ficha, 'simbolo')">
@@ -116,10 +156,12 @@
               >
                 <span class="cinta-estado">
                   <span class="texto-cinta">
-                    {{ textoSimboloEnUso(ficha) }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+                    {{ textoSimboloEnUso(ficha)
+                    }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
                   </span>
                   <span class="texto-cinta texto-cinta--repetido">
-                    {{ textoSimboloEnUso(ficha) }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+                    {{ textoSimboloEnUso(ficha)
+                    }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
                   </span>
                 </span>
               </span>
@@ -127,7 +169,6 @@
           </div>
         </div>
       </section>
-
     </div>
   </q-page>
 </template>
@@ -135,19 +176,32 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { obtenerArticulo, obtenerArticulosPorCategoria } from 'src/Servicios/Economia/CatalogoTienda'
+import {
+  obtenerArticulo,
+  obtenerArticulosPorCategoria,
+} from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
 import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
+import VistaPreviaTablero from 'src/components/TaTeTi/Compartido/VistaPreviaTablero.vue'
 import { useFichaJugador } from 'src/components/Composables/UseFichaJugador'
 import { useConfiguracion } from 'src/components/Composables/useConfiguracion'
 
 const { t } = useI18n()
-const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo } =
-  useEquipamiento()
+const {
+  equipamiento,
+  tableroEquipado,
+  articulosAdquiridos,
+  cargarEquipamiento,
+  equiparArticulo,
+  equiparTablero,
+} = useEquipamiento()
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
-const fichasParticipantes = computed(() => [fichaUsuario.value, fichaUsuario.value === 'X' ? 'O' : 'X'])
+const fichasParticipantes = computed(() => [
+  fichaUsuario.value,
+  fichaUsuario.value === 'X' ? 'O' : 'X',
+])
 const mensajeEstado = ref('')
 const estadoConError = ref(false)
 const observadoresDesbordamiento = new WeakMap()
@@ -178,7 +232,9 @@ const vDesplazarSiDesborda = {
   },
 }
 const articulosDisponiblesPorCategoria = (categoria) =>
-  obtenerArticulosPorCategoria(categoria).filter((articulo) => articulosAdquiridos.value.has(articulo.id))
+  obtenerArticulosPorCategoria(categoria).filter((articulo) =>
+    articulosAdquiridos.value.has(articulo.id),
+  )
 const nombreArticulo = (id) => {
   const articulo = obtenerArticulo(id)
   return articulo ? t(articulo.claveNombre) : ''
@@ -223,9 +279,29 @@ const equipar = async (ficha, categoria, articuloId) => {
   }
 }
 
+const equiparTableroSeleccionado = async (articuloId) => {
+  try {
+    const resultado = await equiparTablero(articuloId)
+    estadoConError.value = resultado !== 'equipado'
+    mensajeEstado.value = t(
+      resultado === 'equipado'
+        ? 'inventario.tableroEquipadoCorrectamente'
+        : resultado === 'articuloNoAdquirido'
+          ? 'inventario.articuloNoAdquirido'
+          : 'inventario.errorEquipamiento',
+    )
+  } catch {
+    estadoConError.value = true
+    mensajeEstado.value = t('inventario.errorEquipamiento')
+  }
+}
+
 const simboloEnUso = (ficha, articuloId) => {
   const otraFicha = ficha === 'X' ? 'O' : 'X'
-  return equipamiento.value[otraFicha].simbolo === articuloId && equipamiento.value[ficha].simbolo !== articuloId
+  return (
+    equipamiento.value[otraFicha].simbolo === articuloId &&
+    equipamiento.value[ficha].simbolo !== articuloId
+  )
 }
 
 const tituloSeleccion = (ficha, categoria) =>
@@ -241,9 +317,7 @@ const textoSimboloEnUso = (ficha) => {
 const seleccionarFicha = async (ficha) => {
   const guardada = await guardarFichaUsuario(ficha)
   estadoConError.value = !guardada
-  mensajeEstado.value = t(
-    guardada ? 'inventario.fichaActualizada' : 'inventario.errorEquipamiento',
-  )
+  mensajeEstado.value = t(guardada ? 'inventario.fichaActualizada' : 'inventario.errorEquipamiento')
 }
 
 const textoAccesibleColor = (ficha, articulo) =>
@@ -256,6 +330,11 @@ const textoAccesibleSimbolo = (ficha, articulo) => {
       ? ` ${t('inventario.simboloEquipado')}`
       : ''
   return `${tituloSeleccion(ficha, 'simbolo')}: ${t(articulo.claveNombre)}.${estado}`
+}
+
+const textoAccesibleTablero = (articulo) => {
+  const estado = tableroEquipado.value === articulo.id ? ` ${t('inventario.equipado')}` : ''
+  return `${t('inventario.tablerosTitulo')}: ${t(articulo.claveNombre)}.${estado}`
 }
 
 const textoAccesibleFicha = (ficha) =>
@@ -393,6 +472,39 @@ onMounted(async () => {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.tablero-equipado {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px;
+  background-color: var(--color-tablero);
+  border: 1px solid var(--color-borde-tablero);
+  border-radius: 10px;
+}
+.vista-tablero-equipado {
+  flex: 0 0 76px;
+  width: 76px;
+}
+.tablero-equipado > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+}
+.tablero-equipado small {
+  color: var(--color-texto-secundario);
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.tablero-equipado strong {
+  overflow: hidden;
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .simbolo-equipado {
   font-size: 3.75rem;
   font-weight: bold;
@@ -440,11 +552,13 @@ onMounted(async () => {
   gap: 5px;
   color: var(--color-texto-principal);
   background-color: var(--color-tablero);
-  border: 2px solid color-mix(in srgb, var(--color-articulo, var(--color-borde-tablero)) 70%, transparent);
+  border: 2px solid
+    color-mix(in srgb, var(--color-articulo, var(--color-borde-tablero)) 70%, transparent);
   border-radius: 10px;
   box-shadow:
     0 0 5px color-mix(in srgb, var(--color-articulo, var(--color-borde-tablero)) 34%, transparent),
-    inset 0 0 8px color-mix(in srgb, var(--color-articulo, var(--color-borde-tablero)) 12%, transparent);
+    inset 0 0 8px
+      color-mix(in srgb, var(--color-articulo, var(--color-borde-tablero)) 12%, transparent);
   cursor: pointer;
   scroll-snap-align: start;
 }
@@ -458,6 +572,13 @@ onMounted(async () => {
   box-shadow:
     0 0 8px color-mix(in srgb, var(--color-turno-activo) 70%, transparent),
     inset 0 0 8px color-mix(in srgb, var(--color-turno-activo) 26%, transparent);
+}
+.item-tablero {
+  gap: 4px;
+  padding: 7px;
+}
+.vista-item-tablero {
+  width: 62px;
 }
 .item-color:disabled {
   cursor: not-allowed;

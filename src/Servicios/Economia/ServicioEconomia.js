@@ -6,9 +6,12 @@ import {
   inicializarBaseEstadisticas,
 } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { catalogoArticulos, obtenerArticulo } from './CatalogoTienda'
+import { TABLERO_PREDETERMINADO_ID, obtenerArticuloTablero } from './PresentacionTableros'
 
 const CLAVE_PUNTUACION = 'puntuacion_sistema'
 const CLAVE_EQUIPAMIENTO_RESPALDO = 'equipamiento_fichas'
+const CLAVE_TABLERO_RESPALDO = 'tablero_equipado'
+const CLAVE_TABLERO_ECONOMIA = 'tableroEquipado'
 const CLAVE_MIGRACION = 'economia_migrada_v2'
 const FICHAS = ['X', 'O']
 const CATEGORIAS_EQUIPAMIENTO = ['color', 'simbolo']
@@ -22,8 +25,11 @@ const clonarEquipamiento = (valor) => ({
 })
 const puntajeTotal = ref(0)
 const economiaDisponible = ref(false)
-const articulosAdquiridos = ref(new Set(catalogoArticulos.filter((item) => item.inicial).map((item) => item.id)))
+const articulosAdquiridos = ref(
+  new Set(catalogoArticulos.filter((item) => item.inicial).map((item) => item.id)),
+)
 const equipamiento = ref(clonarEquipamiento(EQUIPAMIENTO_INICIAL))
+const tableroEquipado = ref(TABLERO_PREDETERMINADO_ID)
 let promesaInicializacion = null
 
 const generarId = () =>
@@ -49,6 +55,17 @@ const normalizarEquipamiento = (valor) => {
     normalizado.O.simbolo = EQUIPAMIENTO_INICIAL.O.simbolo
   }
   return normalizado
+}
+
+const normalizarTableroEquipado = (identificador, exigirAdquisicion = true) => {
+  const articulo = obtenerArticuloTablero(identificador)
+  if (
+    articulo.id !== identificador ||
+    (exigirAdquisicion && !articulosAdquiridos.value.has(identificador))
+  ) {
+    return TABLERO_PREDETERMINADO_ID
+  }
+  return articulo.id
 }
 
 const convertirEquipamientoRespaldo = (valor) => {
@@ -99,6 +116,15 @@ const cargarEquipamientoRespaldo = async () => {
   }
 }
 
+const guardarTableroRespaldo = async (identificador) => {
+  await Preferences.set({ key: CLAVE_TABLERO_RESPALDO, value: identificador })
+}
+
+const cargarTableroRespaldo = async () => {
+  const resultado = await Preferences.get({ key: CLAVE_TABLERO_RESPALDO })
+  tableroEquipado.value = normalizarTableroEquipado(resultado.value, false)
+}
+
 const migrarEconomia = async (saldoRespaldo) => {
   const migrada = await Preferences.get({ key: CLAVE_MIGRACION })
   if (migrada.value === 'true') return
@@ -109,7 +135,10 @@ const migrarEconomia = async (saldoRespaldo) => {
     WHERE resultado <> 'abandono'
     ORDER BY fechaFin`,
   )
-  const sumaPartidas = partidas.reduce((total, partida) => total + Number(partida.variacionPuntos), 0)
+  const sumaPartidas = partidas.reduce(
+    (total, partida) => total + Number(partida.variacionPuntos),
+    0,
+  )
   const ajusteInicial = Number(saldoRespaldo) - sumaPartidas
 
   await ejecutarTransaccionEstadisticas(async (base) => {
@@ -158,6 +187,19 @@ const migrarEconomia = async (saldoRespaldo) => {
   await Preferences.set({ key: CLAVE_MIGRACION, value: 'true' })
 }
 
+const asegurarArticulosIniciales = async () => {
+  await ejecutarTransaccionEstadisticas(async (base) => {
+    for (const articulo of catalogoArticulos.filter((item) => item.inicial)) {
+      await base.run(
+        `INSERT OR IGNORE INTO ArticulosAdquiridos (articuloId, fechaAdquisicion)
+        VALUES (?, ?)`,
+        [articulo.id, new Date(0).toISOString()],
+        false,
+      )
+    }
+  })
+}
+
 const cargarEstado = async () => {
   const filasSaldo = await ejecutarConsultaEstadisticas(
     `SELECT valor FROM EstadoEconomia WHERE clave = 'saldo'`,
@@ -168,6 +210,12 @@ const cargarEstado = async () => {
     `SELECT articuloId FROM ArticulosAdquiridos`,
   )
   articulosAdquiridos.value = new Set(filasArticulos.map((fila) => fila.articuloId))
+
+  const filasTablero = await ejecutarConsultaEstadisticas(
+    `SELECT valor FROM EstadoEconomia WHERE clave = ?`,
+    [CLAVE_TABLERO_ECONOMIA],
+  )
+  tableroEquipado.value = normalizarTableroEquipado(filasTablero[0]?.valor)
 
   const filasEquipamiento = await ejecutarConsultaEstadisticas(
     `SELECT ficha, categoria, articuloId FROM EquipamientoFichas`,
@@ -186,9 +234,11 @@ export const inicializarEconomia = async () => {
   promesaInicializacion = (async () => {
     const respaldo = await leerPuntuacionRespaldo()
     await cargarEquipamientoRespaldo()
+    await cargarTableroRespaldo()
     try {
       await inicializarBaseEstadisticas()
       await migrarEconomia(Number(respaldo.puntajeTotal) || 0)
+      await asegurarArticulosIniciales()
       await cargarEstado()
       economiaDisponible.value = true
     } catch (error) {
@@ -325,6 +375,23 @@ export const equiparArticulo = async (ficha, categoria, articuloId) => {
   return 'equipado'
 }
 
+export const equiparTablero = async (articuloId) => {
+  const articulo = obtenerArticulo(articuloId)
+  if (!articulo || articulo.categoria !== 'tablero') return 'articuloInvalido'
+  if (!articulosAdquiridos.value.has(articuloId)) return 'articuloNoAdquirido'
+
+  await ejecutarTransaccionEstadisticas(async (base) => {
+    await base.run(
+      `INSERT OR REPLACE INTO EstadoEconomia (clave, valor) VALUES (?, ?)`,
+      [CLAVE_TABLERO_ECONOMIA, articuloId],
+      false,
+    )
+  })
+  tableroEquipado.value = articuloId
+  await guardarTableroRespaldo(articuloId)
+  return 'equipado'
+}
+
 export const obtenerEstadisticasEconomicas = async () => {
   const resumen = await ejecutarConsultaEstadisticas(
     `SELECT
@@ -353,8 +420,10 @@ export const usarEconomia = () => ({
   economiaDisponible,
   articulosAdquiridos,
   equipamiento,
+  tableroEquipado,
   inicializarEconomia,
   registrarMovimiento,
   comprarArticulo,
   equiparArticulo,
+  equiparTablero,
 })
