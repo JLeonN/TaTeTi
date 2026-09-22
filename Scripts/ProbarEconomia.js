@@ -80,6 +80,8 @@ for (const [codigo, mensajes] of Object.entries(mensajesEconomia)) {
     'equipado',
     'fluor',
     'simbolosFicha',
+    'colorJugador',
+    'colorNexus',
     'simboloJugador',
     'simboloNexus',
     'simboloUsadoPor',

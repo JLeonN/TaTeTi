@@ -66,60 +66,35 @@
         {{ mensajeEstado }}
       </p>
 
-      <section class="seccion-inventario">
-        <h2 class="titulo-seccion-inventario">{{ t('inventario.coloresFicha', { ficha: 'X' }) }}</h2>
+      <section v-for="ficha in fichasParticipantes" :key="`colores-${ficha}`" class="seccion-inventario">
+        <h2 class="titulo-seccion-inventario">{{ tituloSeleccion(ficha, 'color') }}</h2>
         <div class="panel-inventario">
-          <div class="carrusel-colores" role="list" :aria-label="t('inventario.coloresFicha', { ficha: 'X' })">
+          <div class="carrusel-colores" role="list" :aria-label="tituloSeleccion(ficha, 'color')">
             <button
               v-for="articulo in articulosDisponiblesPorCategoria('color')"
-              :key="`X-${articulo.id}`"
+              :key="`${ficha}-${articulo.id}`"
               class="item-color"
               type="button"
               role="listitem"
               :class="{
-                activo: equipamiento.X.color === articulo.id,
+                activo: equipamiento[ficha].color === articulo.id,
                 fluor: esArticuloFluor(articulo),
               }"
               :style="obtenerEstiloArticulo(articulo)"
-              :aria-label="textoAccesibleColor('X', articulo)"
-              @click="equipar('X', 'color', articulo.id)"
+              :aria-label="textoAccesibleColor(ficha, articulo)"
+              @click="equipar(ficha, 'color', articulo.id)"
             >
-              <FichaVisual class="simbolo-color" ficha="X" :color-id="articulo.id" />
+              <FichaVisual class="simbolo-color" :ficha="ficha" :color-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
             </button>
           </div>
         </div>
       </section>
 
-      <section class="seccion-inventario">
-        <h2 class="titulo-seccion-inventario">{{ t('inventario.coloresFicha', { ficha: 'O' }) }}</h2>
+      <section v-for="ficha in fichasParticipantes" :key="`simbolos-${ficha}`" class="seccion-inventario">
+        <h2 class="titulo-seccion-inventario">{{ tituloSeleccion(ficha, 'simbolo') }}</h2>
         <div class="panel-inventario">
-          <div class="carrusel-colores" role="list" :aria-label="t('inventario.coloresFicha', { ficha: 'O' })">
-            <button
-              v-for="articulo in articulosDisponiblesPorCategoria('color')"
-              :key="`O-${articulo.id}`"
-              class="item-color"
-              type="button"
-              role="listitem"
-              :class="{
-                activo: equipamiento.O.color === articulo.id,
-                fluor: esArticuloFluor(articulo),
-              }"
-              :style="obtenerEstiloArticulo(articulo)"
-              :aria-label="textoAccesibleColor('O', articulo)"
-              @click="equipar('O', 'color', articulo.id)"
-            >
-              <FichaVisual class="simbolo-color" ficha="O" :color-id="articulo.id" />
-              <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section v-for="ficha in fichasSimbolos" :key="`simbolos-${ficha}`" class="seccion-inventario">
-        <h2 class="titulo-seccion-inventario">{{ tituloSimbolos(ficha) }}</h2>
-        <div class="panel-inventario">
-          <div class="carrusel-colores" role="list">
+          <div class="carrusel-colores" role="list" :aria-label="tituloSeleccion(ficha, 'simbolo')">
             <button
               v-for="articulo in articulosDisponiblesPorCategoria('simbolo')"
               :key="`${ficha}-${articulo.id}`"
@@ -172,7 +147,7 @@ const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo }
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
-const fichasSimbolos = computed(() => [fichaUsuario.value, fichaUsuario.value === 'X' ? 'O' : 'X'])
+const fichasParticipantes = computed(() => [fichaUsuario.value, fichaUsuario.value === 'X' ? 'O' : 'X'])
 const mensajeEstado = ref('')
 const estadoConError = ref(false)
 const observadoresDesbordamiento = new WeakMap()
@@ -253,10 +228,10 @@ const simboloEnUso = (ficha, articuloId) => {
   return equipamiento.value[otraFicha].simbolo === articuloId && equipamiento.value[ficha].simbolo !== articuloId
 }
 
-const tituloSimbolos = (ficha) =>
+const tituloSeleccion = (ficha, categoria) =>
   fichaUsuario.value === ficha
-    ? t('inventario.simboloJugador', { nombre: nombreUsuario.value || t('juego.jugador') })
-    : t('inventario.simboloNexus')
+    ? t(`inventario.${categoria}Jugador`, { nombre: nombreUsuario.value || t('juego.jugador') })
+    : t(`inventario.${categoria}Nexus`)
 
 const textoSimboloEnUso = (ficha) => {
   const otraFicha = ficha === 'X' ? 'O' : 'X'
@@ -272,7 +247,7 @@ const seleccionarFicha = async (ficha) => {
 }
 
 const textoAccesibleColor = (ficha, articulo) =>
-  `${t('inventario.coloresFicha', { ficha })}: ${t(articulo.claveNombre)}`
+  `${tituloSeleccion(ficha, 'color')}: ${t(articulo.claveNombre)}`
 
 const textoAccesibleSimbolo = (ficha, articulo) => {
   const estado = simboloEnUso(ficha, articulo.id)
@@ -280,7 +255,7 @@ const textoAccesibleSimbolo = (ficha, articulo) => {
     : equipamiento.value[ficha].simbolo === articulo.id
       ? ` ${t('inventario.simboloEquipado')}`
       : ''
-  return `${tituloSimbolos(ficha)}: ${t(articulo.claveNombre)}.${estado}`
+  return `${tituloSeleccion(ficha, 'simbolo')}: ${t(articulo.claveNombre)}.${estado}`
 }
 
 const textoAccesibleFicha = (ficha) =>
