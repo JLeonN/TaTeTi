@@ -60,6 +60,9 @@ const mensajesEconomia = {
       menuDescripcion: 'Equipá tus artículos',
       coloresFicha: 'Color de {ficha}',
       simbolosFicha: 'Símbolo de {ficha}',
+      simboloJugador: 'Tu símbolo, {nombre}',
+      simboloNexus: 'Símbolo de NEXUS',
+      simboloUsadoPor: 'Usado por {nombre}',
       equipado: 'Equipado',
       fluor: 'Flúor',
       fichaPreferida: 'Ficha contra NEXUS',
@@ -132,6 +135,8 @@ const mensajesEconomia = {
       titulo: 'Inventory', subtitulo: 'Choose the colors and symbol you want to use',
       menuDescripcion: 'Equip your items', coloresFicha: '{ficha} color',
       simbolosFicha: '{ficha} symbol', equipado: 'Equipped', fluor: 'Neon',
+      simboloJugador: 'Your symbol, {nombre}', simboloNexus: "NEXUS's symbol",
+      simboloUsadoPor: 'Used by {nombre}',
       fichaPreferida: 'Symbol against NEXUS',
       fichaPreferidaDescripcion: 'This choice also updates the in-game selector.',
       coloresIntercambiados: 'The X and O colors were swapped.', colorEquipado: 'Color equipped.',
@@ -206,6 +211,8 @@ agregarIdioma(
   {
     titulo: 'Inventário', subtitulo: 'Escolha as cores e a peça que deseja usar',
     menuDescripcion: 'Equipe seus itens', coloresFicha: 'Cor de {ficha}', simbolosFicha: 'Símbolo de {ficha}',
+    simboloJugador: 'Seu símbolo, {nombre}', simboloNexus: 'Símbolo do NEXUS',
+    simboloUsadoPor: 'Usado por {nombre}',
     equipado: 'Equipado', fluor: 'Neon', fichaPreferida: 'Peça contra NEXUS',
     fichaPreferidaDescripcion: 'Esta escolha também atualiza o seletor do jogo.',
     coloresIntercambiados: 'As cores de X e O foram trocadas.', colorEquipado: 'Cor equipada.',
@@ -247,6 +254,8 @@ agregarIdioma(
   {
     titulo: 'Inventaire', subtitulo: 'Choisissez les couleurs et le symbole à utiliser',
     menuDescripcion: 'Équipez vos objets', coloresFicha: 'Couleur de {ficha}', simbolosFicha: 'Symbole de {ficha}',
+    simboloJugador: 'Votre symbole, {nombre}', simboloNexus: 'Symbole de NEXUS',
+    simboloUsadoPor: 'Utilisé par {nombre}',
     equipado: 'Équipé', fluor: 'Néon', fichaPreferida: 'Symbole contre NEXUS',
     fichaPreferidaDescripcion: 'Ce choix met aussi à jour le sélecteur du jeu.',
     coloresIntercambiados: 'Les couleurs de X et O ont été échangées.', colorEquipado: 'Couleur équipée.',
@@ -288,6 +297,8 @@ agregarIdioma(
   {
     titulo: 'Inventario', subtitulo: 'Scegli i colori e il simbolo da usare',
     menuDescripcion: 'Equipaggia i tuoi oggetti', coloresFicha: 'Colore di {ficha}', simbolosFicha: 'Simbolo di {ficha}',
+    simboloJugador: 'Il tuo simbolo, {nombre}', simboloNexus: 'Simbolo di NEXUS',
+    simboloUsadoPor: 'Usato da {nombre}',
     equipado: 'Equipaggiato', fluor: 'Neon', fichaPreferida: 'Simbolo contro NEXUS',
     fichaPreferidaDescripcion: 'Questa scelta aggiorna anche il selettore nel gioco.',
     coloresIntercambiados: 'I colori di X e O sono stati scambiati.', colorEquipado: 'Colore equipaggiato.',
@@ -329,6 +340,8 @@ agregarIdioma(
   {
     titulo: 'Inventar', subtitulo: 'Wähle Farben und dein bevorzugtes Symbol',
     menuDescripcion: 'Rüste deine Gegenstände aus', coloresFicha: 'Farbe von {ficha}', simbolosFicha: 'Symbol von {ficha}',
+    simboloJugador: 'Dein Symbol, {nombre}', simboloNexus: 'Symbol von NEXUS',
+    simboloUsadoPor: 'Verwendet von {nombre}',
     equipado: 'Ausgerüstet', fluor: 'Neon', fichaPreferida: 'Symbol gegen NEXUS',
     fichaPreferidaDescripcion: 'Diese Auswahl aktualisiert auch den Spielwähler.',
     coloresIntercambiados: 'Die Farben von X und O wurden getauscht.', colorEquipado: 'Farbe ausgerüstet.',
@@ -370,6 +383,8 @@ agregarIdioma(
   {
     titulo: 'インベントリ', subtitulo: '使用するカラーとコマを選択',
     menuDescripcion: 'アイテムを装備', coloresFicha: '{ficha}のカラー', simbolosFicha: '{ficha}のシンボル',
+    simboloJugador: '{nombre}のシンボル', simboloNexus: 'NEXUSのシンボル',
+    simboloUsadoPor: '{nombre}が使用中',
     equipado: '装備中', fluor: 'ネオン', fichaPreferida: 'NEXUS戦のコマ',
     fichaPreferidaDescripcion: 'この選択はゲーム内の選択にも反映されます。',
     coloresIntercambiados: 'XとOのカラーを入れ替えました。', colorEquipado: 'カラーを装備しました。',
@@ -411,6 +426,8 @@ agregarIdioma(
   {
     titulo: '인벤토리', subtitulo: '사용할 색상과 말을 선택하세요',
     menuDescripcion: '아이템 장착', coloresFicha: '{ficha} 색상', simbolosFicha: '{ficha} 기호',
+    simboloJugador: '{nombre}님의 기호', simboloNexus: 'NEXUS의 기호',
+    simboloUsadoPor: '{nombre}님이 사용 중',
     equipado: '장착됨', fluor: '네온', fichaPreferida: 'NEXUS 상대 말',
     fichaPreferidaDescripcion: '이 선택은 게임 선택기에도 반영됩니다.',
     coloresIntercambiados: 'X와 O의 색상을 서로 바꿨습니다.', colorEquipado: '색상을 장착했습니다.',
@@ -452,6 +469,8 @@ agregarIdioma(
   {
     titulo: 'Inventarium', subtitulo: 'Välj färger och symbol att använda',
     menuDescripcion: 'Utrusta dina föremål', coloresFicha: 'Färg för {ficha}', simbolosFicha: 'Symbol för {ficha}',
+    simboloJugador: 'Din symbol, {nombre}', simboloNexus: 'NEXUS symbol',
+    simboloUsadoPor: 'Används av {nombre}',
     equipado: 'Utrustad', fluor: 'Neon', fichaPreferida: 'Symbol mot NEXUS',
     fichaPreferidaDescripcion: 'Valet uppdaterar även väljaren i spelet.',
     coloresIntercambiados: 'Färgerna för X och O byttes.', colorEquipado: 'Färgen utrustades.',
@@ -493,6 +512,8 @@ agregarIdioma(
   {
     titulo: 'Inventar', subtitulo: 'Velg farger og symbolet du vil bruke',
     menuDescripcion: 'Utstyr gjenstandene dine', coloresFicha: 'Farge for {ficha}', simbolosFicha: 'Symbol for {ficha}',
+    simboloJugador: 'Symbolet ditt, {nombre}', simboloNexus: 'Symbolet til NEXUS',
+    simboloUsadoPor: 'Brukes av {nombre}',
     equipado: 'Utstyrt', fluor: 'Neon', fichaPreferida: 'Symbol mot NEXUS',
     fichaPreferidaDescripcion: 'Valget oppdaterer også velgeren i spillet.',
     coloresIntercambiados: 'Fargene til X og O ble byttet.', colorEquipado: 'Fargen ble utstyrt.',

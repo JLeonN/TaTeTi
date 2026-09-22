@@ -116,8 +116,8 @@
         </div>
       </section>
 
-      <section v-for="ficha in fichas" :key="`simbolos-${ficha}`" class="seccion-inventario">
-        <h2 class="titulo-seccion-inventario">{{ t('inventario.simbolosFicha', { ficha }) }}</h2>
+      <section v-for="ficha in fichasSimbolos" :key="`simbolos-${ficha}`" class="seccion-inventario">
+        <h2 class="titulo-seccion-inventario">{{ tituloSimbolos(ficha) }}</h2>
         <div class="panel-inventario">
           <div class="carrusel-colores" role="list">
             <button
@@ -133,8 +133,20 @@
             >
               <FichaVisual class="simbolo-color" :ficha="ficha" :simbolo-id="articulo.id" />
               <span class="nombre-color">{{ t(articulo.claveNombre) }}</span>
-              <span v-if="simboloEnUso(ficha, articulo.id)" class="estado-no-disponible">
-                {{ t('inventario.simboloEnUso') }}
+              <span
+                v-if="simboloEnUso(ficha, articulo.id)"
+                v-desplazar-si-desborda
+                class="estado-no-disponible"
+                aria-hidden="true"
+              >
+                <span class="cinta-estado">
+                  <span class="texto-cinta">
+                    {{ textoSimboloEnUso(ficha) }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+                  </span>
+                  <span class="texto-cinta texto-cinta--repetido">
+                    {{ textoSimboloEnUso(ficha) }}<span class="separador-cinta">&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+                  </span>
+                </span>
               </span>
             </button>
           </div>
@@ -146,7 +158,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { obtenerArticulo, obtenerArticulosPorCategoria } from 'src/Servicios/Economia/CatalogoTienda'
 import { useEquipamiento } from 'src/components/Composables/useEquipamiento'
@@ -160,8 +172,36 @@ const { equipamiento, articulosAdquiridos, cargarEquipamiento, equiparArticulo }
 const { fichaUsuario, cargarFichaUsuario, guardarFichaUsuario } = useFichaJugador()
 const { nombreUsuario, cargarNombre } = useConfiguracion()
 const fichas = ['X', 'O']
+const fichasSimbolos = computed(() => [fichaUsuario.value, fichaUsuario.value === 'X' ? 'O' : 'X'])
 const mensajeEstado = ref('')
 const estadoConError = ref(false)
+const observadoresDesbordamiento = new WeakMap()
+
+const actualizarDesplazamiento = (elemento) => {
+  const texto = elemento.querySelector('.texto-cinta:not(.texto-cinta--repetido)')
+  elemento.classList.toggle(
+    'con-desplazamiento',
+    Boolean(texto && texto.scrollWidth > elemento.clientWidth + 1),
+  )
+}
+
+const vDesplazarSiDesborda = {
+  mounted(elemento) {
+    const medir = () => actualizarDesplazamiento(elemento)
+    const observador = new ResizeObserver(medir)
+    observador.observe(elemento)
+    observadoresDesbordamiento.set(elemento, observador)
+    window.requestAnimationFrame(medir)
+    void document.fonts?.ready.then(medir)
+  },
+  updated(elemento) {
+    window.requestAnimationFrame(() => actualizarDesplazamiento(elemento))
+  },
+  unmounted(elemento) {
+    observadoresDesbordamiento.get(elemento)?.disconnect()
+    observadoresDesbordamiento.delete(elemento)
+  },
+}
 const articulosDisponiblesPorCategoria = (categoria) =>
   obtenerArticulosPorCategoria(categoria).filter((articulo) => articulosAdquiridos.value.has(articulo.id))
 const nombreArticulo = (id) => {
@@ -213,6 +253,16 @@ const simboloEnUso = (ficha, articuloId) => {
   return equipamiento.value[otraFicha].simbolo === articuloId && equipamiento.value[ficha].simbolo !== articuloId
 }
 
+const tituloSimbolos = (ficha) =>
+  fichaUsuario.value === ficha
+    ? t('inventario.simboloJugador', { nombre: nombreUsuario.value || t('juego.jugador') })
+    : t('inventario.simboloNexus')
+
+const textoSimboloEnUso = (ficha) => {
+  const otraFicha = ficha === 'X' ? 'O' : 'X'
+  return t('inventario.simboloUsadoPor', { nombre: nombreParticipanteFicha(otraFicha) })
+}
+
 const seleccionarFicha = async (ficha) => {
   const guardada = await guardarFichaUsuario(ficha)
   estadoConError.value = !guardada
@@ -226,11 +276,11 @@ const textoAccesibleColor = (ficha, articulo) =>
 
 const textoAccesibleSimbolo = (ficha, articulo) => {
   const estado = simboloEnUso(ficha, articulo.id)
-    ? ` ${t('inventario.simboloEnUso')}`
+    ? ` ${textoSimboloEnUso(ficha)}`
     : equipamiento.value[ficha].simbolo === articulo.id
       ? ` ${t('inventario.simboloEquipado')}`
       : ''
-  return `${t('inventario.simbolosFicha', { ficha })}: ${t(articulo.claveNombre)}.${estado}`
+  return `${tituloSimbolos(ficha)}: ${t(articulo.claveNombre)}.${estado}`
 }
 
 const textoAccesibleFicha = (ficha) =>
@@ -462,8 +512,32 @@ onMounted(async () => {
   font-size: 0.54rem;
   font-weight: 800;
   line-height: 1;
-  text-overflow: ellipsis;
   white-space: nowrap;
+}
+.cinta-estado {
+  display: flex;
+  width: max-content;
+}
+.texto-cinta {
+  flex: 0 0 auto;
+}
+.texto-cinta--repetido {
+  display: none;
+}
+.separador-cinta {
+  display: none;
+}
+.estado-no-disponible.con-desplazamiento .cinta-estado {
+  animation: desplazar-estado 8s linear infinite;
+}
+.estado-no-disponible.con-desplazamiento .texto-cinta--repetido,
+.estado-no-disponible.con-desplazamiento .separador-cinta {
+  display: inline;
+}
+@keyframes desplazar-estado {
+  to {
+    transform: translateX(-50%);
+  }
 }
 .etiqueta-fluor {
   display: inline-flex;
@@ -519,6 +593,18 @@ onMounted(async () => {
 .chip-participante.nexus {
   background: linear-gradient(135deg, var(--color-desactivado), var(--color-boton));
   box-shadow: 0 0 7px color-mix(in srgb, var(--color-boton) 46%, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .estado-no-disponible.con-desplazamiento .cinta-estado {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    animation: none;
+    text-overflow: ellipsis;
+  }
+  .estado-no-disponible.con-desplazamiento .texto-cinta--repetido {
+    display: none;
+  }
 }
 @media (max-width: 600px) {
   .carrusel-colores {
