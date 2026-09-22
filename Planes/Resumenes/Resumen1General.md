@@ -1,6 +1,6 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 24 de julio de 2026. Versión documentada: `4.0.12`.
+> Vigencia: 21 de septiembre de 2026. Versión documentada: `4.0.13`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
@@ -54,7 +54,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - La IA usa siempre la ficha contraria.
 - La selección de ficha solo se habilita con el tablero vacío y se bloquea tras la primera jugada.
 - En multijugador siempre comienza `X`.
-- Los colores pertenecen a las fichas: `X` roja y `O` azul, sin depender de quién las use.
+- Los colores y símbolos equipados pertenecen a las fichas internas `X` y `O`, sin depender de quién las use; rojo, azul, X y O son los valores iniciales.
 - Los nombres largos nunca deben superponer elementos; se recortan con puntos suspensivos como último recurso.
 - El contenido no debe quedar debajo de barras Android, notch, teclado ni banner.
 
@@ -67,14 +67,14 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `puntuacion_sistema`: puntos y rachas.
 - `contador_partidas_publicidad`: progreso hacia el siguiente intersticial.
 - `estado_recompensas`: disponibilidad diaria y protección horaria local.
-- `equipamiento_fichas`: respaldo del color equipado en `X` y `O`.
+- `equipamiento_fichas`: respaldo de colores y símbolos equipados en `X` y `O`.
 
 ## Estadísticas con SQLite
 
-- La base `EstadisticasTaTeTi` registra partidas contra NEXUS y sus turnos.
+- La base `EstadisticasTaTeTi`, en esquema versión 4, registra partidas contra NEXUS, sus turnos y los símbolos utilizados.
 - En Android usa `@capacitor-community/sqlite`; en web usa `jeep-sqlite` sobre IndexedDB.
 - No existe límite artificial, limpieza automática ni botón para borrar estadísticas.
-- La página filtra visualmente por dificultad y ficha mediante chips.
+- La página filtra visualmente por dificultad y símbolo mediante chips que reflejan el equipamiento actual, conservando el símbolo histórico de cada partida.
 - Período, resultado, fechas y horarios activos siguen disponibles en los datos o consultas, pero no se muestran en la interfaz actual.
 - Leer `Planes/Resumenes/Resumen5Estadisticas.md` y `src/Servicios/Estadisticas/ContratoEstadisticas.md` antes de modificar este módulo.
 
@@ -97,6 +97,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - Se usa `100dvh` con fallback compatible.
 - AdMob usa `ADAPTIVE_BANNER`.
 - `usePublicidad.js` escucha el tamaño real del banner, actualiza la variable global y libera el espacio si se oculta o falla.
+- Las recompensas programan una única actualización para la próxima medianoche local o el final de un bloqueo horario.
 
 ## Actualizaciones remotas
 
