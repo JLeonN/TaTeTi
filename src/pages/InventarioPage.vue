@@ -59,7 +59,7 @@
             :aria-label="`${t('inventario.tableroEquipado')}: ${nombreArticulo(tableroEquipado)}`"
           >
             <VistaPreviaTablero class="vista-tablero-equipado" :tablero-id="tableroEquipado" />
-            <span>
+            <span class="informacion-tablero-equipado">
               <small>{{ t('inventario.tableroEquipado') }}</small>
               <strong>{{ nombreArticulo(tableroEquipado) }}</strong>
             </span>
@@ -487,7 +487,7 @@ onMounted(async () => {
   flex: 0 0 76px;
   width: 76px;
 }
-.tablero-equipado > span {
+.informacion-tablero-equipado {
   display: flex;
   min-width: 0;
   flex-direction: column;
