@@ -469,6 +469,7 @@ import { useI18n } from 'vue-i18n'
 import BarraFiltrosEstadisticas from 'src/components/Estadisticas/BarraFiltrosEstadisticas.vue'
 import EncabezadoPanel from 'src/components/Estadisticas/EncabezadoPanelEstadistica.vue'
 import FichaVisual from 'src/components/TaTeTi/Compartido/FichaVisual.vue'
+import { obtenerArticulo } from 'src/Servicios/Economia/CatalogoTienda'
 import { inicializarBaseEstadisticas } from 'src/Servicios/Estadisticas/BaseDatosEstadisticas'
 import { obtenerEstadisticas } from 'src/Servicios/Estadisticas/ConsultasEstadisticas'
 import {
@@ -616,10 +617,20 @@ const dificultadesCompletas = computed(() =>
       },
   ),
 )
-const opcionesFicha = computed(() => [
-  equipamiento.value.X?.simbolo,
-  equipamiento.value.O?.simbolo,
-].filter(Boolean))
+const opcionesFicha = computed(() =>
+  ['X', 'O']
+    .map((ficha) => {
+      const configuracionFicha = equipamiento.value[ficha]
+      const articuloSimbolo = obtenerArticulo(configuracionFicha?.simbolo)
+      return {
+        valor: configuracionFicha?.simbolo,
+        ficha,
+        colorId: configuracionFicha?.color,
+        etiqueta: articuloSimbolo ? t(articuloSimbolo.claveNombre) : ficha,
+      }
+    })
+    .filter((opcion) => opcion.valor),
+)
 const fichasCompletas = computed(() => datos.value?.porFicha?.filter((fila) => numero(fila.partidas) > 0) ?? [])
 const fondoGraficaResultados = computed(() => {
   const total = Math.max(1, numero(datos.value.resumen.finalizadas))
@@ -758,8 +769,11 @@ watch(
   { deep: true },
 )
 
-watch(opcionesFicha, (simbolos) => {
-  if (filtros.ficha !== 'todas' && !simbolos.includes(filtros.ficha)) {
+watch(opcionesFicha, (opciones) => {
+  if (
+    filtros.ficha !== 'todas' &&
+    !opciones.some((opcion) => opcion.valor === filtros.ficha)
+  ) {
     filtros.ficha = 'todas'
   }
 })

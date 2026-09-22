@@ -95,6 +95,16 @@ for (const ruta of [
   assert.match(contenido, /FichaVisual/, `${ruta}: falta integrar FichaVisual.`)
 }
 
+const contenidoFiltrosEstadisticas = await readFile(
+  new URL('../src/components/Estadisticas/BarraFiltrosEstadisticas.vue', import.meta.url),
+  'utf8',
+)
+assert.match(
+  contenidoFiltrosEstadisticas,
+  /:color-id="opcion\.colorId"/,
+  'Los filtros de Estadísticas deben reflejar el color equipado de cada ficha.',
+)
+
 const SQL = await initSqlJs()
 const base = new SQL.Database()
 for (const migracion of MIGRACIONES_ESTADISTICAS.filter((migracion) => migracion.toVersion <= 2)) {

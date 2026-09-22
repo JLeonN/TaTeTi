@@ -27,9 +27,16 @@
           class="chip-filtro"
           :class="{ activo: ficha === opcion.valor }"
           :aria-pressed="ficha === opcion.valor"
+          :aria-label="opcion.etiqueta"
           @click="$emit('update:ficha', opcion.valor)"
         >
-          <FichaVisual v-if="opcion.valor !== 'todas'" :simbolo-id="opcion.valor" tamano="1.35rem" />
+          <FichaVisual
+            v-if="opcion.valor !== 'todas'"
+            :ficha="opcion.ficha"
+            :simbolo-id="opcion.valor"
+            :color-id="opcion.colorId"
+            tamano="1.35rem"
+          />
           <span v-else>{{ opcion.etiqueta }}</span>
         </button>
       </div>
