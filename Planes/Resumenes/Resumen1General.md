@@ -1,6 +1,6 @@
 # Resumen general de TaTeTi
 
-> Vigencia: 21 de septiembre de 2026. Versión documentada: `4.0.13`.
+> Vigencia: 22 de septiembre de 2026. Versión documentada: `4.0.14`.
 > Este archivo está pensado como punto de entrada para otra IA. Antes de modificar el proyecto, leer `AGENTS.md` y verificar el código actual.
 
 ## Propósito
@@ -12,8 +12,8 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `/`: partida contra IA.
 - `/jugador-vs-jugador`: multijugador local.
 - `/estadisticas`: rendimiento e historial agregado de partidas contra NEXUS.
-- `/tienda`: recompensas diarias, anuncios recompensados y compra de colores y símbolos.
-- `/inventario`: equipamiento de colores, símbolos y ficha preferida contra NEXUS.
+- `/tienda`: recompensas diarias, anuncios recompensados y compra de colores, símbolos y tableros.
+- `/inventario`: equipamiento de colores, símbolos, tablero global y ficha preferida contra NEXUS.
 - `/configuracion`: nombre e idioma.
 - Cualquier ruta desconocida: página 404.
 
@@ -55,6 +55,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - La selección de ficha solo se habilita con el tablero vacío y se bloquea tras la primera jugada.
 - En multijugador siempre comienza `X`.
 - Los colores y símbolos equipados pertenecen a las fichas internas `X` y `O`, sin depender de quién las use; rojo, azul, X y O son los valores iniciales.
+- El tablero equipado es global para partidas contra NEXUS y multijugador; se compra en la Tienda y se selecciona en el Inventario.
 - Los nombres largos nunca deben superponer elementos; se recortan con puntos suspensivos como último recurso.
 - El contenido no debe quedar debajo de barras Android, notch, teclado ni banner.
 
@@ -68,6 +69,7 @@ TaTeTi es una aplicación móvil hecha con Vue 3, Quasar 2 y Capacitor 7. Ofrece
 - `contador_partidas_publicidad`: progreso hacia el siguiente intersticial.
 - `estado_recompensas`: disponibilidad diaria y protección horaria local.
 - `equipamiento_fichas`: respaldo de colores y símbolos equipados en `X` y `O`.
+- `tablero_equipado`: respaldo del diseño de tablero seleccionado.
 
 ## Estadísticas con SQLite
 
