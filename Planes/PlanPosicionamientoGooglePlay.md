@@ -81,7 +81,7 @@ Actualiza el plan al terminar cada paso. No avances a la fase siguiente sin que 
 
 ### Objetivo
 
-Publicar un título comprensible, buscable y fiel a la aplicación, sin superar los 30 caracteres.
+Publicar títulos localizados comprensibles, buscables y fieles a la aplicación, sin superar los 30 caracteres por idioma.
 
 ### Contexto autónomo para un chat nuevo
 
@@ -89,26 +89,30 @@ Publicar un título comprensible, buscable y fiel a la aplicación, sin superar 
 - La ficha pública usa actualmente `Ta-Te-Ti: Vs IA Invencible`, mientras `PublicacionGooglePlay/FichaGooglePlay.json` conserva `Ta-Te-Ti` para `es-419`.
 - Las métricas verificadas muestran buena conversión aproximada y pocas impresiones, por lo que el título debe priorizar relevancia de búsqueda sin perder claridad.
 - El chat debe investigar competidores actuales en Google Play antes de proponer títulos y debe usar fuentes públicas recientes.
-- Entregable: título español elegido, JSON actualizado, publicación manual guiada y resultado anotado en este plan.
+- Entregable: títulos elegidos para los diez idiomas, JSON actualizado, publicación manual guiada y resultado anotado en este plan.
 
 ### Pasos de ejecución
 
-- [ ] Buscar en Google Play los términos `ta te ti`, `tres en raya` y `tic tac toe` usando la región e idioma español de Latinoamérica.
-- [ ] Comparar entre cinco y diez competidores directos.
+- [x] Buscar en Google Play los términos `ta te ti`, `tres en raya` y `tic tac toe` usando la región e idioma español de Latinoamérica.
+- [x] Comparar entre cinco y diez competidores directos.
   - Registrar título, cantidad visible de descargas, valoración y palabras repetidas.
   - No copiar nombres de marca, frases completas ni recursos gráficos.
-- [ ] Preparar entre tres y cinco títulos candidatos.
+- [x] Preparar entre tres y cinco títulos candidatos.
   - Incluir la búsqueda principal de manera natural.
   - Evitar afirmaciones absolutas como `la mejor`, `invencible` o `número uno`.
   - Comprobar el límite de 30 caracteres contando espacios y signos.
-- [ ] Elegir el título definitivo con Leo.
-- [ ] Actualizar únicamente `idiomas.es-419.nombre` en `PublicacionGooglePlay/FichaGooglePlay.json`.
-- [ ] Publicar el mismo título en la ficha española de Play Console.
-- [ ] Registrar la fecha de publicación y no cambiar todavía la descripción ni las imágenes.
+- [x] Elegir el título definitivo español con Leo.
+- [x] Investigar el nombre habitual del juego en los otros nueve idiomas habilitados.
+- [x] Preparar y validar títulos localizados de hasta 30 caracteres.
+- [x] Actualizar los diez campos `nombre` en `PublicacionGooglePlay/FichaGooglePlay.json`.
+- [x] Cargar los diez títulos localizados en Play Console y enviarlos juntos a revisión.
+- [x] Mantener sin cambios las descripciones y las imágenes durante esta fase.
+- [ ] Confirmar que Google aprobó y publicó los diez títulos.
+- [ ] Registrar la fecha efectiva de publicación.
 
 ### Criterio de finalización
 
-- El título aprobado aparece en la ficha pública española y coincide con el JSON del proyecto.
+- Los diez títulos aprobados aparecen en sus fichas públicas y coinciden con el JSON del proyecto.
 
 ## FASE 2: Optimizar la descripción corta en español
 
@@ -251,7 +255,7 @@ Aplicar la estrategia aprobada a los otros nueve idiomas sin realizar traduccion
 
 ### Pasos de ejecución
 
-- [ ] Adaptar título, descripción corta y descripción completa para `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`.
+- [ ] Adaptar la descripción corta y la descripción completa para `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`; los títulos se resuelven en la Fase 1.
 - [ ] Usar en cada idioma el nombre local habitual del juego.
 - [ ] Mantener `Ta-Te-Ti` y `NEXUS` como nombres propios cuando corresponda.
 - [ ] Actualizar cada entrada de `PublicacionGooglePlay/FichaGooglePlay.json`.
@@ -397,12 +401,38 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 1: Título
 
-- Estado: Pendiente
+- Estado: En revisión de Google Play
 - Título anterior: `Ta-Te-Ti: Vs IA Invencible`
-- Título aprobado: Pendiente
-- Fecha de publicación: Pendiente
-- Evidencia o enlace: Pendiente
-- Observaciones: Pendiente
+- Título español aprobado: `Ta-Te-Ti: Tres en raya con IA`
+- Títulos localizados preparados:
+  - `en-US`: `Ta-Te-Ti: Tic Tac Toe vs AI`
+  - `pt-BR`: `Ta-Te-Ti: Jogo da Velha IA`
+  - `fr-FR`: `Ta-Te-Ti : Morpion avec IA`
+  - `it-IT`: `Ta-Te-Ti: Tris contro IA`
+  - `de-DE`: `Ta-Te-Ti: Tic-Tac-Toe KI`
+  - `ja-JP`: `Ta-Te-Ti：三目並べAI対戦`
+  - `ko-KR`: `Ta-Te-Ti: AI 틱택토`
+  - `sv-SE`: `Ta-Te-Ti: Tre i rad mot AI`
+  - `no-NO`: `Ta-Te-Ti: Tre på rad mot KI`
+- Fecha de envío a revisión: 23 de septiembre de 2026
+- Fecha de publicación: Pendiente de aprobación
+- Evidencia: Google Play Console confirmó el envío conjunto de 10 cambios de nombre, uno por cada idioma habilitado.
+- Competidores revisados:
+  - `Juego OX - Tres en Raya`: 5 M+ de descargas y valoración 4,8.
+  - `Tres en raya - XO Online`: 10 M+ de descargas y valoración 4,6.
+  - `Tres en Raya: Tic Tac Toe`: 10 M+ de descargas y valoración 4,6.
+  - `Tres en Raya - juego de Gato`: 100 mil+ descargas y valoración 4,4.
+  - `Mega Tres En Raya Online`: 1 M+ de descargas y valoración 4,6.
+  - `Tateti — Juego del Gato`: 1 M+ de descargas y valoración 4,4.
+  - `Tres en Raya — IA minimax`: 500+ descargas, sin valoración pública suficiente.
+- Patrones observados: `Tres en raya` domina los títulos en español; `Tic Tac Toe`, `XO`, `Online`, `Juego del Gato` e `IA` se usan como modificadores.
+- Candidatos preparados:
+  - `Ta-Te-Ti: Tres en raya con IA` — 29 caracteres.
+  - `Ta-Te-Ti: Tres en raya` — 22 caracteres.
+  - `Tres en raya: Ta-Te-Ti con IA` — 29 caracteres.
+  - `Ta-Te-Ti: IA y dos jugadores` — 28 caracteres.
+  - `Ta-Te-Ti: Desafía a NEXUS` — 25 caracteres.
+- Recomendación de CH: `Ta-Te-Ti: Tres en raya con IA`, porque conserva la identidad regional, incorpora la búsqueda dominante y comunica el diferencial principal sin una promesa absoluta.
 
 ### Fase 2: Descripción corta
 
@@ -470,4 +500,4 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 Fecha de creación: 23 de septiembre de 2026
 Fecha de última actualización: 23 de septiembre de 2026
-Estado: BORRADOR
+Estado: EN PROCESO
