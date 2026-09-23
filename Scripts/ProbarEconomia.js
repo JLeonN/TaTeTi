@@ -77,11 +77,25 @@ assert.deepEqual(
 assert.equal(TABLERO_PREDETERMINADO_ID, 'tableroClasico')
 assert.deepEqual(
   catalogoTableros.map((articulo) => articulo.id),
-  ['tableroClasico', 'tableroEmblema', 'tableroTorbellino'],
+  [
+    'tableroClasico',
+    'tableroEmblema',
+    'tableroTorbellino',
+    'tableroNeonTecnologico',
+    'tableroCosmos',
+    'tableroFuegoHielo',
+    'tableroBosqueMagico',
+    'tableroArcadeRetro',
+    'tableroTrianguloMistico',
+    'tableroLaberintoCuadrado',
+    'tableroEstrellaCelestial',
+    'tableroNucleoHexagonal',
+    'tableroFestivalGeometrico',
+  ],
 )
 assert.deepEqual(
   catalogoTableros.map((articulo) => articulo.precio),
-  [0, 0, 200],
+  [0, 0, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
 )
 assert.deepEqual(
   catalogoTableros.filter((articulo) => articulo.inicial).map((articulo) => articulo.id),
@@ -90,7 +104,21 @@ assert.deepEqual(
 assert.ok(catalogoTableros.every((articulo) => articulo.categoria === 'tablero'))
 assert.deepEqual(
   catalogoTableros.map((articulo) => articulo.aparienciaTablero.rutaImagen),
-  [null, '/favicon.png', '/Tableros/TorbellinoXO.png'],
+  [
+    null,
+    '/favicon.png',
+    '/Tableros/TorbellinoXO.png',
+    '/Tableros/NeonTecnologico.png',
+    '/Tableros/Cosmos.png',
+    '/Tableros/FuegoHielo.png',
+    '/Tableros/BosqueMagico.png',
+    '/Tableros/ArcadeRetro.png',
+    '/Tableros/TrianguloMistico.png',
+    '/Tableros/LaberintoCuadrado.png',
+    '/Tableros/EstrellaCelestial.png',
+    '/Tableros/NucleoHexagonal.png',
+    '/Tableros/FestivalGeometrico.png',
+  ],
 )
 assert.deepEqual(
   catalogoTableros.map((articulo) => ({
@@ -101,6 +129,16 @@ assert.deepEqual(
     { oscurecimiento: 100, opacidadCeldas: 100 },
     { oscurecimiento: 62, opacidadCeldas: 46 },
     { oscurecimiento: 68, opacidadCeldas: 52 },
+    { oscurecimiento: 78, opacidadCeldas: 38 },
+    { oscurecimiento: 75, opacidadCeldas: 42 },
+    { oscurecimiento: 72, opacidadCeldas: 44 },
+    { oscurecimiento: 70, opacidadCeldas: 46 },
+    { oscurecimiento: 74, opacidadCeldas: 40 },
+    { oscurecimiento: 72, opacidadCeldas: 42 },
+    { oscurecimiento: 78, opacidadCeldas: 38 },
+    { oscurecimiento: 70, opacidadCeldas: 44 },
+    { oscurecimiento: 76, opacidadCeldas: 40 },
+    { oscurecimiento: 68, opacidadCeldas: 46 },
   ],
 )
 assert.ok(
@@ -154,7 +192,21 @@ for (const [codigo, mensajes] of Object.entries(mensajesEconomia)) {
   assert.ok(mensajes.tienda.simbolos.cuadrado, `${codigo}: falta el nombre del cuadrado.`)
   assert.ok(mensajes.tienda.simbolos.estrella, `${codigo}: falta el nombre de la estrella.`)
   assert.ok(mensajes.tienda.simbolos.hexagono, `${codigo}: falta el nombre del hexágono.`)
-  for (const clave of ['clasico', 'emblemaXO', 'torbellinoXO']) {
+  for (const clave of [
+    'clasico',
+    'emblemaXO',
+    'torbellinoXO',
+    'neonTecnologico',
+    'cosmos',
+    'fuegoHielo',
+    'bosqueMagico',
+    'arcadeRetro',
+    'trianguloMistico',
+    'laberintoCuadrado',
+    'estrellaCelestial',
+    'nucleoHexagonal',
+    'festivalGeometrico',
+  ]) {
     assert.ok(mensajes.tienda.tableros[clave], `${codigo}: falta tienda.tableros.${clave}.`)
   }
   assert.ok(mensajes.tienda.colores.negro, `${codigo}: falta el nombre del negro.`)
@@ -165,6 +217,21 @@ const recursoTorbellino = await stat(
   new URL('../public/Tableros/TorbellinoXO.png', import.meta.url),
 )
 assert.ok(recursoTorbellino.isFile() && recursoTorbellino.size > 0)
+for (const archivo of [
+  'NeonTecnologico.png',
+  'Cosmos.png',
+  'FuegoHielo.png',
+  'BosqueMagico.png',
+  'ArcadeRetro.png',
+  'TrianguloMistico.png',
+  'LaberintoCuadrado.png',
+  'EstrellaCelestial.png',
+  'NucleoHexagonal.png',
+  'FestivalGeometrico.png',
+]) {
+  const recurso = await stat(new URL(`../public/Tableros/${archivo}`, import.meta.url))
+  assert.ok(recurso.isFile() && recurso.size > 0, `Falta el tablero ${archivo}.`)
+}
 
 const contenidoTienda = await readFile(
   new URL('../src/pages/TiendaPage.vue', import.meta.url),
