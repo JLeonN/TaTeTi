@@ -107,18 +107,18 @@ Publicar títulos localizados comprensibles, buscables y fieles a la aplicación
 - [x] Actualizar los diez campos `nombre` en `PublicacionGooglePlay/FichaGooglePlay.json`.
 - [x] Cargar los diez títulos localizados en Play Console y enviarlos juntos a revisión.
 - [x] Mantener sin cambios las descripciones y las imágenes durante esta fase.
-- [ ] Confirmar que Google aprobó y publicó los diez títulos.
-- [ ] Registrar la fecha efectiva de publicación.
+- [x] Confirmar que Google aprobó y publicó los diez títulos.
+- [x] Registrar la fecha efectiva de publicación.
 
 ### Criterio de finalización
 
 - Los diez títulos aprobados aparecen en sus fichas públicas y coinciden con el JSON del proyecto.
 
-## FASE 2: Optimizar la descripción corta en español
+## FASE 2: Optimizar las descripciones cortas localizadas
 
 ### Objetivo
 
-Explicar el beneficio principal y las funciones diferenciales en un máximo de 80 caracteres.
+Explicar el beneficio principal y las funciones diferenciales en los diez idiomas habilitados, con un máximo de 80 caracteres por idioma.
 
 ### Contexto autónomo para un chat nuevo
 
@@ -126,23 +126,26 @@ Explicar el beneficio principal y las funciones diferenciales en un máximo de 8
 - Debe leerse el título publicado para evitar repetirlo literalmente.
 - La descripción corta actual es `Juega al Ta-Te-Ti contra NEXUS o con otra persona.`.
 - Debe describir beneficios reales de la versión actual y usar el término principal validado durante la investigación de competidores.
-- Entregable: descripción corta española elegida, JSON actualizado, publicación manual guiada y resultado anotado.
+- Entregable: diez descripciones cortas localizadas, JSON actualizado, publicación manual guiada y resultado anotado.
 
 ### Pasos de ejecución
 
-- [ ] Revisar el rendimiento del título después de un período inicial razonable, sin atribuir conclusiones a muestras demasiado pequeñas.
-- [ ] Redactar entre tres y cinco descripciones cortas candidatas.
+- [x] Revisar las recomendaciones oficiales de Google Play y las fichas de competidores directos.
+- [x] Redactar entre tres y cinco descripciones cortas españolas candidatas.
   - Mencionar de forma natural `tres en raya` o el término validado en la fase anterior.
   - Priorizar IA, dificultades, estadísticas o multijugador según lo observado en la competencia.
   - No repetir literalmente el título.
-- [ ] Elegir una variante con Leo y comprobar el límite de 80 caracteres.
-- [ ] Actualizar `idiomas.es-419.descripcionCorta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
-- [ ] Publicar únicamente la descripción corta española en Play Console.
+- [x] Elegir la variante española con Leo y comprobar el límite de 80 caracteres.
+- [x] Adaptar el mensaje a los otros nueve idiomas usando la terminología existente de la aplicación.
+- [x] Comprobar el límite de 80 caracteres en las diez variantes.
+- [x] Actualizar los diez campos `descripcionCorta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
+- [x] Cargar y enviar a revisión las diez descripciones cortas en Play Console.
+- [ ] Confirmar que Google aprobó y publicó las diez descripciones.
 - [ ] Registrar la fecha del cambio.
 
 ### Criterio de finalización
 
-- La descripción corta aprobada está publicada y coincide con el JSON del proyecto.
+- Las diez descripciones cortas aprobadas están publicadas y coinciden con el JSON del proyecto.
 
 ## FASE 3: Reescribir la descripción completa en español
 
@@ -255,7 +258,7 @@ Aplicar la estrategia aprobada a los otros nueve idiomas sin realizar traduccion
 
 ### Pasos de ejecución
 
-- [ ] Adaptar la descripción corta y la descripción completa para `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`; los títulos se resuelven en la Fase 1.
+- [ ] Adaptar la descripción completa para `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`; los títulos y las descripciones cortas se resuelven en las Fases 1 y 2.
 - [ ] Usar en cada idioma el nombre local habitual del juego.
 - [ ] Mantener `Ta-Te-Ti` y `NEXUS` como nombres propios cuando corresponda.
 - [ ] Actualizar cada entrada de `PublicacionGooglePlay/FichaGooglePlay.json`.
@@ -384,8 +387,8 @@ Validar que cada publicación sea correcta, medible y coherente con el proyecto.
 
 ## Progreso del plan
 
-- [ ] Fase 1: Optimizar el título en español
-- [ ] Fase 2: Optimizar la descripción corta en español
+- [x] Fase 1: Optimizar los títulos localizados
+- [ ] Fase 2: Optimizar las descripciones cortas localizadas
 - [ ] Fase 3: Reescribir la descripción completa en español
 - [ ] Fase 4: Revisar categoría y etiquetas
 - [ ] Fase 5: Mejorar las capturas en español
@@ -401,7 +404,7 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 1: Título
 
-- Estado: En revisión de Google Play
+- Estado: Completada
 - Título anterior: `Ta-Te-Ti: Vs IA Invencible`
 - Título español aprobado: `Ta-Te-Ti: Tres en raya con IA`
 - Títulos localizados preparados:
@@ -415,7 +418,7 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
   - `sv-SE`: `Ta-Te-Ti: Tre i rad mot AI`
   - `no-NO`: `Ta-Te-Ti: Tre på rad mot KI`
 - Fecha de envío a revisión: 23 de septiembre de 2026
-- Fecha de publicación: Pendiente de aprobación
+- Fecha de publicación: 23 de septiembre de 2026
 - Evidencia: Google Play Console confirmó el envío conjunto de 10 cambios de nombre, uno por cada idioma habilitado.
 - Competidores revisados:
   - `Juego OX - Tres en Raya`: 5 M+ de descargas y valoración 4,8.
@@ -436,10 +439,13 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 2: Descripción corta
 
-- Estado: Pendiente
-- Texto aprobado: Pendiente
-- Fecha de publicación: Pendiente
-- Observaciones: Pendiente
+- Estado: En revisión de Google Play
+- Texto público español anterior: `Tres en raya vs IA imposible de vencer. ¿Podrás ganarle a NEXUS? ¡Desafío!`
+- Texto español aprobado: `Juega contra NEXUS en 3 dificultades, con multijugador local y estadísticas.`
+- Descripciones localizadas: guardadas y validadas en `PublicacionGooglePlay/FichaGooglePlay.json`.
+- Fecha de envío a revisión: 23 de septiembre de 2026
+- Fecha de publicación: Pendiente de aprobación
+- Observaciones: Las diez variantes respetan el máximo de 80 caracteres, describen funciones verificadas en el código y evitan afirmaciones absolutas como `imposible de vencer`.
 
 ### Fase 3: Descripción completa
 
