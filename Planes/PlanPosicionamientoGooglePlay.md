@@ -140,45 +140,48 @@ Explicar el beneficio principal y las funciones diferenciales en los diez idioma
 - [x] Comprobar el límite de 80 caracteres en las diez variantes.
 - [x] Actualizar los diez campos `descripcionCorta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
 - [x] Cargar y enviar a revisión las diez descripciones cortas en Play Console.
-- [ ] Confirmar que Google aprobó y publicó las diez descripciones.
-- [ ] Registrar la fecha del cambio.
+- [x] Confirmar que Google aprobó y publicó las diez descripciones.
+- [x] Registrar la fecha del cambio.
 
 ### Criterio de finalización
 
 - Las diez descripciones cortas aprobadas están publicadas y coinciden con el JSON del proyecto.
 
-## FASE 3: Reescribir la descripción completa en español
+## FASE 3: Reescribir las descripciones completas localizadas
 
 ### Objetivo
 
-Crear una descripción atractiva y verificable que refleje el estado real de la aplicación.
+Crear descripciones atractivas, localizadas y verificables que reflejen el estado real de la aplicación en los diez idiomas habilitados.
 
 ### Contexto autónomo para un chat nuevo
 
 - Requiere que las Fases 1 y 2 estén terminadas y registradas.
 - La descripción pública antigua contiene afirmaciones como `miles de jugadores`, `la IA más poderosa` y `el mejor`, incompatibles con los datos públicos o difíciles de demostrar.
 - La versión real incluye NEXUS, tres dificultades, multijugador local, estadísticas, puntuación, tienda, inventario, regalo diario, símbolos y tableros.
-- El texto canónico que debe modificarse está en `idiomas.es-419.descripcionCompleta` de `PublicacionGooglePlay/FichaGooglePlay.json`.
-- Entregable: descripción completa española aprobada, JSON actualizado, publicación manual guiada y resultado anotado.
+- Los textos canónicos están en los diez campos `descripcionCompleta` de `PublicacionGooglePlay/FichaGooglePlay.json`.
+- Entregable: diez descripciones completas aprobadas, JSON actualizado, publicación manual guiada y resultado anotado.
 
 ### Pasos de ejecución
 
-- [ ] Sustituir afirmaciones no demostrables como `miles de jugadores`, `la IA más poderosa` o `el mejor`.
-- [ ] Redactar una introducción breve que explique el juego y su diferencia principal.
-- [ ] Presentar las funciones reales en bloques fáciles de leer.
+- [x] Sustituir afirmaciones no demostrables como `miles de jugadores`, `la IA más poderosa` o `el mejor`.
+- [x] Redactar una introducción breve que explique el juego y su diferencia principal.
+- [x] Presentar las funciones reales en bloques fáciles de leer.
   - Juego contra NEXUS con tres dificultades.
   - Multijugador local en el mismo dispositivo.
   - Estadísticas, puntuación y rachas.
   - Símbolos y tableros personalizables.
   - Progreso local y ausencia de registro obligatorio.
-- [ ] Usar sinónimos relevantes con naturalidad y sin listas artificiales de palabras clave.
-- [ ] Elegir el texto definitivo con Leo.
-- [ ] Actualizar `idiomas.es-419.descripcionCompleta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
-- [ ] Publicar la descripción completa española sin modificar todavía otros idiomas.
+- [x] Usar sinónimos relevantes con naturalidad y sin listas artificiales de palabras clave.
+- [x] Elegir el texto español definitivo con Leo.
+- [x] Adaptar el texto a los otros nueve idiomas con el nombre local del juego y la terminología existente de la aplicación.
+- [x] Actualizar los diez campos `descripcionCompleta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
+- [x] Cargar y enviar a revisión las diez descripciones completas en Play Console.
+- [ ] Confirmar que Google aprobó y publicó las diez descripciones.
+- [ ] Registrar la fecha efectiva de publicación.
 
 ### Criterio de finalización
 
-- La descripción pública explica correctamente la aplicación y no contiene promesas engañosas o desactualizadas.
+- Las diez descripciones públicas explican correctamente la aplicación y no contienen promesas engañosas o desactualizadas.
 
 ## FASE 4: Revisar categoría y etiquetas
 
@@ -241,27 +244,25 @@ Mostrar las funciones principales mediante una secuencia visual clara y menos re
 
 - Las primeras tres capturas explican qué ofrece el juego sin necesidad de abrir la descripción.
 
-## FASE 6: Localizar la ficha completa
+## FASE 6: Auditar la ficha localizada completa
 
 ### Objetivo
 
-Aplicar la estrategia aprobada a los otros nueve idiomas sin realizar traducciones literales deficientes.
+Comprobar la coherencia final entre textos y capturas de los diez idiomas sin duplicar el trabajo resuelto en las Fases 1, 2 y 3.
 
 ### Contexto autónomo para un chat nuevo
 
-- Requiere que las Fases 1, 2, 3 y 5 estén terminadas en español.
+- Requiere que las Fases 1, 2, 3 y 5 estén terminadas.
 - Los idiomas y códigos exactos se obtienen de `src/i18n/IdiomasApp.json` y no deben inventarse.
 - Las traducciones canónicas se guardan en `PublicacionGooglePlay/FichaGooglePlay.json`.
 - Hay ocho capturas por idioma dentro de `F:\Programación\Ta-Te-Ti`; se deben conservar los originales y revisar si reflejan la interfaz actual.
-- La adaptación debe usar el nombre habitual del juego en cada mercado, no una traducción literal de `Ta-Te-Ti` cuando perjudique la búsqueda.
-- Entregable: textos y capturas revisados para los diez idiomas, publicación guiada por idioma y resultados anotados.
+- Los títulos y las descripciones localizadas ya se resuelven en las Fases 1, 2 y 3.
+- Entregable: auditoría final de textos y capturas para los diez idiomas, correcciones puntuales y resultados anotados.
 
 ### Pasos de ejecución
 
-- [ ] Adaptar la descripción completa para `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`; los títulos y las descripciones cortas se resuelven en las Fases 1 y 2.
-- [ ] Usar en cada idioma el nombre local habitual del juego.
-- [ ] Mantener `Ta-Te-Ti` y `NEXUS` como nombres propios cuando corresponda.
-- [ ] Actualizar cada entrada de `PublicacionGooglePlay/FichaGooglePlay.json`.
+- [ ] Comparar títulos, descripciones cortas y descripciones completas publicadas con `PublicacionGooglePlay/FichaGooglePlay.json`.
+- [ ] Corregir únicamente diferencias lingüísticas o de formato detectadas durante la auditoría.
 - [ ] Revisar las ocho capturas existentes de cada carpeta localizada en `F:\Programación\Ta-Te-Ti`.
 - [ ] Regenerar solamente las capturas cuyo texto o interfaz haya quedado desactualizado.
 - [ ] Publicar una localización por vez y comprobar su vista previa.
@@ -388,11 +389,11 @@ Validar que cada publicación sea correcta, medible y coherente con el proyecto.
 ## Progreso del plan
 
 - [x] Fase 1: Optimizar los títulos localizados
-- [ ] Fase 2: Optimizar las descripciones cortas localizadas
-- [ ] Fase 3: Reescribir la descripción completa en español
+- [x] Fase 2: Optimizar las descripciones cortas localizadas
+- [ ] Fase 3: Reescribir las descripciones completas localizadas
 - [ ] Fase 4: Revisar categoría y etiquetas
 - [ ] Fase 5: Mejorar las capturas en español
-- [ ] Fase 6: Localizar la ficha completa
+- [ ] Fase 6: Auditar la ficha localizada completa
 - [ ] Fase 7: Medir resultados y realizar experimentos
 - [ ] Fase 8: Evaluar mejoras dentro de la aplicación
 - [ ] Fase 9: Promoción externa y contenido promocional
@@ -439,20 +440,21 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 2: Descripción corta
 
-- Estado: En revisión de Google Play
+- Estado: Completada
 - Texto público español anterior: `Tres en raya vs IA imposible de vencer. ¿Podrás ganarle a NEXUS? ¡Desafío!`
 - Texto español aprobado: `Juega contra NEXUS en 3 dificultades, con multijugador local y estadísticas.`
 - Descripciones localizadas: guardadas y validadas en `PublicacionGooglePlay/FichaGooglePlay.json`.
 - Fecha de envío a revisión: 23 de septiembre de 2026
-- Fecha de publicación: Pendiente de aprobación
-- Observaciones: Las diez variantes respetan el máximo de 80 caracteres, describen funciones verificadas en el código y evitan afirmaciones absolutas como `imposible de vencer`.
+- Fecha de publicación: 23 de septiembre de 2026
+- Observaciones: Las diez variantes respetan el máximo de 80 caracteres, describen funciones verificadas en el código y evitan afirmaciones absolutas como `imposible de vencer`. Play Console dejó de mostrarlas como cambios pendientes antes del envío de la Fase 3.
 
 ### Fase 3: Descripción completa
 
-- Estado: Pendiente
-- Fecha de publicación: Pendiente
-- Resumen de cambios: Pendiente
-- Observaciones: Pendiente
+- Estado: En revisión de Google Play
+- Fecha de envío a revisión: 23 de septiembre de 2026
+- Fecha de publicación: Pendiente de aprobación
+- Resumen de cambios: Se eliminaron afirmaciones absolutas y se organizaron funciones reales en bloques sobre modos de juego, progreso, estadísticas, personalización y experiencia sin cuenta.
+- Observaciones: Las diez versiones localizadas están guardadas en `PublicacionGooglePlay/FichaGooglePlay.json` y fueron enviadas juntas a revisión. La ficha pública todavía muestra la descripción completa anterior, por lo que la fase no puede marcarse como completada.
 
 ### Fase 4: Categoría y etiquetas
 
