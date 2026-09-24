@@ -221,7 +221,7 @@ Mostrar las funciones principales mediante una secuencia visual clara y menos re
 - La captura 1 muestra el logo sin juego; las capturas 2, 3, 5 y 8 repiten el tablero; ninguna enseña estadísticas, tienda ni inventario. La captura 8 afirma `¡Victoria asegurada!`.
 - La app local está disponible en `http://localhost:9000/#/`. Las pantallas actuales de estadísticas, tienda, inventario y multijugador están en `src/pages/EstadisticasPage.vue`, `src/pages/TiendaPage.vue`, `src/pages/InventarioPage.vue` y `src/pages/JugarMultijugador.vue`.
 - Google Play permite hasta ocho capturas por tipo de dispositivo y recomienda al menos tres verticales de `1080x1920` para juegos, centradas en la experiencia real. Se prepararán seis capturas españolas distintas; se agregarán otras solo si muestran una función nueva con valor claro.
-- Los originales deben conservarse. Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` para los PNG nuevos, con nombres PascalCase `CapturaUno.png` a `CapturaSeis.png`.
+- Los originales deben conservarse. Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` para los PNG nuevos. Por indicación expresa de Leo, nombrarlos `Español - 1.png` a `Español - 6.png`, en orden de impacto; esta excepción de nombres prevalece sobre la convención general de PascalCase para los archivos de las capturas.
 - Usar capturas reales de la app para la interfaz y texto compuesto de forma verificable; no reconstruir la interfaz con IA. Si se generan fondos o se editan imágenes mediante IA, utilizar la skill `imagegen` y revisar visualmente el resultado.
 - Entregable: seis capturas españolas aprobadas, orden final definido, publicación manual guiada y rutas anotadas.
 
@@ -235,11 +235,11 @@ Mostrar las funciones principales mediante una secuencia visual clara y menos re
   4. Estadísticas: mostrar resultados o rendimiento por dificultad con datos reales de una sesión de prueba.
   5. Tienda y regalo diario: mostrar artículos disponibles y la recompensa, sin prometer artículos gratis que requieren puntos.
   6. Multijugador local: mostrar una partida de dos personas en el mismo dispositivo.
-- [ ] Capturar las seis pantallas reales desde la app actual, preferentemente en Android; si se utiliza `localhost:9000`, comprobar que el diseño y los datos coincidan con la versión Android publicada.
-- [ ] Componer seis PNG de `1080x1920`, con texto breve en español y la interfaz como elemento principal, legible en tamaño de teléfono. Quitar `¡Victoria asegurada!` y cualquier otro mensaje no demostrable.
-- [ ] Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` y guardar allí `CapturaUno.png` a `CapturaSeis.png`, sin sobrescribir los ocho originales.
-- [ ] Revisar visualmente las seis imágenes con Leo, confirmar que cada texto corresponde a la pantalla mostrada y validar dimensiones, formato y orden.
-- [ ] Guiar a Leo en Play Console para sustituir las capturas de teléfono de la ficha española, una instrucción por vez; esperar la aprobación y comprobar el orden en la ficha pública antes de cerrar la fase.
+- [x] Capturar las seis pantallas reales desde la app actual. Se usó `localhost:9000` en tamaño de teléfono; se contrastó la pantalla de juego con Android 4.0.14 instalado. Los datos de estadísticas provienen de dos partidas reales de la sesión de captura.
+- [x] Componer seis PNG de `1080x1920`, con texto breve en español y la interfaz como elemento principal, legible en tamaño de teléfono. No se incluyó `¡Victoria asegurada!` ni otra promesa absoluta.
+- [x] Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` y guardar allí `Español - 1.png` a `Español - 6.png`, sin sobrescribir los ocho originales.
+- [x] Revisar visualmente las seis imágenes con Leo, confirmar que cada texto corresponde a la pantalla mostrada y validar dimensiones, formato y orden. Leo aprobó el diseño español el 24 de septiembre de 2026.
+- [ ] Guiar a Leo en Play Console para sustituir las capturas de teléfono de la ficha española, una instrucción por vez; esperar la aprobación y comprobar el orden en la ficha pública antes de cerrar la fase. Las capturas de los diez idiomas ya se cargaron y están en verificaciones rápidas previas a la revisión; falta confirmar su publicación y el orden visible.
 
 ### Criterio de finalización
 
@@ -468,20 +468,24 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 5: Capturas en español
 
-- Estado: Preparada; capturas nuevas pendientes
+- Estado: Seis capturas cargadas en Play Console; verificaciones rápidas en curso, pendientes de revisión, publicación y comprobación pública
 - Carpeta de originales: `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español`
 - Carpeta prevista para capturas revisadas: `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol`
-- Orden propuesto: NEXUS, dificultades, personalización, estadísticas, tienda y regalo diario, multijugador local
+- Archivos preparados: `Español - 1.png`, `Español - 2.png`, `Español - 3.png`, `Español - 4.png`, `Español - 5.png` y `Español - 6.png` en la carpeta revisada; los seis tienen `1080x1920` y formato PNG.
+- Vista previa conjunta para revisión: `F:\Programación\Ta-Te-Ti\VistaPreviaCapturasEspañol.png`.
+- Orden aprobado: NEXUS, dificultades, personalización, estadísticas, tienda y regalo diario, multijugador local
+- Fecha de carga en Play Console: 24 de septiembre de 2026
 - Orden publicado: Pendiente
 - Fecha de publicación: Pendiente
-- Observaciones: Se inspeccionaron las ocho capturas españolas y una muestra visual de inglés, japonés y portugués. Se comprobó que cada una de las diez carpetas tiene ocho PNG, pero falta la auditoría visual completa de los otros nueve idiomas en la Fase 6. Se recomiendan seis imágenes nuevas de `1080x1920` basadas en pantallas reales; `http://localhost:9000/#/` respondió correctamente durante la preparación.
+- Observaciones: Se inspeccionaron las ocho capturas españolas y una muestra visual de inglés, japonés y portugués. Se comprobó que cada una de las diez carpetas tiene ocho PNG, pero falta la auditoría visual completa de los otros nueve idiomas en la Fase 6. El 24 de septiembre de 2026 se detectó un Android `M2102J20SG` por ADB con la versión 4.0.9; se instaló y verificó la versión 4.0.14 (código 27) preservando los datos. El APK de prueba muestra un encabezado naranja, distinto al de producción, y el teléfono bloquea la inyección de toques por ADB. Por ello, las seis piezas se capturaron de la app local actual con el color de producción y se contrastó el juego con Android. La captura de tienda muestra el estado web `Cargando video...`; Leo aprobó las seis piezas y su orden el 24 de septiembre de 2026. No se usó IA para fondos ni pantallas. Los ocho originales conservan su tamaño y fecha de modificación. Leo solicitó numerar las capturas por idioma en orden de impacto. Leo cargó las nuevas capturas en Play Console; su captura de la página «Descripción general de la publicación» muestra la ficha española en «Cambios en la etapa de revisión» mientras se ejecutan verificaciones rápidas. La pantalla no confirma todavía la publicación.
 
 ### Fase 6: Localización
 
-- Estado: Pendiente
-- Idiomas terminados: Ninguno
-- Idiomas pendientes: `es-419`, `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE`, `no-NO`
-- Observaciones: Pendiente
+- Estado: Capturas de los otros nueve idiomas cargadas en Play Console; verificaciones rápidas en curso, auditoría de la ficha y publicación pendientes
+- Idiomas con capturas preparadas: `es-419`, `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE`, `no-NO`
+- Idiomas cargados en Play Console: Los diez
+- Idiomas pendientes de publicación: Los diez
+- Observaciones: Leo aprobó el diseño español y autorizó localizar las seis piezas en los otros nueve idiomas antes de publicar la Fase 5. Se recrearon las pantallas reales de la app en el idioma del dispositivo, incluido el texto de la interfaz, y se prepararon seis PNG de 1080×1920 por idioma en carpetas nuevas `F:\Programación\Ta-Te-Ti\CapturasRevisadas[Idioma]`, numerados `[Idioma] - 1.png` a `[Idioma] - 6.png`. Los originales permanecen intactos. Cada carpeta revisada incluye `VistaPrevia[Idioma].png`. Se usó `Leo` como nombre personalizable para evitar mostrar el valor predeterminado español `Jugador` en las imágenes localizadas. Los 54 PNG pasaron validación de formato y dimensiones. Leo cargó las capturas de los diez idiomas en Play Console el 24 de septiembre de 2026; la página «Descripción general de la publicación» muestra una entrada «Cambiar Capturas de pantalla de teléfono» por cada idioma y verificaciones rápidas en curso. La pantalla indica que, al terminar esas verificaciones, los cambios se enviarán para revisión. Pendientes: aprobación y publicación, comprobación pública de los diez idiomas y auditoría completa de originales y ficha. No se usó IA.
 
 ### Fase 7: Métricas y experimentos
 
