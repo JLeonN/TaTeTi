@@ -176,8 +176,8 @@ Crear descripciones atractivas, localizadas y verificables que reflejen el estad
 - [x] Adaptar el texto a los otros nueve idiomas con el nombre local del juego y la terminología existente de la aplicación.
 - [x] Actualizar los diez campos `descripcionCompleta` en `PublicacionGooglePlay/FichaGooglePlay.json`.
 - [x] Cargar y enviar a revisión las diez descripciones completas en Play Console.
-- [ ] Confirmar que Google aprobó y publicó las diez descripciones.
-- [ ] Registrar la fecha efectiva de publicación.
+- [x] Confirmar que Google aprobó y publicó las diez descripciones.
+- [x] Registrar la fecha efectiva de publicación.
 
 ### Criterio de finalización
 
@@ -192,17 +192,17 @@ Ayudar a Google Play a clasificar Ta-Te-Ti dentro del público correcto.
 ### Contexto autónomo para un chat nuevo
 
 - Conviene ejecutar esta fase después de estabilizar los textos españoles.
-- La ficha pública está clasificada actualmente como `Estrategia`; debe compararse con `Juegos de mesa` usando competidores actuales y las opciones reales disponibles en Play Console.
+- Antes de esta fase, la ficha pública estaba clasificada como `Estrategia`; se comparó con `Juegos de mesa` usando competidores actuales y las opciones reales disponibles en Play Console.
 - Las etiquetas no están almacenadas en el repositorio y deberán revisarse mediante capturas de Play Console.
 - Entregable: categoría y etiquetas elegidas, cambio manual guiado y decisión documentada.
 
 ### Pasos de ejecución
 
-- [ ] Comparar la categoría actual `Estrategia` con la categoría `Juegos de mesa` y observar qué categoría usan los competidores directos.
-- [ ] Elegir con Leo la categoría que mejor represente la experiencia principal.
-- [ ] Ir a `Aumenta la cantidad de usuarios > Presencia en Play Store > Configuración de la tienda`.
-- [ ] Revisar las etiquetas disponibles y seleccionar como máximo las cinco más directamente relacionadas.
-- [ ] Guardar el cambio y registrar la fecha de publicación.
+- [x] Comparar la categoría actual `Estrategia` con la categoría `Juegos de mesa` y observar qué categoría usan los competidores directos.
+- [x] Elegir con Leo la categoría que mejor represente la experiencia principal.
+- [x] Ir a `Aumenta la cantidad de usuarios > Presencia en Play Store > Configuración de la tienda`.
+- [x] Revisar las etiquetas disponibles y seleccionar como máximo las cinco más directamente relacionadas.
+- [x] Guardar el cambio y registrar la fecha de publicación.
 
 ### Criterio de finalización
 
@@ -390,8 +390,8 @@ Validar que cada publicación sea correcta, medible y coherente con el proyecto.
 
 - [x] Fase 1: Optimizar los títulos localizados
 - [x] Fase 2: Optimizar las descripciones cortas localizadas
-- [ ] Fase 3: Reescribir las descripciones completas localizadas
-- [ ] Fase 4: Revisar categoría y etiquetas
+- [x] Fase 3: Reescribir las descripciones completas localizadas
+- [x] Fase 4: Revisar categoría y etiquetas
 - [ ] Fase 5: Mejorar las capturas en español
 - [ ] Fase 6: Auditar la ficha localizada completa
 - [ ] Fase 7: Medir resultados y realizar experimentos
@@ -450,19 +450,20 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 3: Descripción completa
 
-- Estado: En revisión de Google Play
+- Estado: Completada
 - Fecha de envío a revisión: 23 de septiembre de 2026
-- Fecha de publicación: Pendiente de aprobación
+- Fecha de publicación: 23 de septiembre de 2026
 - Resumen de cambios: Se eliminaron afirmaciones absolutas y se organizaron funciones reales en bloques sobre modos de juego, progreso, estadísticas, personalización y experiencia sin cuenta.
-- Observaciones: Las diez versiones localizadas están guardadas en `PublicacionGooglePlay/FichaGooglePlay.json` y fueron enviadas juntas a revisión. La ficha pública todavía muestra la descripción completa anterior, por lo que la fase no puede marcarse como completada.
+- Observaciones: Se comprobaron públicamente las diez localizaciones (`es-419`, `en-US`, `pt-BR`, `fr-FR`, `it-IT`, `de-DE`, `ja-JP`, `ko-KR`, `sv-SE` y `no-NO`). Todas contienen la introducción y el encabezado principal de su nueva descripción completa y coinciden con `PublicacionGooglePlay/FichaGooglePlay.json`.
 
 ### Fase 4: Categoría y etiquetas
 
-- Estado: Pendiente
+- Estado: Completada
 - Categoría anterior: `Estrategia`
-- Categoría aprobada: Pendiente
-- Etiquetas aprobadas: Pendiente
-- Fecha de publicación: Pendiente
+- Categoría aprobada: `Juegos de mesa`
+- Etiquetas aprobadas: `Casuales`, `Estrategia`, `Estrategia abstracta`, `Juegos de mesa` y `Lógica y habilidad mental`
+- Fecha de publicación: 24 de septiembre de 2026
+- Observaciones: Leo guardó `Juego > Juegos de mesa` y las cinco etiquetas aprobadas en Play Console. La ficha pública se comprobó después del cambio y muestra la categoría `Mesa`, denominación pública correspondiente a `Juegos de mesa`.
 
 ### Fase 5: Capturas en español
 
@@ -507,5 +508,5 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 - Última comprobación pública: Pendiente
 
 Fecha de creación: 23 de septiembre de 2026
-Fecha de última actualización: 23 de septiembre de 2026
+Fecha de última actualización: 24 de septiembre de 2026
 Estado: EN PROCESO
