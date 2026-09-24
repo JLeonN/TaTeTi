@@ -14,8 +14,8 @@ Mejorar progresivamente la visibilidad de Ta-Te-Ti en Google Play mediante ASO, 
 ## Contexto verificado
 
 - Aplicación publicada: `com.leotateti.tateti`.
-- Nombre público actual en español: `Ta-Te-Ti: Vs IA Invencible`.
-- Categoría pública actual: `Estrategia`.
+- Nombre público actual en español: `Ta-Te-Ti: Tres en raya con IA`.
+- Categoría pública actual: `Mesa` (`Juegos de mesa` en Play Console).
 - La aplicación tiene anuncios y funciona sin cuenta.
 - La aplicación incluye juego contra NEXUS, tres dificultades, multijugador local, estadísticas, puntuación, tienda, inventario, regalo diario, símbolos y tableros personalizables.
 - El proyecto admite diez idiomas definidos en `src/i18n/IdiomasApp.json`.
@@ -217,32 +217,33 @@ Mostrar las funciones principales mediante una secuencia visual clara y menos re
 ### Contexto autónomo para un chat nuevo
 
 - Requiere textos españoles estabilizados para que los mensajes visuales no contradigan la ficha.
-- Los originales españoles están en `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español` y son ocho imágenes de `1080x1920`.
-- Las capturas actuales tienen un estilo colorido coherente, pero repiten el tablero y no muestran suficientemente estadísticas, tienda, inventario o personalización.
-- No se deben sobrescribir los originales. Cualquier carpeta o archivo nuevo debe respetar PascalCase.
-- Si se generan o editan imágenes mediante IA, debe utilizarse la skill `imagegen` y realizar revisión visual antes de entregar.
-- Entregable: ocho capturas españolas aprobadas, orden final definido, publicación manual guiada y rutas anotadas.
+- Los originales españoles están en `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español` y son ocho imágenes de `1080x1920`. Las otras nueve carpetas localizadas también contienen ocho PNG cada una; solo se han inspeccionado visualmente las ocho españolas y muestras de inglés, japonés y portugués.
+- La captura 1 muestra el logo sin juego; las capturas 2, 3, 5 y 8 repiten el tablero; ninguna enseña estadísticas, tienda ni inventario. La captura 8 afirma `¡Victoria asegurada!`.
+- La app local está disponible en `http://localhost:9000/#/`. Las pantallas actuales de estadísticas, tienda, inventario y multijugador están en `src/pages/EstadisticasPage.vue`, `src/pages/TiendaPage.vue`, `src/pages/InventarioPage.vue` y `src/pages/JugarMultijugador.vue`.
+- Google Play permite hasta ocho capturas por tipo de dispositivo y recomienda al menos tres verticales de `1080x1920` para juegos, centradas en la experiencia real. Se prepararán seis capturas españolas distintas; se agregarán otras solo si muestran una función nueva con valor claro.
+- Los originales deben conservarse. Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` para los PNG nuevos, con nombres PascalCase `CapturaUno.png` a `CapturaSeis.png`.
+- Usar capturas reales de la app para la interfaz y texto compuesto de forma verificable; no reconstruir la interfaz con IA. Si se generan fondos o se editan imágenes mediante IA, utilizar la skill `imagegen` y revisar visualmente el resultado.
+- Entregable: seis capturas españolas aprobadas, orden final definido, publicación manual guiada y rutas anotadas.
 
 ### Pasos de ejecución
 
-- [ ] Revisar las ocho capturas de `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español`.
-- [ ] Verificar qué pantallas quedaron desactualizadas respecto de la versión actual.
-- [ ] Definir una secuencia de mensajes antes de editar imágenes.
-  - Desafío contra NEXUS.
-  - Tres niveles de dificultad.
-  - Personalización de símbolos y tableros.
-  - Estadísticas y progreso.
-  - Multijugador local.
-  - Rachas o partidas rápidas.
-- [ ] Eliminar mensajes ambiguos o difíciles de sostener, como `Victoria asegurada`.
-- [ ] Aumentar el tamaño visible de la interfaz y reducir la competencia visual del fondo cuando sea necesario.
-- [ ] Conservar los archivos originales y crear una carpeta nueva con nombre PascalCase para las versiones revisadas.
-- [ ] Revisar visualmente las ocho imágenes antes de subirlas.
-- [ ] Publicar las capturas españolas en el orden aprobado.
+- [x] Revisar las ocho capturas de `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español` y contrastarlas con las pantallas actuales del proyecto.
+- [x] Definir una secuencia inicial de seis mensajes, de mayor a menor importancia para quien descubre el juego.
+  1. Partida real contra NEXUS: mostrar el tablero y una jugada en curso.
+  2. Tres dificultades: mostrar los controles Fácil, Normal y Difícil junto al tablero.
+  3. Personalización: mostrar símbolos y tableros equipados en el inventario.
+  4. Estadísticas: mostrar resultados o rendimiento por dificultad con datos reales de una sesión de prueba.
+  5. Tienda y regalo diario: mostrar artículos disponibles y la recompensa, sin prometer artículos gratis que requieren puntos.
+  6. Multijugador local: mostrar una partida de dos personas en el mismo dispositivo.
+- [ ] Capturar las seis pantallas reales desde la app actual, preferentemente en Android; si se utiliza `localhost:9000`, comprobar que el diseño y los datos coincidan con la versión Android publicada.
+- [ ] Componer seis PNG de `1080x1920`, con texto breve en español y la interfaz como elemento principal, legible en tamaño de teléfono. Quitar `¡Victoria asegurada!` y cualquier otro mensaje no demostrable.
+- [ ] Crear `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol` y guardar allí `CapturaUno.png` a `CapturaSeis.png`, sin sobrescribir los ocho originales.
+- [ ] Revisar visualmente las seis imágenes con Leo, confirmar que cada texto corresponde a la pantalla mostrada y validar dimensiones, formato y orden.
+- [ ] Guiar a Leo en Play Console para sustituir las capturas de teléfono de la ficha española, una instrucción por vez; esperar la aprobación y comprobar el orden en la ficha pública antes de cerrar la fase.
 
 ### Criterio de finalización
 
-- Las primeras tres capturas explican qué ofrece el juego sin necesidad de abrir la descripción.
+- Las primeras tres capturas muestran juego real, dificultades y personalización sin necesidad de abrir la descripción. Las seis capturas publicadas representan funciones disponibles y coinciden con los PNG aprobados.
 
 ## FASE 6: Auditar la ficha localizada completa
 
@@ -255,7 +256,7 @@ Comprobar la coherencia final entre textos y capturas de los diez idiomas sin du
 - Requiere que las Fases 1, 2, 3 y 5 estén terminadas.
 - Los idiomas y códigos exactos se obtienen de `src/i18n/IdiomasApp.json` y no deben inventarse.
 - Las traducciones canónicas se guardan en `PublicacionGooglePlay/FichaGooglePlay.json`.
-- Hay ocho capturas por idioma dentro de `F:\Programación\Ta-Te-Ti`; se deben conservar los originales y revisar si reflejan la interfaz actual.
+- Hay ocho capturas originales por idioma dentro de `F:\Programación\Ta-Te-Ti`; se deben conservar y revisar si reflejan la interfaz actual. La nueva secuencia española de seis capturas será la base para localizar las demás.
 - Los títulos y las descripciones localizadas ya se resuelven en las Fases 1, 2 y 3.
 - Entregable: auditoría final de textos y capturas para los diez idiomas, correcciones puntuales y resultados anotados.
 
@@ -467,11 +468,13 @@ Completar esta sección al finalizar cada sesión para que el siguiente chat pue
 
 ### Fase 5: Capturas en español
 
-- Estado: Pendiente
+- Estado: Preparada; capturas nuevas pendientes
 - Carpeta de originales: `F:\Programación\Ta-Te-Ti\Ta-Te-Ti - Español`
-- Carpeta de capturas revisadas: Pendiente
+- Carpeta prevista para capturas revisadas: `F:\Programación\Ta-Te-Ti\CapturasRevisadasEspañol`
+- Orden propuesto: NEXUS, dificultades, personalización, estadísticas, tienda y regalo diario, multijugador local
 - Orden publicado: Pendiente
 - Fecha de publicación: Pendiente
+- Observaciones: Se inspeccionaron las ocho capturas españolas y una muestra visual de inglés, japonés y portugués. Se comprobó que cada una de las diez carpetas tiene ocho PNG, pero falta la auditoría visual completa de los otros nueve idiomas en la Fase 6. Se recomiendan seis imágenes nuevas de `1080x1920` basadas en pantallas reales; `http://localhost:9000/#/` respondió correctamente durante la preparación.
 
 ### Fase 6: Localización
 
